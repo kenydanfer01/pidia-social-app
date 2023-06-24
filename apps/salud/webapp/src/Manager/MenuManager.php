@@ -11,7 +11,7 @@ namespace SocialApp\Apps\Salud\Webapp\Manager;
 
 use CarlosChininin\App\Infrastructure\Manager\CRUDManager;
 use SocialApp\Apps\Salud\Webapp\Repository\MenuRepository;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 final class MenuManager extends CRUDManager
 {

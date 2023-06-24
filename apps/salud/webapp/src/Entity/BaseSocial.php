@@ -2,6 +2,8 @@
 
 namespace SocialApp\Apps\Salud\Webapp\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use SocialApp\Apps\Salud\Webapp\Entity\Traits\EntityTrait;
@@ -22,6 +24,19 @@ class BaseSocial
 
     #[ORM\Column(length: 100)]
     private ?string $localidad = null;
+
+    #[ORM\OneToMany(mappedBy: 'baseSocial', targetEntity: Paciente::class)]
+    private Collection $asociados;
+
+    public function __construct()
+    {
+        $this->asociados = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->nombre;
+    }
 
     public function getId(): ?int
     {
@@ -48,6 +63,36 @@ class BaseSocial
     public function setLocalidad(string $localidad): static
     {
         $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Paciente>
+     */
+    public function getAsociados(): Collection
+    {
+        return $this->asociados;
+    }
+
+    public function addAsociado(Paciente $asociado): static
+    {
+        if (!$this->asociados->contains($asociado)) {
+            $this->asociados->add($asociado);
+            $asociado->setBaseSocial($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAsociado(Paciente $asociado): static
+    {
+        if ($this->asociados->removeElement($asociado)) {
+            // set the owning side to null (unless already changed)
+            if ($asociado->getBaseSocial() === $this) {
+                $asociado->setBaseSocial(null);
+            }
+        }
 
         return $this;
     }

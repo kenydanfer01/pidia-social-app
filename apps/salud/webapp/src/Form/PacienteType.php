@@ -8,6 +8,7 @@
 namespace SocialApp\Apps\Salud\Webapp\Form;
 
 use Doctrine\ORM\EntityRepository;
+use SocialApp\Apps\Salud\Webapp\Entity\BaseSocial;
 use SocialApp\Apps\Salud\Webapp\Entity\Paciente;
 use SocialApp\Apps\Salud\Webapp\Entity\Parametro;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -97,6 +98,11 @@ class PacienteType extends AbstractType
                 'class' => Paciente::class,
                 'placeholder' => 'Seleccione...',
                 'required' => false,
+            ])
+            ->add('baseSocial', EntityType::class, [
+                'class' => BaseSocial::class,
+                'label' => 'Base Social:',
+                'placeholder' => 'Seleccione..',
             ]);
     }
 

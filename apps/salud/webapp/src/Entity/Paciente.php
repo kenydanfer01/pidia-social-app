@@ -60,6 +60,9 @@ class Paciente
     #[ORM\ManyToOne(targetEntity: self::class)]
     private ?self $titular = null;
 
+    #[ORM\ManyToOne(inversedBy: 'asociados')]
+    private ?BaseSocial $baseSocial = null;
+
     public function __toString(): string
     {
         return $this->apellidoPaterno.' '.$this->apellidoMaterno.' '.$this->nombres;
@@ -198,6 +201,18 @@ class Paciente
     public function setTitular(?self $titular): static
     {
         $this->titular = $titular;
+
+        return $this;
+    }
+
+    public function getBaseSocial(): ?BaseSocial
+    {
+        return $this->baseSocial;
+    }
+
+    public function setBaseSocial(?BaseSocial $baseSocial): static
+    {
+        $this->baseSocial = $baseSocial;
 
         return $this;
     }
