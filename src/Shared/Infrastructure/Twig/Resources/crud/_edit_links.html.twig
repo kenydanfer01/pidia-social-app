@@ -1,0 +1,14 @@
+{% import '@TwigShared/theme/action.html.twig' as action %}
+
+{{ action.btn_list_link(path(route_base ~ '_index')) }}
+{{ action.btn_new_link(path(route_base ~ '_new')) }}
+
+{% if entity.isActive == true %}
+    {{ action.btn_disable_form(path(route_base ~ '_disable', {'id': entity.id}), csrf_token('disable' ~ entity.id)) }}
+{% endif %}
+{% if entity.isActive == false %}
+    {{ action.btn_enable_form(path(route_base ~ '_enable', {'id': entity.id}), csrf_token('enable' ~ entity.id)) }}
+{% endif %}
+
+{{ action.btn_delete_forever_form(path(route_base ~ '_delete', {'id': entity.id}), csrf_token('delete_forever' ~ entity.id)) }}
+

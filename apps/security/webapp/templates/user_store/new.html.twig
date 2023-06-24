@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% import '@TwigShared/theme/breadcrumb.html.twig' as breadcrumb %}
+
+{% set _title = 'User' %}
+{% set _main_title = 'New' %}
+{% set _section =  'user_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title,_section,'Nuevo') }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('user_store/_form.html.twig') }}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include '@TwigShared/crud/_new_links_ico.html.twig' with {'route_base':'user'} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include '@TwigShared/crud/_new_links.html.twig' with {'route_base':'user'} %}
+{% endblock %}

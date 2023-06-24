@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HOME{% endblock %}
+
+{% block _main %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ book_category.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ book_category.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

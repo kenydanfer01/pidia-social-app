@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% import '@TwigShared/theme/breadcrumb.html.twig' as breadcrumb %}
+{% import '@TwigShared/theme/pagination.html.twig' as pagination %}
+
+{% set _title = 'Book' %}
+{% set _main_title = 'List' %}
+{% set _section =  'book_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(books, _section) }}
+    {% embed '@TwigShared/theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import '@TwigShared/theme/action.html.twig' as action %}
+            {% import '@TwigShared/theme/table.html.twig' as table %}
+
+            <tr>
+                {{ table.th('#') }}
+                {{ table.th('Data', true, 'd-block d-sm-none') }}
+                {{ table.th('Name', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Category', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Categories', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Author', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Price', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
+                <th></th>
+            </tr>
+        {% endblock %}
+        {% block table_body %}
+            {% import '@TwigShared/theme/action.html.twig' as action %}
+            {% import '@TwigShared/theme/table.html.twig' as table %}
+
+            {% for book in books %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index(books)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Name', book.name) }}
+                            {{ table.tbl_tr_th_td('Category', book.category) }}
+                            {{ table.tbl_tr_th_td('Categories', book.categories|join(', ')) }}
+                            {{ table.tbl_tr_th_td('Author', book.author) }}
+                            {{ table.tbl_tr_th_td('price', book.price) }}
+                            {{ table.tbl_tr_th_td('Activo', book.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ book.name }}</td>
+                    <td class="d-none d-sm-table-cell">{{ book.category }}</td>
+                    <td class="d-none d-sm-table-cell">{{ book.categories|join(', ') }}</td>
+                    <td class="d-none d-sm-table-cell">{{ book.author }}</td>
+                    <td class="d-none d-sm-table-cell">{{ book.price }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ book.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {{ action.btn_show_link2_ico(path('book_show', {'id': book.id})) }}
+                            {{ action.btn_edit_link2_ico(path('book_edit', {'id': book.id})) }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
+    {{ pagination.show(books, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include '@TwigShared/crud/_index_links.html.twig' with {'route_base': 'book'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include '@TwigShared/crud/_index_links_ico.html.twig' with {'route_base': 'book'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/crud/list.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            CRUDList.init('{{ path('book_index') }}');
+        });
+    </script>
+{% endblock %}

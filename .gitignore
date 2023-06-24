@@ -1,0 +1,38 @@
+/.idea
+/apps/*/*/.idea
+/apps/*/*/node_modules/
+/apps/*/*/public/build/
+/apps/*/*/public/theme/
+/apps/*/*/public/media/
+/apps/*/*/public/uploads/
+/apps/*/*/config/jwt
+/apps/*/*/var/
+/apps/*/*/vendor/
+/apps/*/*/build/
+/apps/*/*/composer.lock
+/apps/*/*/symfony.lock
+/apps/*/*/.env.local
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> qossmic/deptrac-shim ###
+/.deptrac_bc.cache
+/.deptrac_hexa.cache
+###< qossmic/deptrac-shim ###

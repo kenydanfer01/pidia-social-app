@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% import '@TwigShared/theme/breadcrumb.html.twig' as breadcrumb %}
+{% import '@TwigShared/theme/table.html.twig' as table %}
+
+{% set _title = 'User' %}
+{% set _main_title = 'Show' %}
+{% set _section =  'user_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Show') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Name',user.name) }}
+    {{ table.tbl_tr('FullName',user.fullName) }}
+    {% include '@TwigShared/crud/_show_info.html.twig' with {'entity': user} %}
+    {{ table.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include '@TwigShared/crud/_show_links.html.twig' with {'route_base':'user','entity': user} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include '@TwigShared/crud/_show_links_ico.html.twig' with {'route_base':'user','entity': user} %}
+{% endblock %}

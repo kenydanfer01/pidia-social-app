@@ -1,0 +1,45 @@
+{% macro show(title) %}
+    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 pt-1 d-print-none">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ path('homepage') }}" class="text-muted text-hover-primary">{{ 'Inicio' | trans }}</a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-200 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">{{ title | trans }}</li>
+        <!--end::Item-->
+    </ul>
+{% endmacro %}
+
+{% macro show2(title2, route2, title) %}
+    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 pt-1 d-print-none">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ path('homepage') }}" class="text-muted text-hover-primary">{{ 'Inicio' | trans }}</a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-200 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ path(route2) }}" class="text-muted text-hover-success">{{ title2 | trans }}</a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-200 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">{{ title | trans | capitalize }}</li>
+        <!--end::Item-->
+    </ul>
+{% endmacro %}

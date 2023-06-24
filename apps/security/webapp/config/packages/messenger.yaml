@@ -1,0 +1,33 @@
+framework:
+    messenger:
+#        failure_transport: failed
+        default_bus: 'command.bus'
+        buses:
+            command.bus: ~
+            query.bus: ~
+
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    use_notify: true
+                    check_delayed_interval: 60000
+                retry_strategy:
+                    max_retries: 3
+                    multiplier: 2
+#            failed: 'doctrine://default?queue_name=failed'
+            sync: 'sync://'
+
+        routing:
+            # Route your messages to the transports
+            SocialApp\Shared\Application\Query\QueryInterface: sync
+            SocialApp\Shared\Application\Command\CommandInterface: sync
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'

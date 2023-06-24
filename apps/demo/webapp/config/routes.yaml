@@ -1,0 +1,25 @@
+book_store_controllers:
+    resource:
+        path: ../src/BookStore/Controller/
+        namespace: SocialApp\Apps\Demo\Webapp\BookStore\Controller
+    type: attribute
+    prefix: /book
+    
+book_category_controllers:
+    resource:
+        path: ../src/BookCategory/Controller/
+        namespace: SocialApp\Apps\Demo\Webapp\BookCategory\Controller
+    type: attribute
+    prefix: /book_category
+    
+user_login_controllers:
+    resource:
+        path: ../src/UserLogin/Controller/
+        namespace: SocialApp\Apps\Demo\Webapp\UserLogin\Controller
+    type: attribute
+
+home_controllers:
+    resource:
+        path: ../src/Home/Controller/
+        namespace: SocialApp\Apps\Demo\Webapp\Home\Controller
+    type: attribute

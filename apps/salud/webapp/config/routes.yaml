@@ -1,0 +1,21 @@
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+    prefix: /{_locale}
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+        
+apis:
+    resource: ../src/Api/
+    type: annotation
+
+homepage:
+    path: /{_locale}
+    controller: SocialApp\Apps\Salud\Webapp\Controller\DefaultController::home
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        template: default/homepage.html.twig
+        _locale: '%locale%'

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HOME{% endblock %}
+
+{% block _main %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button>Actualizar</button>
+    {{ form_end(form) }}
+{% endblock %}

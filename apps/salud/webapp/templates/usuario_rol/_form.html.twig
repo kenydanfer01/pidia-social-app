@@ -1,0 +1,23 @@
+{% import 'theme/form.html.twig' as frm %}
+
+{{ form_start(form) }}
+    {% if access.isSuperAdmin -%}
+        {{ frm.column2(
+            frm.row(form.name),
+            frm.row(form.rol)
+        ) }}
+
+        {{ frm.column2(
+            frm.row(form.config)
+        ) }}
+    {% else %}
+        {{ frm.column2(
+            frm.row(form.name)
+        ) }}
+    {% endif %}
+
+    {{ frm.row(form.permissions) }}
+
+    {{ frm.button(button_label|default('Guardar')) }}
+
+{{ form_end(form) }}

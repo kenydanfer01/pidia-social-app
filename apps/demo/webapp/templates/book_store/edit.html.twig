@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% import '@TwigShared/theme/breadcrumb.html.twig' as breadcrumb %}
+
+{% set _title = 'Book' %}
+{% set _main_title = 'Edit' %}
+{% set _section =  'book_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Update') }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('book_store/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include '@TwigShared/crud/_edit_links_ico.html.twig' with {'route_base':'book','entity': book} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include '@TwigShared/crud/_edit_links.html.twig' with {'route_base':'book','entity': book} %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        Select2();
+    </script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% import '@TwigShared/theme/breadcrumb.html.twig' as breadcrumb %}
+{% import '@TwigShared/theme/table.html.twig' as table %}
+
+{% set _title = 'Book' %}
+{% set _main_title = 'Show' %}
+{% set _section =  'book_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Show') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Name',book.name) }}
+    {{ table.tbl_tr('Category',book.category) }}
+    {{ table.tbl_tr('Categories',book.categories|join(', ')) }}
+    {{ table.tbl_tr('Description',book.description) }}
+    {{ table.tbl_tr('Author',book.author) }}
+    {{ table.tbl_tr('Content',book.content) }}
+    {{ table.tbl_tr('Price',book.price) }}
+    {% include '@TwigShared/crud/_show_info.html.twig' with {'entity': book} %}
+    {{ table.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include '@TwigShared/crud/_show_links.html.twig' with {'route_base':'book','entity': book} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include '@TwigShared/crud/_show_links_ico.html.twig' with {'route_base':'book','entity': book} %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HOME{% endblock %}
+
+{% block _main %}
+    <table class="table">
+        <tbody>
+        {% for book_category in book_categories %}
+            <tr>
+                <td>{{ book_category.name }}</td>
+                <td>{{ book_category.description }}</td>
+                <td>
+                    <a href="{{ path('book_category_show', {id: book_category.id}) }}" class="btn btn-info">Show</a>
+                    <a href="{{ path('book_category_edit', {id: book_category.id}) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ path('book_category_delete', {id: book_category.id}) }}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('book_category_new') }}" class="btn btn-success">Nuevo</a>
+{% endblock %}

@@ -1,0 +1,44 @@
+parameters:
+    default_results_per_page: { '10': 10,'25': 25, '100': 100, '1000': 1000 }
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    _instanceof:
+        SocialApp\Shared\Application\Command\CommandHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+
+        SocialApp\Shared\Application\Query\QueryHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
+
+    SocialApp\Apps\Demo\Webapp\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    SocialApp\Shared\:
+        resource: '../../../../src/Shared/'
+    SocialApp\Demo\:
+        resource: '../../../../src/Demo/'
+    SocialApp\Security\:
+        resource: '../../../../src/Security/'
+
+    SocialApp\Security\UserStore\Domain\Repository\UserRepositoryInterface:
+        class: 'SocialApp\Security\UserStore\Infrastructure\Doctrine\DoctrineUserRepository'
+
+    SocialApp\Demo\BookStore\Domain\Repository\BookRepositoryInterface:
+        class: 'SocialApp\Demo\BookStore\Infrastructure\Doctrine\DoctrineBookRepository'
+        
+    SocialApp\Demo\BookCategory\Domain\Repository\BookCategoryRepositoryInterface:
+        class: 'SocialApp\Demo\BookCategory\Infrastructure\Doctrine\DoctrineBookCategoryRepository'
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            - '%env(DATABASE_URL)%'
+            - { db_table: 'user_session' }

@@ -1,0 +1,21 @@
+{% import '@TwigShared/theme/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.column2(
+        form_row(form.name),
+        form_row(form.description)
+    ) }}
+    {{ frm.column2(
+        form_row(form.author),
+        form_row(form.content)
+    ) }}
+    {{ frm.column2(
+        form_row(form.price),
+        form_row(form.category)
+    ) }}
+    {{ frm.column2(
+        form_row(form.categories)
+    ) }}
+
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}

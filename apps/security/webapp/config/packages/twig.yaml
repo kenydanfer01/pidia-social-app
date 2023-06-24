@@ -1,0 +1,13 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    paths:
+        '%kernel.project_dir%/../../../src/Shared/Infrastructure/Twig/Resources': TwigShared
+    form_themes:
+        - '@TwigShared/theme/bootstrap_horizontal.html.twig'
+    globals:
+        app_version: '%env(resolve:APP_VERSION)%'
+        default_results_per_page: '%default_results_per_page%'
+
+when@test:
+    twig:
+        strict_variables: true

@@ -1,0 +1,31 @@
+{% import 'theme/form.html.twig' as frm %}
+
+{{ form_start(form) }}
+    {{ frm.column2(
+        form_row(form.fullName)
+    ) }}
+
+    {{ frm.column2(
+        form_row(form.username),
+        form_row(form.email)
+    ) }}
+
+    {{ frm.column2(
+        form_row(form.password.first),
+        form_row(form.password.second)
+    ) }}
+
+    {{ frm.column2(
+        form_row(form.usuarioRoles),
+        form_row(form.photo),
+    ) }}
+
+    {% if access.isSuperAdmin -%}
+        {{ frm.column2(
+            form_row(form.config),
+        ) }}
+    {% endif %}
+
+    {{ frm.button(button_label|default('Guardar')) }}
+
+{{ form_end(form) }}

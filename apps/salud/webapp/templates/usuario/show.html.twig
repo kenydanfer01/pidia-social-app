@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Usuarios' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'usuario_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+        {{ table.tbl_tr('Nombres'|gtrans, usuario.fullName) }}
+        {{ table.tbl_tr('Usuario'|gtrans, usuario.username) }}
+        {{ table.tbl_tr('Correo'|gtrans, usuario.email) }}
+        <tr>
+            <th>Roles</th>
+            <td>
+                {% for rol in usuario.roles %}
+                    {{ rol }},
+                {% endfor %}
+            </td>
+        </tr>
+        {% if usuario.photo %}
+            <tr>
+                <th>Foto</th>
+                <td>
+                    <img src="{{ usuario.photo | attached_file_webpath }}"  alt="Photo"/>
+                </td>
+            </tr>
+        {% endif %}
+        {% include 'crud/_show_info.html.twig' with {'entity': usuario} %}
+    {{ table.tbl_end() }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'usuario','entity': usuario} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'usuario','entity': usuario} %}
+{% endblock %}

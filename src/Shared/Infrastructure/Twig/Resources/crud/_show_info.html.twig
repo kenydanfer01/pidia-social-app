@@ -1,0 +1,8 @@
+{% import '@TwigShared/theme/table.html.twig' as table %}
+
+{{ table.tbl_tr('Active',entity.isActive | yesno_custom) }}
+{#{% if access.master %}#}
+{#    {{ table.tbl_tr('Propietario'| gtrans,entity.owner) }}#}
+{#    {{ table.tbl_tr('Creado'| gtrans,entity.createdAt | fecha_hora_larga) }}#}
+{#    {{ table.tbl_tr('Actualizado'| gtrans,entity.updatedAt | fecha_hora_larga) }}#}
+{#{% endif %}#}

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
+{% import '@App/theme1/table.html.twig' as table %}
+{% import 'theme/action.html.twig' as action %}
+
+{% set _title = 'Configuración' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'config_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(paginator, _section) }}
+    <div class="table-responsive">
+        {{ table.tbl_start() }}
+        {{ table.thead_start() }}
+        <tr>
+            {{ table.th('Nombre', true) }}
+            {{ table.th('Alias', true) }}
+            {{ table.th('Menus', true) }}
+            {{ table.th('Activo', true, 'text-center') }}
+            <th></th>
+        </tr>
+        {{ table.thead_end() }}
+        {{ table.tbody_start() }}
+        {% for config in paginator.results %}
+            <tr>
+                <td>{{ config.nombre }}</td>
+                <td>{{ config.alias }}</td>
+                <td>
+                    {% for menu in config.menus %}
+                        <span class="badge badge-secondary">{{ menu }}</span>
+                    {% endfor %}
+                </td>
+                <td class="text-center">{{ config.isActive | yesno_custom | raw }}</td>
+                <td>
+                    {% if access.has('show') %}
+                        {{ action.btn_show_link2_ico(path('config_show', {'id': config.id})) }}
+                    {% endif %}
+                    {% if access.has('edit', config) %}
+                        {{ action.btn_edit_link2_ico(path('config_edit', {'id': config.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+        {{ table.tbody_end() }}
+        {{ table.tbl_end() }}
+    </div>
+
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'config'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'config'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

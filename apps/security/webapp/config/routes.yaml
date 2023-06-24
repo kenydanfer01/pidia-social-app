@@ -1,0 +1,18 @@
+user_store_controllers:
+    resource:
+        path: ../src/UserStore/Controller/
+        namespace: SocialApp\Apps\Security\Webapp\UserStore\Controller
+    type: attribute
+    prefix: /user
+    
+user_login_controllers:
+    resource:
+        path: ../src/UserLogin/Controller/
+        namespace: SocialApp\Apps\Security\Webapp\UserLogin\Controller
+    type: attribute
+
+home_controllers:
+    resource:
+        path: ../src/Home/Controller/
+        namespace: SocialApp\Apps\Security\Webapp\Home\Controller
+    type: attribute
