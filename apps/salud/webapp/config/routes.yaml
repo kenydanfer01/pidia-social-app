@@ -7,9 +7,9 @@ controllers:
     defaults:
         _locale: '%locale%'
         
-apis:
-    resource: ../src/Api/
-    type: annotation
+#apis:
+#    resource: ../src/Api/
+#    type: annotation
 
 homepage:
     path: /{_locale}

@@ -16,3 +16,4 @@ services:
             - '../src/Kernel.php'
 
     CarlosChininin\App\Domain\Model\AuthMenu\MenuServiceInterface: '@SocialApp\Apps\Salud\Webapp\Service\Menu\MenuService'
+    CarlosChininin\ApiSearchPerson\SearchPersonService: ~

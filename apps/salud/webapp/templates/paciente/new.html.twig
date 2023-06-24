@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+
+{% set _title = 'Paciente' %}
+{% set _main_title = 'Nuevo' %}
+{% set _section =  'paciente_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title,_section,'Nuevo') }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('paciente/_form.html.twig') }}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'paciente'} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'paciente'} %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/flatpickr.js') }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            Flatpickr()
+            Select2()
+        });
+
+        $(document).on('keyup', '#paciente_dni', function (event) {
+            if($(this).val().length!==8){
+                return false
+            }
+            event.preventDefault();
+            console.log($(this).val())
+            $.ajax({
+                type: 'post',
+                url: '{{ path("buscar_paciente_dni") }}',
+                data: {
+                    'dni': $(this).val()
+                },
+                success: function (result) {
+                    console.log(result)
+                    if (result.data){
+                        $('#paciente_nombres').val(result.data.nombres)
+                        $('#paciente_apellidoPaterno').val(result.data.apellidoPaterno)
+                        $('#paciente_apellidoMaterno').val(result.data.apellidoMaterno)
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock %}
