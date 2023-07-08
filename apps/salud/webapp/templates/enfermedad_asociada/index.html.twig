@@ -76,8 +76,8 @@
 {% block javascripts %}
     <script src="{{ asset('js/crud/list.js') }}"></script>
     <script>
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function() {
             CRUDList.init('{{ path('enfermedad_asociada_index') }}');
-        });
+        })
     </script>
 {% endblock %}

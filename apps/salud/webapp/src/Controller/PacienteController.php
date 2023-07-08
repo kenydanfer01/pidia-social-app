@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Salud\Webapp\Controller;
 
 use CarlosChininin\ApiSearchPerson\SearchPersonService;
@@ -147,7 +152,10 @@ class PacienteController extends WebAuthController
     #[Route(path: '/search_dni', name: 'buscar_paciente_dni', methods: ['POST'])]
     public function searchPaciente(Request $request, SearchPersonService $personService): Response
     {
-        $dni = $request->request->get('dni');
+        $dataRequest = $request->getContent();
+        $decodedJson = json_decode($dataRequest, true, 512, JSON_THROW_ON_ERROR);
+
+        $dni = $decodedJson['dni'];
         $datos = $personService->dni($dni);
 
         return $this->json(['data' => $datos]);

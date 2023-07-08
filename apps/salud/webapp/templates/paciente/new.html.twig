@@ -28,32 +28,42 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
-        jQuery(document).ready(function () {
+        let dniTxt = document.getElementById('paciente_dni');
+        let nombresTxt = document.getElementById('paciente_nombres');
+        let apPaternoTxt = document.getElementById('paciente_apellidoPaterno');
+        let apMaternoTxt = document.getElementById('paciente_apellidoMaterno');
+    </script>
+    <script>
+        async function getPersonaApi(dni) {
+            let response = await fetch('{{ path('buscar_paciente_dni') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    dni: dni,
+                })
+            });
+
+            return await response.json();
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             Flatpickr()
             Select2()
-        });
+        })
 
-        $(document).on('keyup', '#paciente_dni', function (event) {
-            if($(this).val().length!==8){
-                return false
-            }
-            event.preventDefault();
-            console.log($(this).val())
-            $.ajax({
-                type: 'post',
-                url: '{{ path("buscar_paciente_dni") }}',
-                data: {
-                    'dni': $(this).val()
-                },
-                success: function (result) {
-                    console.log(result)
-                    if (result.data){
-                        $('#paciente_nombres').val(result.data.nombres)
-                        $('#paciente_apellidoPaterno').val(result.data.apellidoPaterno)
-                        $('#paciente_apellidoMaterno').val(result.data.apellidoMaterno)
+        dniTxt.onkeyup = function () {
+            if(this.value.length === 8){
+                getPersonaApi(this.value).then(result => {
+                    if (null !== result.data) {
+                        nombresTxt.value = result.data['nombres'];
+                        apPaternoTxt.value = result.data['apellidoPaterno'];
+                        apMaternoTxt.value = result.data['apellidoMaterno'];
                     }
-                }
-            })
-        });
+                })
+            }
+        }
     </script>
 {% endblock %}

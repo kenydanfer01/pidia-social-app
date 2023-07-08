@@ -28,9 +28,9 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
-        jQuery(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function() {
             Flatpickr()
             Select2()
-        });
+        })
     </script>
 {% endblock %}

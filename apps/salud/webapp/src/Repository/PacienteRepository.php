@@ -37,7 +37,7 @@ class PacienteRepository extends BaseRepository
     {
         $queryBuilder = $this->allQuery();
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['paciente.nombres']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['paciente.nombres', 'paciente.dni']);
 
         return $queryBuilder;
     }
