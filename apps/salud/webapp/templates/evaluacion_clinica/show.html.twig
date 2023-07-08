@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Evaluacion Clinica' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'evaluacion_clinica_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Temperatura Máxima', evaluacion_clinica.temperaturaMaxima) }}
+    {{ table.tbl_tr('¿Tiene fiebre?', evaluacion_clinica.hasFiebre | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene tos?', evaluacion_clinica.hasTos | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene dolor de garganta?', evaluacion_clinica.hasDolorGarganta | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene rinorrea?', evaluacion_clinica.hasRinorrea | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene expectoración?', evaluacion_clinica.hasExpectoracion | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene sibilancias?', evaluacion_clinica.hasSibilancias | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene congestión faríngea?', evaluacion_clinica.hasCongestionFaringea | yesno_custom) }}
+    {{ table.tbl_tr('¿Ha medido la temperatura?', evaluacion_clinica.hasMedidaTermometro | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene otalgia?', evaluacion_clinica.hasOtalgia | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene fotofobia?', evaluacion_clinica.hasFotofobia | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene congestión conjuntival?', evaluacion_clinica.hasCongestionConjuntiva | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene vómitos?', evaluacion_clinica.hasVomitos | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene dolor abdominal?', evaluacion_clinica.hasDolorAbdominal | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene diarrea?', evaluacion_clinica.hasDiarrea | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene adenopatías?', evaluacion_clinica.hasAdenopatias | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene astenia?', evaluacion_clinica.hasAstenia | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene cefalea?', evaluacion_clinica.hasCefalea | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene mialgias?', evaluacion_clinica.hasMialgias | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene malestar general?', evaluacion_clinica.hasMalestarGeneral | yesno_custom) }}
+    {{ table.tbl_tr('¿Tiene erupción dérmica?', evaluacion_clinica.hasErupcionDermica | yesno_custom) }}
+    {{ table.tbl_tr('Otros', evaluacion_clinica.otros) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': evaluacion_clinica} %}
+    {{ table.tbl_end() }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'evaluacion_clinica','entity': evaluacion_clinica} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'evaluacion_clinica','entity': evaluacion_clinica} %}
+{% endblock %}

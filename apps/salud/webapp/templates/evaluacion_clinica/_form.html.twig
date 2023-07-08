@@ -1,0 +1,32 @@
+{% import 'theme/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.temperaturaMaxima),
+            frm.row(form.hasFiebre),
+            frm.row(form.hasTos),
+            frm.row(form.hasDolorGarganta),
+            frm.row(form.hasRinorrea),
+            frm.row(form.hasExpectoracion),
+            frm.row(form.hasSibilancias),
+            frm.row(form.hasCongestionFaringea),
+            frm.row(form.hasMedidaTermometro),
+            frm.row(form.hasOtalgia),
+            frm.row(form.hasFotofobia),
+            frm.row(form.hasCongestionConjuntiva),
+            frm.row(form.hasVomitos),
+            frm.row(form.hasDolorAbdominal),
+            frm.row(form.hasDiarrea),
+            frm.row(form.hasAdenopatias),
+            frm.row(form.hasAstenia),
+            frm.row(form.hasCefalea),
+            frm.row(form.hasMialgias),
+            frm.row(form.hasMalestarGeneral),
+            frm.row(form.hasErupcionDermica),
+            frm.row(form.otros),
+        ],
+        6
+    ) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}
