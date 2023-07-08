@@ -20,7 +20,7 @@
             <tr>
                 {{ table.th('#') }}
                 {{ table.th('Datos', true, 'd-block d-sm-none') }}
-                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('IMC', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
                 <th></th>
             </tr>
@@ -34,7 +34,7 @@
                     <td class="text-center">{{ loop.index | index (paginator)}}</td>
                     <td class="d-block d-sm-none">
                         <table class="table gs-0 gy-0">
-                            {{ table.tbl_tr_th_td('Nombre', examen_fisico.imc) }}
+                            {{ table.tbl_tr_th_td('IMC', examen_fisico.imc) }}
                             {{ table.tbl_tr_th_td('Activo', examen_fisico.isActive  | yesno_custom) }}
                         </table>
                     </td>

@@ -52,11 +52,11 @@ class ExamenFisicoController extends WebAuthController
     {
         $this->denyAccess([Permission::NEW]);
 
-        $enfermedadesAsociadas = new ExamenFisico();
-        $form = $this->createForm(ExamenFisicoType::class, $enfermedadesAsociadas);
+        $examenFisico = new ExamenFisico();
+        $form = $this->createForm(ExamenFisicoType::class, $examenFisico);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($manager->save($enfermedadesAsociadas)) {
+            if ($manager->save($examenFisico)) {
                 $this->addFlash('success', 'Registro creado!!!');
             } else {
                 $this->addErrors($manager->errors());
@@ -68,54 +68,54 @@ class ExamenFisicoController extends WebAuthController
         return $this->render(
             'examen_fisico/new.html.twig',
             [
-                'examen_fisico' => $enfermedadesAsociadas,
+                'examen_fisico' => $examenFisico,
                 'form' => $form->createView(),
             ]
         );
     }
 
     #[Route(path: '/{id}', name: 'examen_fisico_show', methods: ['GET'])]
-    public function show(ExamenFisico $enfermedadesAsociadas): Response
+    public function show(ExamenFisico $examenFisico): Response
     {
-        $this->denyAccess([Permission::SHOW], $enfermedadesAsociadas);
+        $this->denyAccess([Permission::SHOW], $examenFisico);
 
-        return $this->render('examen_fisico/show.html.twig', ['examen_fisico' => $enfermedadesAsociadas]);
+        return $this->render('examen_fisico/show.html.twig', ['examen_fisico' => $examenFisico]);
     }
 
     #[Route(path: '/{id}/edit', name: 'examen_fisico_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, ExamenFisico $enfermedadesAsociadas, ExamenFisicoManager $manager): Response
+    public function edit(Request $request, ExamenFisico $examenFisico, ExamenFisicoManager $manager): Response
     {
-        $this->denyAccess([Permission::EDIT], $enfermedadesAsociadas);
+        $this->denyAccess([Permission::EDIT], $examenFisico);
 
-        $form = $this->createForm(ExamenFisicoType::class, $enfermedadesAsociadas);
+        $form = $this->createForm(ExamenFisicoType::class, $examenFisico);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($manager->save($enfermedadesAsociadas)) {
+            if ($manager->save($examenFisico)) {
                 $this->addFlash('success', 'Registro actualizado!!!');
             } else {
                 $this->addErrors($manager->errors());
             }
 
-            return $this->redirectToRoute('examen_fisico_index', ['id' => $enfermedadesAsociadas->getId()]);
+            return $this->redirectToRoute('examen_fisico_index', ['id' => $examenFisico->getId()]);
         }
 
         return $this->render(
             'examen_fisico/edit.html.twig',
             [
-                'examen_fisico' => $enfermedadesAsociadas,
+                'examen_fisico' => $examenFisico,
                 'form' => $form->createView(),
             ]
         );
     }
 
     #[Route(path: '/{id}/state', name: 'examen_fisico_change_state', methods: ['POST'])]
-    public function state(Request $request, ExamenFisico $enfermedadesAsociadas, ExamenFisicoManager $manager): Response
+    public function state(Request $request, ExamenFisico $examenFisico, ExamenFisicoManager $manager): Response
     {
-        $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $enfermedadesAsociadas);
+        $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $examenFisico);
 
-        if ($this->isCsrfTokenValid('change_state'.$enfermedadesAsociadas->getId(), $request->request->get('_token'))) {
-            $enfermedadesAsociadas->changeActive();
-            if ($manager->save($enfermedadesAsociadas)) {
+        if ($this->isCsrfTokenValid('change_state'.$examenFisico->getId(), $request->request->get('_token'))) {
+            $examenFisico->changeActive();
+            if ($manager->save($examenFisico)) {
                 $this->addFlash('success', 'Estado ha sido actualizado');
             } else {
                 $this->addErrors($manager->errors());
@@ -126,12 +126,12 @@ class ExamenFisicoController extends WebAuthController
     }
 
     #[Route(path: '/{id}/delete', name: 'examen_fisico_delete', methods: ['POST'])]
-    public function delete(Request $request, ExamenFisico $enfermedadesAsociadas, ExamenFisicoManager $manager): Response
+    public function delete(Request $request, ExamenFisico $examenFisico, ExamenFisicoManager $manager): Response
     {
-        $this->denyAccess([Permission::DELETE], $enfermedadesAsociadas);
+        $this->denyAccess([Permission::DELETE], $examenFisico);
 
-        if ($this->isCsrfTokenValid('delete_forever'.$enfermedadesAsociadas->getId(), $request->request->get('_token'))) {
-            if ($manager->remove($enfermedadesAsociadas)) {
+        if ($this->isCsrfTokenValid('delete_forever'.$examenFisico->getId(), $request->request->get('_token'))) {
+            if ($manager->remove($examenFisico)) {
                 $this->addFlash('warning', 'Registro eliminado');
             } else {
                 $this->addErrors($manager->errors());

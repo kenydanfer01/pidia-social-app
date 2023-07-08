@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Salud\Webapp\Form;
 
 use SocialApp\Apps\Salud\Webapp\Entity\ExamenFisico;
@@ -19,8 +24,7 @@ class ExamenFisicoType extends AbstractType
             ->add('temperatura')
             ->add('frecuenciaRespiratoria')
             ->add('imc')
-            ->add('observaciones')
-        ;
+            ->add('observaciones');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
