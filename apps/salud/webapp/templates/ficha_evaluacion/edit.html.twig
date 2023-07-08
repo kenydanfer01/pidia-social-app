@@ -26,4 +26,9 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Select2();
+        })
+    </script>
 {% endblock %}
