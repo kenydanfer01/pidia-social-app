@@ -1,0 +1,19 @@
+{% import 'theme/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.nombre),
+            frm.row(form.peso),
+            frm.row(form.talla),
+            frm.row(form.presionArterial),
+            frm.row(form.frecuenciaCardiaca),
+            frm.row(form.temperatura),
+            frm.row(form.frecuenciaRespiratoria),
+            frm.row(form.imc),
+            frm.row(form.observaciones),
+        ],
+        6
+    ) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}
