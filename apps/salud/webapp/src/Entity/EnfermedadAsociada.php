@@ -10,11 +10,11 @@ namespace SocialApp\Apps\Salud\Webapp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use SocialApp\Apps\Salud\Webapp\Entity\Traits\EntityTrait;
-use SocialApp\Apps\Salud\Webapp\Repository\EnfermedadesAsociadasRepository;
+use SocialApp\Apps\Salud\Webapp\Repository\EnfermedadAsociadaRepository;
 
-#[ORM\Entity(repositoryClass: EnfermedadesAsociadasRepository::class)]
+#[ORM\Entity(repositoryClass: EnfermedadAsociadaRepository::class)]
 #[HasLifecycleCallbacks]
-class EnfermedadesAsociadas
+class EnfermedadAsociada
 {
     use EntityTrait;
 
@@ -25,6 +25,11 @@ class EnfermedadesAsociadas
 
     #[ORM\Column(length: 255)]
     private ?string $nombre = null;
+
+    public function __toString(): string
+    {
+        return $this->nombre;
+    }
 
     public function getId(): ?int
     {

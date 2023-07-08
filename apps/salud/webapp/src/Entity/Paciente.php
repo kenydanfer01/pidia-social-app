@@ -7,6 +7,8 @@
 
 namespace SocialApp\Apps\Salud\Webapp\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -63,9 +65,17 @@ class Paciente
     #[ORM\ManyToOne(inversedBy: 'asociados')]
     private ?BaseSocial $baseSocial = null;
 
+    #[ORM\OneToMany(mappedBy: 'paciente', targetEntity: FichaEvaluacion::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $fichasEvaluaciones;
+
+    public function __construct()
+    {
+        $this->fichasEvaluaciones = new ArrayCollection();
+    }
+
     public function __toString(): string
     {
-        return $this->apellidoPaterno.' '.$this->apellidoMaterno.' '.$this->nombres;
+        return $this->apellidoPaterno.' '.$this->apellidoMaterno.', '.$this->nombres;
     }
 
     public function getId(): ?int
@@ -213,6 +223,36 @@ class Paciente
     public function setBaseSocial(?BaseSocial $baseSocial): static
     {
         $this->baseSocial = $baseSocial;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FichaEvaluacion>
+     */
+    public function getFichasEvaluaciones(): Collection
+    {
+        return $this->fichasEvaluaciones;
+    }
+
+    public function addFichasEvaluacione(FichaEvaluacion $fichasEvaluacione): static
+    {
+        if (!$this->fichasEvaluaciones->contains($fichasEvaluacione)) {
+            $this->fichasEvaluaciones->add($fichasEvaluacione);
+            $fichasEvaluacione->setPaciente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFichasEvaluacione(FichaEvaluacion $fichasEvaluacione): static
+    {
+        if ($this->fichasEvaluaciones->removeElement($fichasEvaluacione)) {
+            // set the owning side to null (unless already changed)
+            if ($fichasEvaluacione->getPaciente() === $this) {
+                $fichasEvaluacione->setPaciente(null);
+            }
+        }
 
         return $this;
     }

@@ -7,19 +7,19 @@ use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use SocialApp\Apps\Salud\Webapp\Entity\EnfermedadesAsociadas;
+use SocialApp\Apps\Salud\Webapp\Entity\FichaEvaluacion;
 
 /**
- * @method EnfermedadesAsociadas|null find($id, $lockMode = null, $lockVersion = null)
- * @method EnfermedadesAsociadas|null findOneBy(array $criteria, array $orderBy = null)
- * @method EnfermedadesAsociadas[]    findAll()
- * @method EnfermedadesAsociadas[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FichaEvaluacion|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FichaEvaluacion|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FichaEvaluacion[]    findAll()
+ * @method FichaEvaluacion[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EnfermedadesAsociadasRepository extends BaseRepository
+class FichaEvaluacionRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EnfermedadesAsociadas::class);
+        parent::__construct($registry, FichaEvaluacion::class);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
@@ -37,14 +37,15 @@ class EnfermedadesAsociadasRepository extends BaseRepository
     {
         $queryBuilder = $this->allQuery();
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['enfermedades_asociadas.nombre']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['paciente.nombres', 'paciente.apellidoPaterno', 'paciente.apellidoMaterno']);
 
         return $queryBuilder;
     }
 
     public function allQuery(): QueryBuilder
     {
-        return $this->createQueryBuilder('enfermedades_asociadas')
-            ->select(['enfermedades_asociadas']);
+        return $this->createQueryBuilder('ficha_evaluacion')
+            ->select(['ficha_evaluacion', 'paciente'])
+            ->leftJoin('ficha_evaluacion.paciente', 'paciente');
     }
 }

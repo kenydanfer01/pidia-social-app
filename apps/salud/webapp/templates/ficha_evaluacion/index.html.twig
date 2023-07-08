@@ -2,9 +2,9 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/pagination.html.twig' as pagination %}
 
-{% set _title = 'Enfermedades Asociadas' %}
+{% set _title = 'Ficha Evaluación' %}
 {% set _main_title = 'Listado' %}
-{% set _section =  'enfermedades_asociadas_index' %}
+{% set _section =  'ficha_evaluacion_index' %}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show(_title) }}
@@ -20,7 +20,8 @@
             <tr>
                 {{ table.th('#') }}
                 {{ table.th('Datos', true, 'd-block d-sm-none') }}
-                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Paciente', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Diagnóstico', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
                 <th></th>
             </tr>
@@ -29,24 +30,26 @@
             {% import 'theme/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
-            {% for enfermedades_asociadas in paginator.results %}
+            {% for ficha_evaluacion in paginator.results %}
                 <tr>
                     <td class="text-center">{{ loop.index | index (paginator)}}</td>
                     <td class="d-block d-sm-none">
                         <table class="table gs-0 gy-0">
-                            {{ table.tbl_tr_th_td('Nombre', enfermedades_asociadas.nombre) }}
-                            {{ table.tbl_tr_th_td('Activo', enfermedades_asociadas.isActive  | yesno_custom) }}
+                            {{ table.tbl_tr_th_td('Paciente', ficha_evaluacion.paciente) }}
+                            {{ table.tbl_tr_th_td('Diagnóstico', ficha_evaluacion.diagnostico) }}
+                            {{ table.tbl_tr_th_td('Activo', ficha_evaluacion.isActive  | yesno_custom) }}
                         </table>
                     </td>
-                    <td class="d-none d-sm-table-cell">{{ enfermedades_asociadas.nombre }}</td>
-                    <td class="d-none d-sm-table-cell text-center">{{ enfermedades_asociadas.isActive | yesno_custom | raw }}</td>
+                    <td class="d-none d-sm-table-cell">{{ ficha_evaluacion.paciente }}</td>
+                    <td class="d-none d-sm-table-cell">{{ ficha_evaluacion.diagnostico }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ ficha_evaluacion.isActive | yesno_custom | raw }}</td>
                     <td class="">
                         <div class="float-end">
-                            {% if access.has('show', enfermedades_asociadas) %}
-                                {{ action.btn_show_link2_ico(path('enfermedades_asociadas_show', {'id': enfermedades_asociadas.id})) }}
+                            {% if access.has('show', ficha_evaluacion) %}
+                                {{ action.btn_show_link2_ico(path('ficha_evaluacion_show', {'id': ficha_evaluacion.id})) }}
                             {% endif %}
-                            {% if access.has('edit', enfermedades_asociadas) %}
-                                {{ action.btn_edit_link2_ico(path('enfermedades_asociadas_edit', {'id': enfermedades_asociadas.id})) }}
+                            {% if access.has('edit', ficha_evaluacion) %}
+                                {{ action.btn_edit_link2_ico(path('ficha_evaluacion_edit', {'id': ficha_evaluacion.id})) }}
                             {% endif %}
                         </div>
                     </td>
@@ -63,11 +66,11 @@
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_index_links.html.twig' with {'route_base': 'enfermedades_asociadas'} %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'ficha_evaluacion'} %}
 {% endblock%}
 
 {% block _body_tools %}
-    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'enfermedades_asociadas'}  %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'ficha_evaluacion'}  %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -77,7 +80,7 @@
     <script src="{{ asset('js/crud/list.js') }}"></script>
     <script>
         $(document).ready(function () {
-            CRUDList.init('{{ path('enfermedades_asociadas_index') }}');
+            CRUDList.init('{{ path('ficha_evaluacion_index') }}');
         });
     </script>
 {% endblock %}

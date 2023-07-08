@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 
-{% set _title = 'Enfermedades Asociadas' %}
+{% set _title = 'Ficha Evaluación' %}
 {% set _main_title = 'Nuevo' %}
-{% set _section =  'enfermedades_asociadas_index'%}
+{% set _section =  'ficha_evaluacion_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2(_title,_section,'Nuevo') }}
 {% endblock %}
 
 {% block _main %}
-    {{ include('enfermedades_asociadas/_form.html.twig') }}
+    {{ include('ficha_evaluacion/_form.html.twig') }}
 {% endblock %}
 
 {% block _body_tools %}
-    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'enfermedades_asociadas'} %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'ficha_evaluacion'} %}
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_new_links.html.twig' with {'route_base':'enfermedades_asociadas'} %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'ficha_evaluacion'} %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -26,4 +26,9 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Select2();
+        })
+    </script>
 {% endblock %}
