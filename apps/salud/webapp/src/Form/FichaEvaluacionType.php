@@ -25,6 +25,9 @@ class FichaEvaluacionType extends AbstractType
             ])
             ->add('examenFisico', ExamenFisicoType::class, [
                 'required' => false,
+            ])
+            ->add('evaluacionClinica', EvaluacionClinicaType::class, [
+                'required' => false,
             ]);
     }
 

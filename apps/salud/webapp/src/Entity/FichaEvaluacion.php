@@ -46,6 +46,10 @@ class FichaEvaluacion
     #[ORM\JoinColumn(nullable: true)]
     private ?ExamenFisico $examenFisico = null;
 
+    #[ORM\OneToOne(inversedBy: 'fichaEvaluacion', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?EvaluacionClinica $evaluacionClinica = null;
+
     public function __construct()
     {
         $this->enfermedadesAsociadas = new ArrayCollection();
@@ -136,6 +140,18 @@ class FichaEvaluacion
     public function setExamenFisico(?ExamenFisico $examenFisico): static
     {
         $this->examenFisico = $examenFisico;
+
+        return $this;
+    }
+
+    public function getEvaluacionClinica(): ?EvaluacionClinica
+    {
+        return $this->evaluacionClinica;
+    }
+
+    public function setEvaluacionClinica(?EvaluacionClinica $evaluacionClinica): static
+    {
+        $this->evaluacionClinica = $evaluacionClinica;
 
         return $this;
     }

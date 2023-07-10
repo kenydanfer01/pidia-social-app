@@ -85,6 +85,9 @@ class EvaluacionClinica
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $otros = null;
 
+    #[ORM\OneToOne(mappedBy: 'evaluacionClinica', cascade: ['persist', 'remove'])]
+    private ?FichaEvaluacion $fichaEvaluacion = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -350,6 +353,28 @@ class EvaluacionClinica
     public function setOtros(?string $otros): static
     {
         $this->otros = $otros;
+
+        return $this;
+    }
+
+    public function getFichaEvaluacion(): ?FichaEvaluacion
+    {
+        return $this->fichaEvaluacion;
+    }
+
+    public function setFichaEvaluacion(?FichaEvaluacion $fichaEvaluacion): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($fichaEvaluacion === null && $this->fichaEvaluacion !== null) {
+            $this->fichaEvaluacion->setEvaluacionClinica(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($fichaEvaluacion !== null && $fichaEvaluacion->getEvaluacionClinica() !== $this) {
+            $fichaEvaluacion->setEvaluacionClinica($this);
+        }
+
+        $this->fichaEvaluacion = $fichaEvaluacion;
 
         return $this;
     }
