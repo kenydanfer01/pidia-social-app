@@ -22,6 +22,9 @@ class FichaEvaluacionType extends AbstractType
                 'class' => EnfermedadAsociada::class,
                 'multiple' => true,
                 'required' => false,
+            ])
+            ->add('examenFisico', ExamenFisicoType::class, [
+                'required' => false,
             ]);
     }
 

@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Salud\Webapp\Entity;
 
 use Doctrine\DBAL\Types\Types;
@@ -42,6 +47,9 @@ class ExamenFisico
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $observaciones = null;
+
+    #[ORM\OneToOne(mappedBy: 'examenFisico', cascade: ['persist', 'remove'])]
+    private ?FichaEvaluacion $fichaEvaluacion = null;
 
     public function getId(): ?int
     {
@@ -142,5 +150,31 @@ class ExamenFisico
         $this->observaciones = $observaciones;
 
         return $this;
+    }
+
+    public function getFichaEvaluacion(): ?FichaEvaluacion
+    {
+        return $this->fichaEvaluacion;
+    }
+
+    public function setFichaEvaluacion(?FichaEvaluacion $fichaEvaluacion): static
+    {
+        // unset the owning side of the relation if necessary
+        if (null === $fichaEvaluacion && null !== $this->fichaEvaluacion) {
+            $this->fichaEvaluacion->setExamenFisico(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if (null !== $fichaEvaluacion && $fichaEvaluacion->getExamenFisico() !== $this) {
+            $fichaEvaluacion->setExamenFisico($this);
+        }
+
+        $this->fichaEvaluacion = $fichaEvaluacion;
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->getObservaciones();
     }
 }

@@ -7,10 +7,27 @@
             frm.row(form.enfermedadesAsociadas),
             frm.row(form.diagnostico),
             frm.row(form.intervenciones),
-            frm.row(form.tratamiento)
+            frm.row(form.tratamiento),
         ],
         6
     ) }}
+    <br/>
+    <div class="accordion" id="kt_accordion_1">
+        <div class="accordion-item">
+            <h1 class="accordion-header" id="kt_accordion_1_header_1">
+                <button class="accordion-button p-2 fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_1" aria-expanded="false" aria-controls="kt_accordion_1_body_1">
+                    <div type="button" class="btn btn-primary btn-sm p-1 mx-2"><i class="fa-solid fa-eye px-1 py-0"></i></div>
+                     Examen Físico
+                </button>
+            </h1>
+            <div id="kt_accordion_1_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_1" data-bs-parent="#kt_accordion_1">
+                <div class="accordion-body py-0">
+                    {{ frm.column(form.examenFisico) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
     {{ frm.button(button_label|default('Guardar')) }}
 {{ frm.end(form) }}
 

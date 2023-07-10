@@ -42,6 +42,10 @@ class FichaEvaluacion
     #[ORM\ManyToMany(targetEntity: EnfermedadAsociada::class)]
     private Collection $enfermedadesAsociadas;
 
+    #[ORM\OneToOne(inversedBy: 'fichaEvaluacion', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?ExamenFisico $examenFisico = null;
+
     public function __construct()
     {
         $this->enfermedadesAsociadas = new ArrayCollection();
@@ -120,6 +124,18 @@ class FichaEvaluacion
     public function removeEnfermedadesAsociada(EnfermedadAsociada $enfermedadesAsociada): static
     {
         $this->enfermedadesAsociadas->removeElement($enfermedadesAsociada);
+
+        return $this;
+    }
+
+    public function getExamenFisico(): ?ExamenFisico
+    {
+        return $this->examenFisico;
+    }
+
+    public function setExamenFisico(?ExamenFisico $examenFisico): static
+    {
+        $this->examenFisico = $examenFisico;
 
         return $this;
     }
