@@ -17,14 +17,14 @@ class ExamenFisicoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('observaciones')
             ->add('peso')
             ->add('talla')
+            ->add('temperatura')
             ->add('presionArterial')
             ->add('frecuenciaCardiaca')
-            ->add('temperatura')
             ->add('frecuenciaRespiratoria')
-            ->add('imc')
-            ->add('observaciones');
+            ->add('imc');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,16 +1,7 @@
 {% import 'theme/form.html.twig' as frm %}
 
 {{ frm.start(form) }}
-    {{ frm.columnX(
-        [
-            frm.row(form.paciente),
-            frm.row(form.enfermedadesAsociadas),
-            frm.row(form.diagnostico),
-            frm.row(form.intervenciones),
-            frm.row(form.tratamiento),
-        ],
-        6
-    ) }}
+    {{ frm.column(form.paciente) }}
     <br/>
     <div class="accordion" id="kt_accordion_1">
         <div class="accordion-item">
@@ -28,6 +19,30 @@
         </div>
     </div>
     <br/>
+    <div class="accordion" id="kt_accordion_2">
+        <div class="accordion-item">
+            <h1 class="accordion-header" id="kt_accordion_1_header_2">
+                <button class="accordion-button p-2 fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_2" aria-expanded="false" aria-controls="kt_accordion_1_body_2">
+                    <div type="button" class="btn btn-primary btn-sm p-1 mx-2"><i class="fa-solid fa-eye px-1 py-0"></i></div>
+                    Evaluación Clínica
+                </button>
+            </h1>
+            <div id="kt_accordion_1_body_2" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_2" data-bs-parent="#kt_accordion_2">
+                <div class="accordion-body py-0">
+                    {{ frm.column(form.evaluacionClinica) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    {{ frm.column(form.enfermedadesAsociadas) }}
+    {{ frm.column(form.diagnostico) }}
+    <br/>
+    {{ frm.column(form.intervenciones) }}
+    <br/>
+    {{ frm.column(form.tratamiento) }}
+    <h4>Exámenes Auxiliares</h4>
+    <h4>Recomendaciones Adicionales</h4>
     {{ frm.button(button_label|default('Guardar')) }}
 {{ frm.end(form) }}
 
