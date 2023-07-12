@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Salud\Webapp\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
@@ -80,8 +85,19 @@ class FichaEvaluacionController extends WebAuthController
     public function show(FichaEvaluacion $fichaEvaluacion): Response
     {
         $this->denyAccess([Permission::SHOW], $fichaEvaluacion);
+        $paciente = $fichaEvaluacion->getPaciente();
+        $evaluacionClinica = $fichaEvaluacion->getEvaluacionClinica();
+        $examenFisico = $fichaEvaluacion->getExamenFisico();
 
-        return $this->render('ficha_evaluacion/show.html.twig', ['ficha_evaluacion' => $fichaEvaluacion]);
+        return $this->render(
+            'ficha_evaluacion/show.html.twig',
+            [
+                'ficha_evaluacion' => $fichaEvaluacion,
+                'paciente' => $paciente,
+                'evaluacionClinica' => $evaluacionClinica,
+                'examenFisico' => $examenFisico,
+            ]
+        );
     }
 
     #[Route(path: '/{id}/edit', name: 'ficha_evaluacion_edit', methods: ['GET', 'POST'])]
