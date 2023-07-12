@@ -12,11 +12,23 @@
             frm.row(form.fechaNacimiento),
             frm.row(form.estadoCivil),
             frm.row(form.sexo),
+        ],
+        4
+    ) }}
+    {{ frm.columnX(
+        [
             frm.row(form.baseSocial),
             frm.row(form.posicion),
-            frm.row(form.titular),
         ],
-        6
+        4
     ) }}
+    <div id="titular_txt">
+        {{ frm.columnX(
+            [
+                frm.row(form.titular),
+            ],
+            4
+        ) }}
+    </div>
     {{ frm.button(button_label|default('Guardar')) }}
 {{ frm.end(form) }}

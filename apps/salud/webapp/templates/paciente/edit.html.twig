@@ -32,6 +32,9 @@
         let nombresTxt = document.getElementById('paciente_nombres');
         let apPaternoTxt = document.getElementById('paciente_apellidoPaterno');
         let apMaternoTxt = document.getElementById('paciente_apellidoMaterno');
+        let titularField = document.getElementById('titular_txt');
+        let posicionSelect = document.getElementById('paciente_posicion');
+        let titularSelect = document.getElementById('paciente_titular');
     </script>
     <script>
         async function getPersonaApi(dni) {
@@ -47,11 +50,29 @@
 
             return await response.json();
         }
+
+        function resetElement(element) {
+            if (null !== element) {
+                element.value = '';
+                element.dispatchEvent(new Event('change'));
+            }
+        }
+
+        function validarTitular() {
+            let opcionSeleccionada = posicionSelect.selectedOptions[0];
+            let textoSeleccionado = opcionSeleccionada.text.toUpperCase();
+            if ("FAMILIAR" === textoSeleccionado) {
+                titularField.style.display = "block";
+            } else {
+                titularField.style.display = "none";
+            }
+        }
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            Flatpickr()
-            Select2()
+            Flatpickr();
+            Select2();
+            validarTitular();
         })
 
         dniTxt.onkeyup = function () {
@@ -64,6 +85,11 @@
                     }
                 })
             }
+        }
+
+        posicionSelect.onchange = function () {
+            resetElement(titularSelect);
+            validarTitular();
         }
     </script>
 {% endblock %}
