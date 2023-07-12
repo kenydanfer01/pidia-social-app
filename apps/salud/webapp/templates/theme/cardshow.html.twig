@@ -1,0 +1,69 @@
+{#{% macro card_start(title) %}#}
+{#<div class="card shadow-sm p-2 mb-3">#}
+{#    <h2 class="m-3 p-3">{{ title }}</h2>#}
+{#    <div class="card-body py-0">#}
+{#        <div class="row">#}
+{#            {% endmacro %}#}
+
+{#            {% macro row(label, value, col) %}#}
+{#                <div class="col-md-{{ col }}">#}
+{#                    <p>#}
+{#                        <strong>{{ label }}:</strong>#}
+{#                        {% if value is same as(true) or value is same as(false) %}#}
+{#                            {% if value %}#}
+{#                                <span class="badge badge-success">si</span>#}
+{#                            {% else %}#}
+{#                                <span class="badge badge-secondary">no</span>#}
+{#                            {% endif %}#}
+{#                        {% else %}#}
+{#                            {{ value }}#}
+{#                        {% endif %}#}
+{#                    </p>#}
+{#                </div>#}
+{#            {% endmacro %}#}
+
+{#            {% macro card_end() %}#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#{% endmacro %}#}
+
+{% macro card_start(title) %}
+<div class="card shadow-sm p-2 mb-3">
+    <h2 class="m-3 p-3">{{ title }}</h2>
+    <div class="card-body py-0">
+        <div class="row">
+            {% endmacro %}
+
+            {% macro row(label, value, col) %}
+                <div class="col-md-{{ col }}">
+                    <p>
+                        <strong>{{ label }}:</strong>
+                        {{ _self.display(value) }}
+                    </p>
+                </div>
+            {% endmacro %}
+
+            {% macro card_end() %}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro display(value) %}
+    {%- if value is same as(true) or value is same as(false) %}
+        {% if value %}
+            <span class="badge badge-success">si</span>
+        {% else %}
+            <span class="badge badge-secondary">no</span>
+        {% endif %}
+    {%- elseif value is iterable %}
+        {% for item in value %}
+            {{ item }},
+        {% endfor %}
+    {%- elseif value.timestamp is defined %}
+        {{ value | date('d-m-Y') }}
+    {%- else %}
+        {{ value }}
+    {%- endif %}
+{% endmacro %}
