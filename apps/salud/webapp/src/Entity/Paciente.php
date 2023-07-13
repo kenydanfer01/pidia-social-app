@@ -256,4 +256,9 @@ class Paciente
 
         return $this;
     }
+
+    public function calcularEdad(): int
+    {
+        return $this->fechaNacimiento->diff(new \DateTime())->y;
+    }
 }

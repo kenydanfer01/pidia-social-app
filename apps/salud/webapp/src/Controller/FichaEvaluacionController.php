@@ -88,6 +88,7 @@ class FichaEvaluacionController extends WebAuthController
         $paciente = $fichaEvaluacion->getPaciente();
         $evaluacionClinica = $fichaEvaluacion->getEvaluacionClinica();
         $examenFisico = $fichaEvaluacion->getExamenFisico();
+        $edad = $paciente?->calcularEdad();
 
         return $this->render(
             'ficha_evaluacion/show.html.twig',
@@ -96,6 +97,7 @@ class FichaEvaluacionController extends WebAuthController
                 'paciente' => $paciente,
                 'evaluacionClinica' => $evaluacionClinica,
                 'examenFisico' => $examenFisico,
+                'edad' => $edad,
             ]
         );
     }

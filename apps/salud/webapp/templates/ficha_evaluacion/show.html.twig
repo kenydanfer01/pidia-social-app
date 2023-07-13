@@ -21,7 +21,7 @@
             {{ cardshow.row('Nombres y apellidos', ficha_evaluacion.paciente, 6) }}
             {{ cardshow.row('DNI', paciente.dni, 6) }}
             {{ cardshow.row('Fecha de Nacimiento', paciente.fechaNacimiento | date('d-m-Y'), 6) }}
-            {{ cardshow.row('Edad', 'SE DEBE CALCULAR', 6) }}
+            {{ cardshow.row('Edad', edad~" años", 6) }}
             {{ cardshow.row('Dirección', paciente.direccion, 8) }}
             {{ cardshow.row('Teléfono', paciente.telefono, 4) }}
             {{ cardshow.row('Sexo', paciente.sexo, 6) }}
