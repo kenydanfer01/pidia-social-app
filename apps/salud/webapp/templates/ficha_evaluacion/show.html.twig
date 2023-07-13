@@ -18,84 +18,84 @@
             <h3>Fecha de Atención: 00-00-0000</h3>
         </div>
         {{ cardshow.card_start('Datos del Paciente: ') }}
-            {{ cardshow.row('Nombres y apellidos', ficha_evaluacion.paciente, 6) }}
-            {{ cardshow.row('DNI', paciente.dni, 6) }}
-            {{ cardshow.row('Fecha de Nacimiento', paciente.fechaNacimiento | date('d-m-Y'), 6) }}
-            {{ cardshow.row('Edad', edad~" años", 6) }}
-            {{ cardshow.row('Dirección', paciente.direccion, 8) }}
-            {{ cardshow.row('Teléfono', paciente.telefono, 4) }}
-            {{ cardshow.row('Sexo', paciente.sexo, 6) }}
-            {{ cardshow.row('Estado Civil', paciente.estadoCivil, 6) }}
+        {{ cardshow.row('Nombres y apellidos', ficha_evaluacion.paciente, 8) }}
+        {{ cardshow.row('DNI', paciente.dni, 4) }}
+        {{ cardshow.row('Fecha de Nacimiento', paciente.fechaNacimiento | date('d-m-Y'), 8) }}
+        {{ cardshow.row('Edad', edad~" años", 4) }}
+        {{ cardshow.row('Dirección', paciente.direccion, 8) }}
+        {{ cardshow.row('Teléfono', paciente.telefono, 4) }}
+        {{ cardshow.row('Sexo', paciente.sexo, 8) }}
+        {{ cardshow.row('Estado Civil', paciente.estadoCivil, 4) }}
         {{ cardshow.card_end() }}
         <div>
             <h2>Valoración</h2>
         </div>
         {{ cardshow.card_start('1. Examen Físico: ') }}
-            {{ cardshow.row('PA', examenFisico.presionArterial, 2) }}
-            {{ cardshow.row('FC', examenFisico.frecuenciaCardiaca, 2) }}
-            {{ cardshow.row('T°', examenFisico.temperatura, 2) }}
-            {{ cardshow.row('FR', examenFisico.frecuenciaRespiratoria, 2) }}
-            {{ cardshow.row('Peso', examenFisico.peso, 2) }}
-            {{ cardshow.row('Talla', examenFisico.talla, 2) }}
-            {{ cardshow.row('IMC', examenFisico.imc, 2) }}
-            <div class=" px-3">
-                <p>
-                    <strong>OBSERVACIONES:</strong>
-                    {{ examenFisico.observaciones }}
-                </p>
-                <hr><br>
-                <hr><br>
-            </div>
+        {{ cardshow.row('PA', examenFisico.presionArterial, 2) }}
+        {{ cardshow.row('FC', examenFisico.frecuenciaCardiaca, 2) }}
+        {{ cardshow.row('T°', examenFisico.temperatura, 2) }}
+        {{ cardshow.row('FR', examenFisico.frecuenciaRespiratoria, 2) }}
+        {{ cardshow.row('Peso', examenFisico.peso, 2) }}
+        {{ cardshow.row('Talla', examenFisico.talla, 2) }}
+        {{ cardshow.row('IMC', examenFisico.imc, 2) }}
+        <div class=" px-3">
+            <p>
+                <strong>OBSERVACIONES:</strong>
+                {{ examenFisico.observaciones }}
+            </p>
+            <hr><br>
+            <hr><br>
+        </div>
         {{ cardshow.card_end() }}
         {{ cardshow.card_start('2. Evaluación Clínica de febriles y resfriado común (COVID-19): ') }}
-            {{ cardshow.row('Otros', evaluacionClinica.otros, 6) }}
-            {{ cardshow.row('Temperatura Máxima', evaluacionClinica.temperaturaMaxima, 6) }}
-            {{ cardshow.row('Fiebre', evaluacionClinica.hasFiebre, 3) }}
-            {{ cardshow.row('Tos', evaluacionClinica.hasTos, 3) }}
-            {{ cardshow.row('Dolor de Garganta', evaluacionClinica.hasDolorGarganta, 3) }}
-            {{ cardshow.row('Rinorrea', evaluacionClinica.hasRinorrea, 3) }}
-            {{ cardshow.row('Expectoración', evaluacionClinica.hasExpectoracion, 3) }}
-            {{ cardshow.row('Sibilancias', evaluacionClinica.hasSibilancias, 3) }}
-            {{ cardshow.row('Congestión Faringea', evaluacionClinica.hasCongestionFaringea, 3) }}
-            {{ cardshow.row('Medida Termómetro', evaluacionClinica.hasMedidaTermometro, 3) }}
-            {{ cardshow.row('Otalgia', evaluacionClinica.hasOtalgia, 3) }}
-            {{ cardshow.row('Fotofobia', evaluacionClinica.hasFotofobia, 3) }}
-            {{ cardshow.row('Congestión Conjuntiva', evaluacionClinica.hasCongestionConjuntiva, 3) }}
-            {{ cardshow.row('Vómitos', evaluacionClinica.hasVomitos, 3) }}
-            {{ cardshow.row('Dolor Abdominal', evaluacionClinica.hasDolorAbdominal, 3) }}
-            {{ cardshow.row('Diarrea', evaluacionClinica.hasDiarrea, 3) }}
-            {{ cardshow.row('Adenopatias', evaluacionClinica.hasAdenopatias, 3) }}
-            {{ cardshow.row('Astenia', evaluacionClinica.hasAstenia, 3) }}
-            {{ cardshow.row('Cefalea', evaluacionClinica.hasCefalea, 3) }}
-            {{ cardshow.row('Mialgias', evaluacionClinica.hasMialgias, 3) }}
-            {{ cardshow.row('Malestar General', evaluacionClinica.hasMalestarGeneral, 3) }}
-            {{ cardshow.row('Erupción Dérmica', evaluacionClinica.hasErupcionDermica, 3) }}
+        {{ cardshow.row('Otros', evaluacionClinica.otros, 6) }}
+        {{ cardshow.row('Temperatura Máxima', evaluacionClinica.temperaturaMaxima, 6) }}
+        {{ cardshow.row('Fiebre', evaluacionClinica.hasFiebre, 3) }}
+        {{ cardshow.row('Tos', evaluacionClinica.hasTos, 3) }}
+        {{ cardshow.row('Dolor de Garganta', evaluacionClinica.hasDolorGarganta, 3) }}
+        {{ cardshow.row('Rinorrea', evaluacionClinica.hasRinorrea, 3) }}
+        {{ cardshow.row('Expectoración', evaluacionClinica.hasExpectoracion, 3) }}
+        {{ cardshow.row('Sibilancias', evaluacionClinica.hasSibilancias, 3) }}
+        {{ cardshow.row('Congestión Faringea', evaluacionClinica.hasCongestionFaringea, 3) }}
+        {{ cardshow.row('Medida Termómetro', evaluacionClinica.hasMedidaTermometro, 3) }}
+        {{ cardshow.row('Otalgia', evaluacionClinica.hasOtalgia, 3) }}
+        {{ cardshow.row('Fotofobia', evaluacionClinica.hasFotofobia, 3) }}
+        {{ cardshow.row('Congestión Conjuntiva', evaluacionClinica.hasCongestionConjuntiva, 3) }}
+        {{ cardshow.row('Vómitos', evaluacionClinica.hasVomitos, 3) }}
+        {{ cardshow.row('Dolor Abdominal', evaluacionClinica.hasDolorAbdominal, 3) }}
+        {{ cardshow.row('Diarrea', evaluacionClinica.hasDiarrea, 3) }}
+        {{ cardshow.row('Adenopatias', evaluacionClinica.hasAdenopatias, 3) }}
+        {{ cardshow.row('Astenia', evaluacionClinica.hasAstenia, 3) }}
+        {{ cardshow.row('Cefalea', evaluacionClinica.hasCefalea, 3) }}
+        {{ cardshow.row('Mialgias', evaluacionClinica.hasMialgias, 3) }}
+        {{ cardshow.row('Malestar General', evaluacionClinica.hasMalestarGeneral, 3) }}
+        {{ cardshow.row('Erupción Dérmica', evaluacionClinica.hasErupcionDermica, 3) }}
         {{ cardshow.card_end() }}
         {{ cardshow.card_start('3. Enfermedades Asociadas: ') }}
-            <div class=" px-3">
-                <p>
-                    <strong>OBSERVACIONES:</strong>
-                    {{ examenFisico.observaciones }}
-                </p>
-                <hr><br>
-                <hr><br>
-            </div>
+        <div class=" px-3">
+            <p>
+                <strong>OBSERVACIONES:</strong>
+                ENFERMEDADES ASOCIADAS....
+            </p>
+            <hr><br>
+            <hr><br>
+        </div>
         {{ cardshow.card_end() }}
         {{ cardshow.card_start('4. Motivo de Consulta: ') }}
-            <div class=" px-3">
-                <p>
-                    <strong>OBSERVACIONES:</strong>
-                    {{ examenFisico.observaciones }}
-                </p>
-                <hr><br>
-                <hr><br>
-            </div>
+        <div class=" px-3">
+            <p>
+                <strong>OBSERVACIONES:</strong>
+                MOTIVO DE LA CONSULTA ES ....
+            </p>
+            <hr><br>
+            <hr><br>
+        </div>
         {{ cardshow.card_end() }}
         {{ cardshow.card_start('5. Intervenciones de Enfermería: ') }}
         <div class=" px-3">
             <p>
                 <strong>OBSERVACIONES:</strong>
-                {{ examenFisico.observaciones }}
+                INTERVENCIONES DE ENFERMERÍA ....
             </p>
             <hr><br>
             <hr><br>
@@ -105,7 +105,7 @@
         <div class=" px-3">
             <p>
                 <strong>OBSERVACIONES:</strong>
-                {{ examenFisico.observaciones }}
+                TRATAMIENTO....
             </p>
             <hr><br>
             <hr><br>
@@ -115,7 +115,7 @@
         <div class=" px-3">
             <p>
                 <strong>OBSERVACIONES:</strong>
-                {{ examenFisico.observaciones }}
+                EXAMENES AUXILIARES....
             </p>
             <hr><br>
             <hr><br>
@@ -125,7 +125,7 @@
         <div class=" px-3">
             <p>
                 <strong>OBSERVACIONES:</strong>
-                {{ examenFisico.observaciones }}
+                RECOMENDACIONES ADICIONALES....
             </p>
             <hr><br>
             <hr><br>
