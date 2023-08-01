@@ -38,6 +38,11 @@ class RegistroFondos
     #[ORM\Column(length: 20)]
     private ?string $tipo = null;
 
+    public function __construct()
+    {
+        $this->fecha = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

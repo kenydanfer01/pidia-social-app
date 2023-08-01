@@ -45,7 +45,17 @@
                         </table>
                     </td>
                     <td class="d-none d-sm-table-cell text-uppercase">{{ registro_fondos.paciente }}</td>
-                    <td class="d-none d-sm-table-cell">{{ registro_fondos.tipo }}</td>
+                    <td class="d-none d-sm-table-cell">
+                        {% if registro_fondos.tipo == 'fondomortorio' %}
+                            Fondo Mortorio
+                            {% elseif registro_fondos.tipo == 'apoyosalud' %}
+                            Apoyo Salud
+                        {% else %}
+                            Otro tipo de fondo
+                        {% endif %}
+                    </td>
+
+
                     <td class="d-none d-sm-table-cell">{{ registro_fondos.fecha  | date('d-m-Y') }}</td>
                     <td class="d-none d-sm-table-cell">{{ registro_fondos.monto }}</td>
                     <td class="d-none d-sm-table-cell text-center">{{ registro_fondos.isActive | yesno_custom | raw }}</td>

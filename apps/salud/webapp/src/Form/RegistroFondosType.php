@@ -28,8 +28,8 @@ class RegistroFondosType extends AbstractType
             ])
             ->add('tipo', ChoiceType::class, [
                 'choices' => [
-                    'mortorio' => 'Fondo Mortorio',
-                    'apoyosalud' => 'Apoyo Salud',
+                    'Fondo Mortorio' => 'fondomortorio',
+                    'Apoyo Salud' => 'apoyosalud',
                 ],
             ])
             ->add('condicion')

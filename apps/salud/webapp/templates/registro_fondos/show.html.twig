@@ -1,58 +1,33 @@
 {% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
 
-{% block title %}RegistroFondos{% endblock %}
+{% set _title = 'Registro de Fondos' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'registro_fondos_index'%}
 
-{% block body %}
-    <h1>RegistroFondos</h1>
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ registro_fondo.id }}</td>
-            </tr>
-            <tr>
-                <th>Condicion</th>
-                <td>{{ registro_fondo.condicion }}</td>
-            </tr>
-            <tr>
-                <th>Fecha</th>
-                <td>{{ registro_fondo.fecha ? registro_fondo.fecha|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Monto</th>
-                <td>{{ registro_fondo.monto }}</td>
-            </tr>
-            <tr>
-                <th>Observacion</th>
-                <td>{{ registro_fondo.observacion }}</td>
-            </tr>
-            <tr>
-                <th>Tipo</th>
-                <td>{{ registro_fondo.tipo }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ registro_fondo.createdAt ? registro_fondo.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ registro_fondo.updatedAt ? registro_fondo.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>IsActive</th>
-                <td>{{ registro_fondo.isActive ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Uuid</th>
-                <td>{{ registro_fondo.uuid }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Paciente',registro_fondos.paciente) }}
+    {{ table.tbl_tr('Tipo',registro_fondos.tipo) }}
+    {{ table.tbl_tr('Condicion',registro_fondos.condicion) }}
+    {{ table.tbl_tr('Fecha',registro_fondos.fecha | date('d-m-Y')) }}
+    {{ table.tbl_tr('Monto',registro_fondos.monto) }}
+    {{ table.tbl_tr('Observacion',registro_fondos.observacion) }}
 
-    <a href="{{ path('app_registro_fondos_index') }}">back to list</a>
+    {% include 'crud/_show_info.html.twig' with {'entity': registro_fondos} %}
+    {{ table.tbl_end() }}
 
-    <a href="{{ path('app_registro_fondos_edit', {'id': registro_fondo.id}) }}">edit</a>
+{% endblock %}
 
-    {{ include('registro_fondos/_delete_form.html.twig') }}
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'registro_fondos','entity': registro_fondos} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'registro_fondos','entity': registro_fondos} %}
 {% endblock %}
