@@ -26,7 +26,7 @@ class RegistroFondos
     #[ORM\Column(type: Types::TEXT)]
     private ?string $condicion = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]

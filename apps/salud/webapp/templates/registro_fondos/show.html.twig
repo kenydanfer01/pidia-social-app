@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RegistroFondos{% endblock %}
+
+{% block body %}
+    <h1>RegistroFondos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ registro_fondo.id }}</td>
+            </tr>
+            <tr>
+                <th>Condicion</th>
+                <td>{{ registro_fondo.condicion }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ registro_fondo.fecha ? registro_fondo.fecha|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Monto</th>
+                <td>{{ registro_fondo.monto }}</td>
+            </tr>
+            <tr>
+                <th>Observacion</th>
+                <td>{{ registro_fondo.observacion }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ registro_fondo.tipo }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ registro_fondo.createdAt ? registro_fondo.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ registro_fondo.updatedAt ? registro_fondo.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsActive</th>
+                <td>{{ registro_fondo.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Uuid</th>
+                <td>{{ registro_fondo.uuid }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_registro_fondos_index') }}">back to list</a>
+
+    <a href="{{ path('app_registro_fondos_edit', {'id': registro_fondo.id}) }}">edit</a>
+
+    {{ include('registro_fondos/_delete_form.html.twig') }}
+{% endblock %}
