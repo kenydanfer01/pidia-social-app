@@ -26,9 +26,26 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Select2();
+            // Organizar Form ExamenFísico
+            let examenFisicoElement = document.getElementById("ficha_evaluacion_examenFisico");
+            examenFisicoElement.classList.add("row");
+            let divs = examenFisicoElement.querySelectorAll("div");
+
+            for (let i = 1; i < divs.length; i++) {
+                divs[i].classList.add("col-sm-6");
+            }
+
+            // Organizar Form EvaluaciónClinica
+            let evaluacionClinicaElement = document.getElementById("ficha_evaluacion_evaluacionClinica");
+            evaluacionClinicaElement.classList.add("row");
+            let divsEV = evaluacionClinicaElement.querySelectorAll("div");
+            for (let i = 1; i < divsEV.length - 2; i++) {
+                divsEV[i].classList.add("col-sm-3");
+            }
         })
     </script>
 {% endblock %}
