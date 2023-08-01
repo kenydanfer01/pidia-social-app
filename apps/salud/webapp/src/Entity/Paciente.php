@@ -68,9 +68,13 @@ class Paciente
     #[ORM\OneToMany(mappedBy: 'paciente', targetEntity: FichaEvaluacion::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $fichasEvaluaciones;
 
+    #[ORM\OneToMany(mappedBy: 'paciente', targetEntity: RegistroFondos::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $registroFondos;
+
     public function __construct()
     {
         $this->fichasEvaluaciones = new ArrayCollection();
+        $this->registroFondos = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -260,5 +264,35 @@ class Paciente
     public function calcularEdad(): int
     {
         return $this->fechaNacimiento->diff(new \DateTime())->y;
+    }
+
+    /**
+     * @return Collection<int, RegistroFondos>
+     */
+    public function getRegistroFondos(): Collection
+    {
+        return $this->registroFondos;
+    }
+
+    public function addRegistroFondo(RegistroFondos $registroFondo): static
+    {
+        if (!$this->registroFondos->contains($registroFondo)) {
+            $this->registroFondos->add($registroFondo);
+            $registroFondo->setPaciente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegistroFondo(RegistroFondos $registroFondo): static
+    {
+        if ($this->registroFondos->removeElement($registroFondo)) {
+            // set the owning side to null (unless already changed)
+            if ($registroFondo->getPaciente() === $this) {
+                $registroFondo->setPaciente(null);
+            }
+        }
+
+        return $this;
     }
 }

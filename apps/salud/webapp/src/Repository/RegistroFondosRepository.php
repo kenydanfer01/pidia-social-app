@@ -1,0 +1,56 @@
+<?php
+
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
+namespace SocialApp\Apps\Salud\Webapp\Repository;
+
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Filter\DoctrineValueSearch;
+use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
+use SocialApp\Apps\Salud\Webapp\Entity\RegistroFondos;
+
+/**
+ * @method RegistroFondos|null find($id, $lockMode = null, $lockVersion = null)
+ * @method RegistroFondos|null findOneBy(array $criteria, array $orderBy = null)
+ * @method RegistroFondos[]    findAll()
+ * @method RegistroFondos[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class RegistroFondosRepository extends BaseRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, RegistroFondos::class);
+    }
+
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
+    {
+        $queryBuilder = $this->filterQuery($params, $permissions);
+
+        if (true === $inArray) {
+            return $queryBuilder->getQuery()->getArrayResult();
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
+    {
+        $queryBuilder = $this->allQuery();
+
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['paciente.nombres', 'paciente.apellidoPaterno', 'paciente.apellidoMaterno']);
+
+        return $queryBuilder;
+    }
+
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('registro_fondos')
+            ->select(['registro_fondos', 'paciente'])
+            ->leftJoin('registro_fondos.paciente', 'paciente');
+    }
+}
