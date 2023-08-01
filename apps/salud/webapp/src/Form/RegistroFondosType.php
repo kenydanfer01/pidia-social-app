@@ -35,7 +35,11 @@ class RegistroFondosType extends AbstractType
             ->add('condicion')
             ->add('fecha', DateType::class, [
                 'widget' => 'single_text',
-                'required' => false,
+                'attr' => [
+                    'class' => 'js-flatpickr',
+                    'placeholder' => 'Selecciona una fecha',
+                ],
+                'label' => 'Fecha:',
             ])
             ->add('monto')
             ->add('observacion');

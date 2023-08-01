@@ -26,9 +26,11 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
         $(document).ready(function() {
             Select2();
+            Flatpickr();
         });
     </script>
 {% endblock %}

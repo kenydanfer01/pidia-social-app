@@ -39,14 +39,14 @@
                         <table class="table gs-0 gy-0">
                             {{ table.tbl_tr_th_td('Paciente', registro_fondos.paciente) }}
                             {{ table.tbl_tr_th_td('Tipo', registro_fondos.tipo) }}
-                            {{ table.tbl_tr_th_td('Fecha', registro_fondos.fecha | format('d-m-Y')) }}
+                            {{ table.tbl_tr_th_td('Fecha', registro_fondos.fecha | date('d-m-Y')) }}
                             {{ table.tbl_tr_th_td('Monto', registro_fondos.monto) }}
                             {{ table.tbl_tr_th_td('Activo', registro_fondos.isActive  | yesno_custom) }}
                         </table>
                     </td>
                     <td class="d-none d-sm-table-cell text-uppercase">{{ registro_fondos.paciente }}</td>
                     <td class="d-none d-sm-table-cell">{{ registro_fondos.tipo }}</td>
-                    <td class="d-none d-sm-table-cell">{{ registro_fondos.fecha  | format('d-m-Y') }}</td>
+                    <td class="d-none d-sm-table-cell">{{ registro_fondos.fecha  | date('d-m-Y') }}</td>
                     <td class="d-none d-sm-table-cell">{{ registro_fondos.monto }}</td>
                     <td class="d-none d-sm-table-cell text-center">{{ registro_fondos.isActive | yesno_custom | raw }}</td>
                     <td class="">
