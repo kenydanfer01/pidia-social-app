@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
+{% import '@App/theme1/table.html.twig' as table %}
+{% import 'theme/action.html.twig' as action %}
+
+{% set _title = 'Config Menus' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'config_menu_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show('Usuarios') }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(paginator, _section) }}
+    <div class="table-responsive">
+        {{ table.tbl_start('table-sm') }}
+        {{ table.thead_start() }}
+        <tr>
+            {{ table.th('#', false, 'text-center') }}
+            {{ table.th('Datos', false, 'd-block d-sm-none') }}
+            {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+            {{ table.th('Ruta', true, 'd-none d-sm-table-cell') }}
+            {{ table.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
+            <th></th>
+        </tr>
+        {{ table.thead_end() }}
+        {{ table.tbody_start() }}
+        {% for config_menu in paginator.results %}
+            <tr>
+                <td class="text-center">{{ loop.index | index(paginator) }}</td>
+                <td class="d-block d-sm-none font-size-xs">
+                    {{ config_menu.name }}<br>
+                    {{ config_menu.route }}<br>
+                    {{ config_menu.isActive | yesno_custom | raw }}
+                </td>
+                <td class="d-none d-sm-table-cell">{{ config_menu.name}}</td>
+                <td class="d-none d-sm-table-cell">{{ config_menu.route }}</td>
+                <td class="d-none d-sm-table-cell">{{ config_menu.isActive | yesno_custom | raw }}</td>
+                <td>
+                    {% if access.has('show') %}
+                        {{ action.btn_show_link2_ico(path('config_menu_show', {'id': config_menu.id})) }}
+                    {% endif %}
+                    {% if access.has('edit', config_menu) %}
+                        {{ action.btn_edit_link2_ico(path('config_menu_edit', {'id': config_menu.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+        {{ table.tbody_end() }}
+        {{ table.tbl_end() }}
+    </div>
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'config_menu'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'config_menu'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(document).on('change', '#filter_size', function () {
+                let route = '{{ path('config_menu_index') }}';
+                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+                route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('config_menu_index') }}';
+            });
+
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('config_menu_index') }}';
+            });
+        });
+    </script>
+{% endblock %}

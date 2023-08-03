@@ -1,44 +1,45 @@
 {
-    "name": "carloschininin/social-ddd",
-    "description": "Social DDD",
+    "name": "pidia/template-demo1",
+    "description": "Plantilla Demo",
     "type": "project",
     "license": "proprietary",
-    "authors": [
-        {
-            "name": "Carlos Chininin",
-            "email": "carloschininin@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-        "php": ">=8.1",
+        "php": "^8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-zip": "*",
         "carloschininin/app": "dev-main",
         "carloschininin/data": "dev-master",
         "carloschininin/file-upload-bundle": "dev-main",
-        "carloschininin/util": "dev-master",
-        "carloschininin/api-search-person": "^0.0.2",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.5",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.11",
         "liip/imagine-bundle": "3.x-dev",
-        "nelmio/cors-bundle": "^2.2",
+        "nelmio/cors-bundle": "*",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.2",
-        "sensio/framework-extra-bundle": "^6.2",
+        "sensio/framework-extra-bundle": "^6.1",
+        "statickidz/php-google-translate-free": "^1.2",
+        "symfony/apache-pack": "^1.0",
         "symfony/asset": "^6.1",
         "symfony/console": "^6.1",
         "symfony/doctrine-messenger": "^6.1",
         "symfony/dotenv": "^6.1",
         "symfony/expression-language": "^6.1",
+        "symfony/flex": "^2",
         "symfony/form": "^6.1",
         "symfony/framework-bundle": "^6.1",
+        "symfony/http-client": "^6.1",
+        "symfony/intl": "^6.1",
         "symfony/mailer": "^6.1",
-        "symfony/messenger": "^6.1",
         "symfony/mime": "^6.1",
         "symfony/monolog-bundle": "^3.0",
         "symfony/notifier": "^6.1",
+        "symfony/process": "^6.1",
         "symfony/property-access": "^6.1",
         "symfony/property-info": "^6.1",
         "symfony/proxy-manager-bridge": "^6.1",
@@ -50,17 +51,19 @@
         "symfony/twig-bundle": "^6.1",
         "symfony/uid": "^6.1",
         "symfony/validator": "^6.1",
+        "symfony/web-link": "^6.1",
+        "symfony/webapp-meta": "^1.0",
         "symfony/yaml": "^6.1",
-        "twig/extra-bundle": "^3.0",
-        "twig/twig": "^3.0",
-        "webmozart/assert": "^1.10"
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
+            "symfony/flex": true,
             "symfony/runtime": true
         },
-        "optimize-autoloader": false,
+        "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
         },
@@ -68,16 +71,12 @@
     },
     "autoload": {
         "psr-4": {
-            "SocialApp\\Apps\\Security\\Webapp\\": "apps/security/webapp/src",
-            "SocialApp\\Apps\\Demo\\Webapp\\": "apps/demo/webapp/src",
-            "SocialApp\\Apps\\Salud\\Webapp\\": "apps/salud/webapp/src",
-            "SocialApp\\Apps\\Financiero\\Webapp\\": "apps/financiero/webapp/src",
-            "SocialApp\\": "src/"
+            "SocialApp\\Apps\\Financiero\\Webapp\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SocialApp\\Tests\\": "tests/"
+            "SocialApp\\Apps\\Financiero\\Webapp\\Tests\\": "tests/"
         }
     },
     "replace": {
@@ -88,28 +87,33 @@
         "symfony/polyfill-php74": "*",
         "symfony/polyfill-php80": "*"
     },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
     "conflict": {
-        "symfony/symfony": "v6.2.7"
+        "symfony/symfony": "*"
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
-            "require": "^6.2.7"
+            "allow-contrib": true,
+            "require": "^6.1"
         }
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
-        "friendsofphp/php-cs-fixer": "^3.11",
-        "phpunit/phpunit": "^9.5",
-        "qossmic/deptrac-shim": "^1.0",
-        "symfony/browser-kit": "^6.1",
-        "symfony/css-selector": "^6.1",
+        "friendsofphp/php-cs-fixer": "^3.1",
         "symfony/debug-bundle": "^6.1",
-        "symfony/http-client": "^6.1",
         "symfony/maker-bundle": "^1.0",
-        "symfony/phpunit-bridge": "^6.1",
         "symfony/stopwatch": "^6.1",
-        "symfony/var-dumper": "^6.2",
         "symfony/web-profiler-bundle": "^6.1"
     }
 }
