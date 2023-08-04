@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
+{% import 'theme/action.html.twig' as action %}
+
+{% set _title = 'Pago' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'pago_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(paginator, _section) }}
+    {% embed 'theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            <tr>
+                {{ table.th('#') }}
+                {{ table.th('Credito', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Pago', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Fecha', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
+                <th></th>
+            </tr>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for pago in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index (paginator)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Credito', pago.credito) }}
+                            {{ table.tbl_tr_th_td('Pago','S/' ~   pago.pago) }}
+                            {{ table.tbl_tr_th_td('Fecha', pago.fecha|date('Y-m-d')) }}
+                            {{ table.tbl_tr_th_td('Activo', pago.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ pago.credito}}</td>
+                    <td class="d-none d-sm-table-cell">S/ {{ pago.pago}}</td>
+                    <td class="d-none d-sm-table-cell">{{ pago.fecha|date('Y-m-d') }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ pago.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show', pago) %}
+                                {{ action.btn_show_link2_ico(path('pago_show', {'id': pago.id})) }}
+                            {% endif %}
+                            {% if access.has('edit', pago) %}
+                                {{ action.btn_edit_link2_ico(path('pago_edit', {'id': pago.id})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'pago'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'pago'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/crud/list.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            CRUDList.init('{{ path('pago_index') }}');
+        })
+    </script>
+{% endblock %}

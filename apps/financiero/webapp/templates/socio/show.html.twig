@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Socio' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'socio_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Dni',socio.dni) }}
+    {{ table.tbl_tr('Nombres',socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres) }}
+    {{ table.tbl_tr('telefono',socio.telefono) }}
+    {{ table.tbl_tr('fechaNacimiento',socio.fechaNacimiento) }}
+    {{ table.tbl_tr('Sexo',socio.sexo) }}
+    {{ table.tbl_tr('Base Social',socio.baseSocial) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': socio} %}
+    {{ table.tbl_end() }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'socio','entity': socio} %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'socio','entity': socio} %}
+{% endblock %}

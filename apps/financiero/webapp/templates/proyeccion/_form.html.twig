@@ -1,0 +1,18 @@
+{% import 'theme/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.socio),
+            frm.row(form.anio),
+            frm.row(form.quintales),
+            frm.row(form.acopiadoQuintales),
+            frm.row(form.aporte),
+            frm.row(form.pagoAporte),
+        ],
+        6
+    ) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}
+
+

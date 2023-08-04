@@ -1,0 +1,13 @@
+{% import 'theme/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.codigoCuenta),
+            frm.row(form.nombre),
+        ],
+        6
+    ) }}
+    {{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}
+

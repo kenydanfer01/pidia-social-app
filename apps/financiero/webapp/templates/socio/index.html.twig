@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
+{% import 'theme/action.html.twig' as action %}
+
+{% set _title = 'Socio' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'socio_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _main %}
+    {{ pagination.pager(paginator, _section) }}
+    {% embed 'theme/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            <tr>
+                {{ table.th('#') }}
+                {{ table.th('Dni', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Nombres', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Base Social', true, 'd-none d-sm-table-cell') }}
+
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
+                <th></th>
+            </tr>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'theme/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
+            {% for socio in paginator.results %}
+                <tr>
+                    <td class="text-center">{{ loop.index | index (paginator)}}</td>
+                    <td class="d-block d-sm-none">
+                        <table class="table gs-0 gy-0">
+                            {{ table.tbl_tr_th_td('Dni', socio.dni) }}
+                            {{ table.tbl_tr_th_td('Nombres', socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres) }}
+                            {{ table.tbl_tr_th_td('Base Social', socio.baseSocial) }}
+                            {{ table.tbl_tr_th_td('Activo', socio.isActive  | yesno_custom) }}
+                        </table>
+                    </td>
+                    <td class="d-none d-sm-table-cell">{{ socio.dni }}</td>
+                    <td class="d-none d-sm-table-cell">{{ socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres }}</td>
+                    <td class="d-none d-sm-table-cell">{{ socio.baseSocial }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ socio.isActive | yesno_custom | raw }}</td>
+                    <td class="">
+                        <div class="float-end">
+                            {% if access.has('show', socio) %}
+                                {{ action.btn_show_link2_ico(path('socio_show', {'id': socio.id})) }}
+                            {% endif %}
+                            {% if access.has('edit', socio) %}
+                                {{ action.btn_edit_link2_ico(path('socio_edit', {'id': socio.id})) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'socio'} %}
+{% endblock%}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'socio'}  %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/crud/list.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            CRUDList.init('{{ path('socio_index') }}');
+        })
+    </script>
+{% endblock %}
