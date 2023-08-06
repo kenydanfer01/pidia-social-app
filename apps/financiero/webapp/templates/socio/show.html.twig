@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/table.html.twig' as table %}
+{% import 'theme/cardshow.html.twig' as cardshow %}
 
 {% set _title = 'Socio' %}
 {% set _main_title = 'Mostrar' %}
@@ -11,14 +12,32 @@
 {% endblock %}
 
 {% block _main %}
+    <div class="container px-0">
+        <div>
+            <h2>{{ socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres }}</h2>
+            <h3>DNI: {{ socio.dni }}</h3>
+        </div>
+    </div>
+    {{ cardshow.card_start('Información del Socio: ') }}
+        {{ cardshow.row('Base Social', socio.baseSocial, 6) }}
+        {{ cardshow.row('telefono', socio.telefono, 6) }}
+        {{ cardshow.row('fechaNacimiento', socio.fechaNacimiento, 6) }}
+        {{ cardshow.row('Sexo', socio.sexo, 6) }}
+    {{ cardshow.card_end() }}
+
+    {% set anio = proyeccion.anio | date('Y') %}
+
+    {{ cardshow.card_start('Proyeccion del Año: ' ~ anio) }}
+        {{ cardshow.row('Proyeccion', proyeccion.quintales ~ ' quintales', 4) }}
+        {{ cardshow.row('Acopio  ' ~ anio, proyeccion.acopiadoQuintales ~ ' quintales', 4) }}
+        {{ cardshow.row('Acopio % ', '- %' , 4) }}
+        {{ cardshow.row('Aporte ', ' S/.  ' ~ proyeccion.aporte, 4) }}
+        {{ cardshow.row('Pago Aporte ', ' S/.  ' ~ proyeccion.pagoAporte, 4) }}
+        {{ cardshow.row('Aporte % ', '- %' , 4) }}
+    {{ cardshow.card_end() }}
+
     {{ table.tbl_start() }}
-    {{ table.tbl_tr('Dni',socio.dni) }}
-    {{ table.tbl_tr('Nombres',socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres) }}
-    {{ table.tbl_tr('telefono',socio.telefono) }}
-    {{ table.tbl_tr('fechaNacimiento',socio.fechaNacimiento) }}
-    {{ table.tbl_tr('Sexo',socio.sexo) }}
-    {{ table.tbl_tr('Base Social',socio.baseSocial) }}
-    {% include 'crud/_show_info.html.twig' with {'entity': socio} %}
+        {% include 'crud/_show_info.html.twig' with {'entity': socio} %}
     {{ table.tbl_end() }}
 {% endblock %}
 

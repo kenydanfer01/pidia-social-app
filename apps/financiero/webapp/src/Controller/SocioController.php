@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Financiero\Webapp\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
@@ -8,6 +13,7 @@ use CarlosChininin\Util\Http\ParamFetcher;
 use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 use SocialApp\Apps\Financiero\Webapp\Form\SocioType;
 use SocialApp\Apps\Financiero\Webapp\Manager\SocioManager;
+use SocialApp\Apps\Financiero\Webapp\Repository\ProyeccionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,11 +89,19 @@ class SocioController extends WebAuthController
     }
 
     #[Route(path: '/{id}', name: 'socio_show', methods: ['GET'])]
-    public function show(Socio $socio): Response
+    public function show(Socio $socio, ProyeccionRepository $proyeccion): Response
     {
         $this->denyAccess([Permission::SHOW], $socio);
+        $proyecciones = $proyeccion->getAllProyeccionBySocio($socio);
+        $presentProyeccion = reset($proyecciones);
 
-        return $this->render('socio/show.html.twig', ['socio' => $socio]);
+        return $this->render(
+            'socio/show.html.twig',
+            [
+                'socio' => $socio,
+                'proyeccion' => $presentProyeccion,
+            ]
+        );
     }
 
     #[Route(path: '/{id}/edit', name: 'socio_edit', methods: ['GET', 'POST'])]
