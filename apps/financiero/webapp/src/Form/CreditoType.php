@@ -31,7 +31,7 @@ class CreditoType extends AbstractType
                 'currency' => 'PEN', // Código ISO de la moneda (PEN para soles)
             ])
             ->add('amortizacion', MoneyType::class, [
-                'label' => 'Monto:',
+                'label' => 'Amortización:',
                 'currency' => 'PEN', // Código ISO de la moneda (PEN para soles)
             ])
         ;
