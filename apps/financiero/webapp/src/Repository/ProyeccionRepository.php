@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SocialApp\Apps\Financiero\Webapp\Entity\Proyeccion;
+use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 
 /**
  * @method Proyeccion|null find($id, $lockMode = null, $lockVersion = null)
@@ -46,6 +47,18 @@ class ProyeccionRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('proyeccion')
-            ->select(['proyeccion']);
+            ->select(['proyeccion', 'socio'])
+            ->leftJoin('proyeccion.socio', 'socio');
+    }
+
+    /** @return Proyeccion[] */
+    public function getAllProyeccionBySocio(Socio $socio): array
+    {
+        return $this->allQuery()
+            ->andWhere('proyeccion.socio = :socio')
+            ->setParameter('socio', $socio)
+            ->orderBy('proyeccion.anio', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }
