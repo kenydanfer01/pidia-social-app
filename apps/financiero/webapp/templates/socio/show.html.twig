@@ -36,6 +36,15 @@
         {{ cardshow.row('Aporte % ', '- %' , 4) }}
     {{ cardshow.card_end() }}
 
+    {{ cardshow.card_start('Créditos Otorgados: ') }}
+        {% for credito in creditos %}
+            {{ cardshow.row('Tipo de Crédito ', credito.tipoCredito, 4) }}
+            {{ cardshow.row('Monto  ', ' S/.  ' ~ credito.monto , 4) }}
+            {{ cardshow.row('Amortizado ', ' S/.  ' ~ credito.amortizacion, 4) }}
+
+        {%  endfor %}
+    {{ cardshow.card_end() }}
+
     {{ table.tbl_start() }}
         {% include 'crud/_show_info.html.twig' with {'entity': socio} %}
     {{ table.tbl_end() }}
