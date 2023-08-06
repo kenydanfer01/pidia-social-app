@@ -2,6 +2,8 @@
 
 namespace SocialApp\Apps\Financiero\Webapp\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -44,6 +46,14 @@ class Socio
 
     #[ORM\ManyToOne]
     private ?BaseSocial $baseSocial = null;
+
+    #[ORM\OneToMany(mappedBy: 'socio', targetEntity: Proyeccion::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $proyecciones;
+
+    public function __construct()
+    {
+        $this->proyecciones = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -160,6 +170,30 @@ class Socio
     {
         $this->baseSocial = $baseSocial;
 
+        return $this;
+    }
+
+    public function getProyecciones(): Collection
+    {
+        return $this->proyecciones;
+    }
+
+    public function addProyeccion(Proyeccion $proyeccion): static
+    {
+        if(!$this->proyecciones->contains($proyeccion)) {
+            $this->proyecciones->add($proyeccion);
+            $proyeccion->setSocio($this);
+        }
+        return $this;
+    }
+
+    public function removeProyecciones(Proyeccion $proyeccion): static
+    {
+        if ($this->proyecciones->removeElement($proyeccion)) {
+            if ($proyeccion->getSocio() === $this) {
+                $proyeccion->setSocio(null);
+            }
+        }
         return $this;
     }
 }

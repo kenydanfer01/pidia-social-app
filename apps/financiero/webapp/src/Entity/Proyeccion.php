@@ -18,7 +18,8 @@ class Proyeccion
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'proyecciones')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Socio $socio = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
