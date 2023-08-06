@@ -8,6 +8,7 @@ use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 
 /**
  * @method Credito|null find($id, $lockMode = null, $lockVersion = null)
@@ -45,6 +46,19 @@ class CreditoRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('credito')
-            ->select(['credito']);
+            ->select(['credito', 'socio'])
+            ->leftJoin('credito.socio', 'socio');
     }
+
+    /** @return Credito[] */
+    public function getAllCreditosBySocio(Socio $socio): array
+    {
+        return $this->allQuery()
+            ->andWhere('credito.socio = :socio')
+            ->setParameter('socio', $socio)
+            ->orderBy('credito.updatedAt', 'DESC')
+            ->getQuery()->getResult();
+    }
+
+
 }
