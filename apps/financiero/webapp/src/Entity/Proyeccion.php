@@ -22,9 +22,6 @@ class Proyeccion
     #[ORM\JoinColumn(nullable: false)]
     private ?Socio $socio = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $anio = null;
-
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $quintales = null;
 
@@ -36,6 +33,9 @@ class Proyeccion
 
     #[ORM\Column(type: Types::DECIMAL, precision: 11, scale: 2, nullable: true)]
     private ?string $pagoAporte = null;
+
+    #[ORM\Column(length: 4)]
+    private ?string $anio = null;
 
     public function getId(): ?int
     {
@@ -50,18 +50,6 @@ class Proyeccion
     public function setSocio(?Socio $socio): static
     {
         $this->socio = $socio;
-
-        return $this;
-    }
-
-    public function getAnio(): ?\DateTimeInterface
-    {
-        return $this->anio;
-    }
-
-    public function setAnio(?\DateTimeInterface $anio): static
-    {
-        $this->anio = $anio;
 
         return $this;
     }
@@ -110,6 +98,18 @@ class Proyeccion
     public function setPagoAporte(?string $pagoAporte): static
     {
         $this->pagoAporte = $pagoAporte;
+
+        return $this;
+    }
+
+    public function getAnio(): ?string
+    {
+        return $this->anio;
+    }
+
+    public function setAnio(string $anio): static
+    {
+        $this->anio = $anio;
 
         return $this;
     }

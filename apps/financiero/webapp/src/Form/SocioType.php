@@ -1,11 +1,16 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Financiero\Webapp\Form;
 
 use Doctrine\ORM\EntityRepository;
 use SocialApp\Apps\Financiero\Webapp\Entity\BaseSocial;
-use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 use SocialApp\Apps\Financiero\Webapp\Entity\Parametro;
+use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -76,8 +81,7 @@ class SocioType extends AbstractType
                 'class' => BaseSocial::class,
                 'label' => 'Base Social:',
                 'placeholder' => 'Seleccione..',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

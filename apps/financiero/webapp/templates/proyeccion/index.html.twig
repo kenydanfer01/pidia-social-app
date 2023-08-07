@@ -21,7 +21,6 @@
             <tr>
                 {{ table.th('#') }}
                 {{ table.th('Socio', true, 'd-none d-sm-table-cell') }}
-                {{ table.th('Año', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Proyeccion', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Acopio', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Aporte', true, 'd-none d-sm-table-cell') }}
@@ -41,7 +40,6 @@
                     <td class="d-block d-sm-none">
                         <table class="table gs-0 gy-0">
                             {{ table.tbl_tr_th_td('Socio', proyeccion.socio) }}
-                            {{ table.tbl_tr_th_td('Año', proyeccion.anio|date('Y-m-d')) }}
                             {{ table.tbl_tr_th_td('Proyeccion', proyeccion.quintales) }}
                             {{ table.tbl_tr_th_td('Acopio', proyeccion.acopiadoQuintales) }}
                             {{ table.tbl_tr_th_td('Aporte','S/' ~  proyeccion.aporte) }}
@@ -50,7 +48,6 @@
                         </table>
                     </td>
                     <td class="d-none d-sm-table-cell">{{ proyeccion.socio}}</td>
-                    <td class="d-none d-sm-table-cell">{{ proyeccion.anio|date('Y-m-d')}}</td>
                     <td class="d-none d-sm-table-cell">{{ proyeccion.quintales }}</td>
                     <td class="d-none d-sm-table-cell">{{ proyeccion.acopiadoQuintales }}</td>
                     <td class="d-none d-sm-table-cell">S/ {{ proyeccion.aporte }}</td>

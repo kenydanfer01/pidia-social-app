@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Financiero\Webapp\Form;
 
 use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
@@ -33,8 +38,8 @@ class CreditoType extends AbstractType
             ->add('amortizacion', MoneyType::class, [
                 'label' => 'Amortización:',
                 'currency' => 'PEN', // Código ISO de la moneda (PEN para soles)
-            ])
-        ;
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
