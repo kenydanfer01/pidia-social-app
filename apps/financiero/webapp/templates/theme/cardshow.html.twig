@@ -1,33 +1,3 @@
-{#{% macro card_start(title) %}#}
-{#<div class="card shadow-sm p-2 mb-3">#}
-{#    <h2 class="m-3 p-3">{{ title }}</h2>#}
-{#    <div class="card-body py-0">#}
-{#        <div class="row">#}
-{#            {% endmacro %}#}
-
-{#            {% macro row(label, value, col) %}#}
-{#                <div class="col-md-{{ col }}">#}
-{#                    <p>#}
-{#                        <strong>{{ label }}:</strong>#}
-{#                        {% if value is same as(true) or value is same as(false) %}#}
-{#                            {% if value %}#}
-{#                                <span class="badge badge-success">si</span>#}
-{#                            {% else %}#}
-{#                                <span class="badge badge-secondary">no</span>#}
-{#                            {% endif %}#}
-{#                        {% else %}#}
-{#                            {{ value }}#}
-{#                        {% endif %}#}
-{#                    </p>#}
-{#                </div>#}
-{#            {% endmacro %}#}
-
-{#            {% macro card_end() %}#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
-{#{% endmacro %}#}
-
 {% macro card_start(title) %}
 <div class="card shadow-sm p-2 mb-3">
     <h2 class="m-3 p-3">{{ title }}</h2>
@@ -35,13 +5,38 @@
         <div class="row">
             {% endmacro %}
 
-            {% macro row(label, value, col) %}
-                <div class="col-md-{{ col }}">
+            {% macro row(label, value, col, class = '') %}
+                <div class="col-md-{{ col }} {{ class }}">
                     <p>
                         <strong>{{ label }}:</strong>
                         {{ _self.display(value) }}
                     </p>
                 </div>
+            {% endmacro %}
+
+            {% macro  rowbtnLink (label = '', col,  class = '', ico = '', link, attributes='')%}
+                <div class="col-md-{{ col }} d-flex justify-content-end align-items-start">
+                    <a href="{{ link }}" class="btn btn-light-{{ class }} btn-sm" {{ attributes }}>
+                        <i class="fa-solid {{ ico }}"></i>
+                        {{ label }}
+                    </a>
+                </div>
+            {% endmacro %}
+
+            {% macro  rowbtnAction (label = '', col,  class = '', ico = '', attributes='')%}
+                <div class="col-md-{{ col }} d-flex justify-content-end align-items-start">
+                    <button type="button" class="btn btn-sm btn-light-{{ class }}" {{ attributes }}>
+                        <i class="fa-solid {{ ico }}"></i>
+                        {{ label }}
+                    </button>
+                </div>
+            {% endmacro %}
+
+            {% macro  rowFreeStart (col)%}
+                    <div class="col-md-{{ col }} d-flex justify-content-end align-items-start">
+                {% endmacro %}
+                {% macro  rowFreeEnd (col)%}
+                    </div>
             {% endmacro %}
 
             {% macro card_end() %}
