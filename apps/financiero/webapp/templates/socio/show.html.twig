@@ -38,10 +38,33 @@
 
     {{ cardshow.card_start('Créditos Otorgados: ') }}
         {% for credito in creditos %}
-            {{ cardshow.row('Tipo de Crédito ', credito.tipoCredito, 4) }}
-            {{ cardshow.row('Monto  ', ' S/.  ' ~ credito.monto , 4) }}
-            {{ cardshow.row('Amortizado ', ' S/.  ' ~ credito.amortizacion, 4) }}
-
+            {{ cardshow.row('Tipo de Crédito ', credito.tipoCredito, '4 my-2') }}
+            {{ cardshow.row('Monto  ', ' S/.  ' ~ credito.monto , '3 my-2') }}
+            {{ cardshow.row('Amortizado ', ' S/.  ' ~ credito.amortizacion, '3 my-2') }}
+            {{ cardshow.rowFreeStart(2) }}
+            <button type="button" class="btn btn-light-success btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_{{ credito.id }}">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                Pagar
+            </button>
+            {{ cardshow.rowFreeEnd() }}
+                <div class="modal fade" tabindex="-1" id="kt_modal_{{ credito.id }}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Realizar un Pago: </h3>
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <p>Modal body text goes here.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         {%  endfor %}
     {{ cardshow.card_end() }}
 
