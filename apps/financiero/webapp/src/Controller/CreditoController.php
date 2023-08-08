@@ -8,6 +8,7 @@ use CarlosChininin\Util\Http\ParamFetcher;
 use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
 use SocialApp\Apps\Financiero\Webapp\Form\CreditoType;
 use SocialApp\Apps\Financiero\Webapp\Manager\CreditoManager;
+use SocialApp\Apps\Financiero\Webapp\Service\Pago\GetAllPagosByCredito;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,11 +79,20 @@ class CreditoController extends WebAuthController
     }
 
     #[Route(path: '/{id}', name: 'credito_show', methods: ['GET'])]
-    public function show(Credito $credito): Response
+    public function show(
+        Credito $credito,
+        Request $request,
+        GetAllPagosByCredito $getAllPagosByCredito,
+    ): Response
     {
+        $creditoId = $request->get('id');
+        $dataPagosByCredito =$getAllPagosByCredito->execute($creditoId);
         $this->denyAccess([Permission::SHOW], $credito);
 
-        return $this->render('credito/show.html.twig', ['credito' => $credito]);
+        return $this->render('credito/show.html.twig', [
+            'credito' => $credito,
+            'dataPagosByCredito'=>(empty($dataPagosByCredito))?null:$dataPagosByCredito,
+        ]);
     }
 
     #[Route(path: '/{id}/edit', name: 'credito_edit', methods: ['GET', 'POST'])]

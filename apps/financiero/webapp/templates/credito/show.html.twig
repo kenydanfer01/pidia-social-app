@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/table.html.twig' as table %}
+{% import 'theme/cardshow.html.twig' as cardshow %}
 
 {% set _title = 'Credito' %}
 {% set _main_title = 'Mostrar' %}
@@ -11,13 +12,34 @@
 {% endblock %}
 
 {% block _main %}
-    {{ table.tbl_start() }}
-    {{ table.tbl_tr('Socio',credito.socio) }}
-    {{ table.tbl_tr('T.Credito',credito.tipoCredito) }}
-    {{ table.tbl_tr('Monto','S/' ~ credito.monto) }}
-    {{ table.tbl_tr('Amortizacion','S/' ~ credito.amortizacion) }}
-    {% include 'crud/_show_info.html.twig' with {'entity': credito} %}
-    {{ table.tbl_end() }}
+
+    {{ cardshow.card_start('Información del Credito: ') }}
+    {{ cardshow.row('Socio', credito.socio, 6) }}
+    {{ cardshow.row('Tipo Credito', credito.tipoCredito, 6) }}
+    {{ cardshow.row('Monto', 'S/' ~ credito.monto, 6) }}
+    {{ cardshow.row('Amortizacion','S/' ~ credito.amortizacion, 6) }}
+    {{ cardshow.card_end() }}
+
+    {{ cardshow.card_start('Historial de pagos realizado') }}
+    <div class="table-responsive">
+        <table class="table table-rounded table-striped border gy-7 gs-7">
+            <thead>
+            <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                <th>Monto Pagado</th>
+                <th>Fecha de Pago</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for pago in dataPagosByCredito %}
+            <tr>
+                <td>{{ pago.montopagado}}</td>
+                <td>{{ pago.fecha |date('Y-m-d')}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ cardshow.card_end() }}
 {% endblock %}
 
 {% block _main_footer %}

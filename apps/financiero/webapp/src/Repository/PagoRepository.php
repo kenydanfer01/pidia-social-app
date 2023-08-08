@@ -45,6 +45,14 @@ class PagoRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('pago')
-            ->select(['pago']);
+            ->select(['pago','credito'])
+            ->join('pago.credito', 'credito');
+    }
+    public function getAllPagosByCredito(int $creditoId): array
+    {
+        return $this->allQuery()
+            ->andWhere('credito.id = :creditoId')
+            ->setParameter('creditoId', $creditoId)
+            ->getQuery()->getResult();
     }
 }
