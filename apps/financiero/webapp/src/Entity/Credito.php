@@ -30,6 +30,18 @@ class Credito
     #[ORM\Column(type: Types::DECIMAL, precision: 11, scale: 2, nullable: true)]
     private ?string $amortizacion = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $fecha = null;
+
+    #[ORM\Column]
+    private ?bool $isPagado = null;
+
+    public function __construct()
+    {
+        $this->fecha = new \DateTime('now', new \DateTimeZone('America/Lima'));
+        $this->isPagado = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,5 +98,29 @@ class Credito
     public function __toString(): string
     {
         return $this->getSocio().' -  S/'.$this->getMonto();
+    }
+
+    public function getFecha(): ?\DateTimeInterface
+    {
+        return $this->fecha;
+    }
+
+    public function setFecha(\DateTimeInterface $fecha): static
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    public function isIsPagado(): ?bool
+    {
+        return $this->isPagado;
+    }
+
+    public function setIsPagado(bool $isPagado): static
+    {
+        $this->isPagado = $isPagado;
+
+        return $this;
     }
 }
