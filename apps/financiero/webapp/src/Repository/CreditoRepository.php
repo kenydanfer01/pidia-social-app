@@ -9,6 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
 use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
+use SocialApp\Apps\Financiero\Webapp\Filter\Dto\CreditoFilterDto;
 
 /**
  * @method Credito|null find($id, $lockMode = null, $lockVersion = null)
@@ -46,8 +47,9 @@ class CreditoRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('credito')
-            ->select(['credito', 'socio'])
-            ->leftJoin('credito.socio', 'socio');
+            ->select(['credito', 'socio','tipoCredito'])
+            ->leftJoin('credito.socio', 'socio')
+            ->leftJoin('credito.tipoCredito', 'tipoCredito');
     }
 
     /** @return Credito[] */
@@ -60,5 +62,20 @@ class CreditoRepository extends BaseRepository
             ->getQuery()->getResult();
     }
 
+    public function filterQueryPaginated(CreditoFilterDto $filterDto): QueryBuilder
+    {
+        $queryBuilder = $this->allQuery();
+        if (null !== $filterDto->socio) {
+            $queryBuilder
+                ->andWhere('socio.id = :socioId')
+                ->setParameter('socioId', $filterDto->socio);
+        }
+        if (null !== $filterDto->tipoCredito) {
+            $queryBuilder
+                ->andWhere('tipoCredito.id = :tipoCreditoId')
+                ->setParameter('tipoCreditoId', $filterDto->tipoCredito);
+        }
+        return $queryBuilder;
+    }
 
 }

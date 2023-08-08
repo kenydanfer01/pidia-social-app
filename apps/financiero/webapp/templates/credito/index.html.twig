@@ -2,6 +2,8 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/pagination.html.twig' as pagination %}
 {% import 'theme/action.html.twig' as action %}
+{% import 'theme/cardshow.html.twig' as cardshow %}
+{% import 'theme/form.html.twig' as frm %}
 
 {% set _title = 'Credito' %}
 {% set _main_title = 'Listado' %}
@@ -12,7 +14,23 @@
 {% endblock %}
 
 {% block _main %}
-    {{ pagination.pager(paginator, _section) }}
+    <div class="">
+        {{ form_start(formFilter) }}
+        <div class="row">
+            <div class="col">
+                {{ form_row(formFilter.socio) }}
+            </div>
+            <div class="col">
+                {{ form_row(formFilter.tipoCredito) }}
+            </div>
+            <div class="col">
+                <button class="btn btn-secondary">Buscar</button>
+            </div>
+        </div>
+        {{ form_end(formFilter) }}
+    </div>
+    <br>
+    {{ pagination.pager(paginator, _section, false) }}
     {% embed 'theme/_table.html.twig' %}
         {% block table_head %}
             {% import 'theme/action.html.twig' as action %}
@@ -84,6 +102,12 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/crud/list.js') }}"></script>
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            Select2()
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             CRUDList.init('{{ path('credito_index') }}');

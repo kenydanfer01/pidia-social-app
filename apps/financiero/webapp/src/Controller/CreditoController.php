@@ -6,8 +6,11 @@ use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Filter\Dto\CreditoFilterDto;
+use SocialApp\Apps\Financiero\Webapp\Form\CreditoFilterType;
 use SocialApp\Apps\Financiero\Webapp\Form\CreditoType;
 use SocialApp\Apps\Financiero\Webapp\Manager\CreditoManager;
+use SocialApp\Apps\Financiero\Webapp\Service\credito\GetPaginatedCreditos;
 use SocialApp\Apps\Financiero\Webapp\Service\Pago\GetAllPagosByCredito;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,18 +21,23 @@ class CreditoController extends WebAuthController
 {
     public const BASE_ROUTE = 'credito_index';
 
-    #[Route(path: '/', name: 'credito_index', defaults: ['page' => '1'], methods: ['GET'])]
-    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'credito_index_paginated', methods: ['GET'])]
-    public function index(Request $request, int $page, CreditoManager $manager): Response
+    #[Route(path: '/', name: 'credito_index', defaults: ['page' => '1'], methods: ['GET','POST'])]
+    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'credito_index_paginated', methods: ['GET','POST'])]
+    public function index(Request $request, int $page,GetPaginatedCreditos $getPaginatedCreditos, CreditoManager $manager): Response
     {
         $this->denyAccess([Permission::LIST]);
-
-        $paginator = $manager->paginate($page, ParamFetcher::fromRequestQuery($request));
+        $filterDto = new CreditoFilterDto();
+        $filterDto->page = $page;
+        $filterForm = $this->createForm(CreditoFilterType::class, $filterDto);
+        $filterForm->handleRequest($request);
+        $paginator = $getPaginatedCreditos->execute($filterDto);
+//        $paginator = $manager->paginate($page, ParamFetcher::fromRequestQuery($request));
 
         return $this->render(
             'credito/index.html.twig',
             [
                 'paginator' => $paginator,
+                'formFilter' => $filterForm->createView(),
             ]
         );
     }
