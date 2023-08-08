@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Financiero\Webapp\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
@@ -141,5 +146,27 @@ class PagoController extends WebAuthController
         }
 
         return $this->redirectToRoute('pago_index');
+    }
+
+    #[Route(path: '/pago/modal', name: 'pago_new_modal', methods: ['POST'])]
+    public function newTrabajadorModal(Request $request, PagoManager $pagoManager): Response
+    {
+        $this->denyAccess([Permission::NEW]);
+        $pago = new Pago();
+
+        $form = $this->createForm(PagoType::class, $pago);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $pagoManager->save($pago);
+
+            return $this->json([
+                'message' => 'El pago se ha guardado exitosamente.',
+            ]);
+        }
+
+        return $this->json([
+            'status' => 'test',
+        ]);
     }
 }

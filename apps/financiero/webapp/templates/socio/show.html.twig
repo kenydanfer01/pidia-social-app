@@ -2,6 +2,7 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/table.html.twig' as table %}
 {% import 'theme/cardshow.html.twig' as cardshow %}
+{% import 'theme/form.html.twig' as frm %}
 
 {% set _title = 'Socio' %}
 {% set _main_title = 'Mostrar' %}
@@ -42,31 +43,39 @@
             {{ cardshow.row('Monto  ', ' S/.  ' ~ credito.monto , '3 my-2') }}
             {{ cardshow.row('Amortizado ', ' S/.  ' ~ credito.amortizacion, '3 my-2') }}
             {{ cardshow.rowFreeStart(2) }}
-            <button type="button" class="btn btn-light-success btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_{{ credito.id }}">
+            <button type="button" class="btn btn-light-success btn-sm btn-pagar" data-bs-toggle="modal" data-bs-target="#kt_modal_1" value={{ credito.id }}>
                 <i class="fa-solid fa-hand-holding-dollar"></i>
                 Pagar
             </button>
             {{ cardshow.rowFreeEnd() }}
-                <div class="modal fade" tabindex="-1" id="kt_modal_{{ credito.id }}">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Realizar un Pago: </h3>
-                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                </div>
-                            </div>
-                            <div class="modal-body">
-                                <p>Modal body text goes here.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
         {%  endfor %}
     {{ cardshow.card_end() }}
+
+    <div class="modal fade" tabindex="-1" id="kt_modal_1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Realizar un Pago: </h3>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ frm.start(formPago, {id: 'form-pago'}) }}
+                        {{ frm.column(formPago.credito) }}
+                        {{ frm.column(formPago.fecha) }}
+                        {{ frm.column(formPago.pago) }}
+                        <div class="d-grid gap-2">
+                            {{ frm.button(button_label|default('Guardar')) }}
+                        </div>
+                    {{ frm.end(formPago) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{ table.tbl_start() }}
         {% include 'crud/_show_info.html.twig' with {'entity': socio} %}
@@ -79,4 +88,36 @@
 
 {% block _body_tools %}
     {% include 'crud/_show_links_ico.html.twig' with {'route_base':'socio','entity': socio} %}
+{% endblock %}
+
+{% block javascripts %}}
+    <script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            Select2();
+            $(document).on('click', '.btn-pagar', function (event) {
+                event.preventDefault();
+                $('#pago_credito').val($(this).val());
+                $('#pago_credito').trigger('change');
+            });
+        });
+    </script>
+    <script>
+        jQuery(document).ready(function() {
+            // Para registrar un pago desde un modal
+            $("#form-pago").submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('pago_new_modal') }}",
+                    data: form.serialize(),
+                    success: function (data) {
+                        console.log('Exito')
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}

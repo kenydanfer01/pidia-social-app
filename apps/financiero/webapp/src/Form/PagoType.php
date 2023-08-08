@@ -1,7 +1,11 @@
 <?php
 
-namespace SocialApp\Apps\Financiero\Webapp\Form;
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
 
+namespace SocialApp\Apps\Financiero\Webapp\Form;
 
 use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
 use SocialApp\Apps\Financiero\Webapp\Entity\Pago;
@@ -17,7 +21,7 @@ class PagoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('credito',EntityType::class, [
+            ->add('credito', EntityType::class, [
                 'class' => Credito::class,
                 'label' => 'Credito:',
                 'placeholder' => 'Seleccione..',
@@ -33,8 +37,7 @@ class PagoType extends AbstractType
                     'placeholder' => 'Selecciona una fecha',
                 ],
                 'label' => 'Fecha:',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

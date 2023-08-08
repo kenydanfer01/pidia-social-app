@@ -27,6 +27,11 @@ class Pago
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $fecha = null;
 
+    public function __construct()
+    {
+        $this->fecha = new \DateTime('now', new \DateTimeZone('America/Lima'));
+    }
+
     public function getId(): ?int
     {
         return $this->id;

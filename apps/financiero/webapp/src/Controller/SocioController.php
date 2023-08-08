@@ -10,7 +10,9 @@ namespace SocialApp\Apps\Financiero\Webapp\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
+use SocialApp\Apps\Financiero\Webapp\Entity\Pago;
 use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
+use SocialApp\Apps\Financiero\Webapp\Form\PagoType;
 use SocialApp\Apps\Financiero\Webapp\Form\SocioType;
 use SocialApp\Apps\Financiero\Webapp\Manager\SocioManager;
 use SocialApp\Apps\Financiero\Webapp\Repository\CreditoRepository;
@@ -96,7 +98,9 @@ class SocioController extends WebAuthController
         $proyecciones = $proyeccion->getAllProyeccionBySocio($socio);
         $presentProyeccion = reset($proyecciones);
         $creditos = $creditoRepository->getAllCreditosBySocio($socio);
-        dump($creditos);
+
+        $pago = new Pago();
+        $formPago = $this->createForm(PagoType::class, $pago);
 
         return $this->render(
             'socio/show.html.twig',
@@ -104,6 +108,7 @@ class SocioController extends WebAuthController
                 'socio' => $socio,
                 'proyeccion' => $presentProyeccion,
                 'creditos' => $creditos,
+                'formPago' => $formPago->createView(),
             ]
         );
     }
