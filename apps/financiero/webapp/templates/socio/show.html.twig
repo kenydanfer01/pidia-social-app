@@ -26,11 +26,9 @@
         {{ cardshow.row('Sexo', socio.sexo, 6) }}
     {{ cardshow.card_end() }}
 
-    {% set anio = proyeccion.anio | date('Y') %}
-
-    {{ cardshow.card_start('Proyeccion del Año: ' ~ anio) }}
+    {{ cardshow.card_start('Proyeccion del Año: ' ~ proyeccion.anio) }}
         {{ cardshow.row('Proyeccion', proyeccion.quintales ~ ' quintales', 4) }}
-        {{ cardshow.row('Acopio  ' ~ anio, proyeccion.acopiadoQuintales ~ ' quintales', 4) }}
+        {{ cardshow.row('Acopio  ' ~ proyeccion.anio, proyeccion.acopiadoQuintales ~ ' quintales', 4) }}
         {{ cardshow.row('Acopio % ', '- %' , 4) }}
         {{ cardshow.row('Aporte ', ' S/.  ' ~ proyeccion.aporte, 4) }}
         {{ cardshow.row('Pago Aporte ', ' S/.  ' ~ proyeccion.pagoAporte, 4) }}
@@ -43,10 +41,12 @@
             {{ cardshow.row('Monto  ', ' S/.  ' ~ credito.monto , '3 my-2') }}
             {{ cardshow.row('Amortizado ', ' S/.  ' ~ credito.amortizacion, '3 my-2') }}
             {{ cardshow.rowFreeStart(2) }}
+            {% if credito.amortizacion < credito.monto %}
             <button type="button" class="btn btn-light-success btn-sm btn-pagar" data-bs-toggle="modal" data-bs-target="#kt_modal_1" value={{ credito.id }}>
                 <i class="fa-solid fa-hand-holding-dollar"></i>
                 Pagar
             </button>
+            {% endif %}
             {{ cardshow.rowFreeEnd() }}
         {%  endfor %}
     {{ cardshow.card_end() }}
@@ -109,12 +109,17 @@
             $("#form-pago").submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
+
                 $.ajax({
                     type: "POST",
                     url: "{{ path('pago_new_modal') }}",
                     data: form.serialize(),
                     success: function (data) {
-                        console.log('Exito')
+                        if (false === data.status) {
+                            swal.fire("Advertencia!", "Pago no válido", "error");
+                        } else {
+                            location.replace(location.href);
+                        }
                     }
                 });
             });

@@ -13,6 +13,8 @@ use CarlosChininin\Util\Http\ParamFetcher;
 use SocialApp\Apps\Financiero\Webapp\Entity\Pago;
 use SocialApp\Apps\Financiero\Webapp\Form\PagoType;
 use SocialApp\Apps\Financiero\Webapp\Manager\PagoManager;
+use SocialApp\Apps\Financiero\Webapp\Service\credito\AmortizarCreditoService;
+use SocialApp\Apps\Financiero\Webapp\Service\credito\IsValidPaymentService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -149,24 +151,31 @@ class PagoController extends WebAuthController
     }
 
     #[Route(path: '/pago/modal', name: 'pago_new_modal', methods: ['POST'])]
-    public function newTrabajadorModal(Request $request, PagoManager $pagoManager): Response
-    {
+    public function newTrabajadorModal(
+        Request $request,
+        PagoManager $pagoManager,
+        AmortizarCreditoService $amortizarCreditoService,
+        IsValidPaymentService $isValidPaymentService,
+    ): Response {
         $this->denyAccess([Permission::NEW]);
         $pago = new Pago();
 
         $form = $this->createForm(PagoType::class, $pago);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $pagoManager->save($pago);
+        if ($isValidPaymentService->execute($pago)) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $amortizarCreditoService->execute($pago);
+                $pagoManager->save($pago);
 
-            return $this->json([
-                'message' => 'El pago se ha guardado exitosamente.',
-            ]);
+                return $this->json([
+                    'status' => true,
+                ]);
+            }
         }
 
         return $this->json([
-            'status' => 'test',
+            'status' => false,
         ]);
     }
 }

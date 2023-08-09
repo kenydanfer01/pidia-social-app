@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Financiero\Webapp\Repository;
 
 use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
@@ -45,9 +50,10 @@ class PagoRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('pago')
-            ->select(['pago','credito'])
+            ->select(['pago', 'credito'])
             ->join('pago.credito', 'credito');
     }
+
     public function getAllPagosByCredito(int $creditoId): array
     {
         return $this->allQuery()
