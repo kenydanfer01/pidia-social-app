@@ -12,6 +12,7 @@ use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 use SocialApp\Apps\Financiero\Webapp\Entity\TipoCredito;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,12 +34,20 @@ class CreditoType extends AbstractType
             ])
             ->add('monto', MoneyType::class, [
                 'label' => 'Monto:',
-                'currency' => 'PEN', // Código ISO de la moneda (PEN para soles)
+                'currency' => 'PEN',
             ])
             ->add('amortizacion', MoneyType::class, [
                 'label' => 'Amortización:',
-                'currency' => 'PEN', // Código ISO de la moneda (PEN para soles)
+                'currency' => 'PEN',
                 'required' => false,
+            ])
+            ->add('fecha', DateType::class, [
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'js-flatpickr',
+                    'placeholder' => 'Selecciona una fecha',
+                ],
+                'label' => 'Fecha:',
             ]);
     }
 
