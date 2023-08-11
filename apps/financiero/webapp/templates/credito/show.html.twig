@@ -3,6 +3,7 @@
 {% import '@App/theme1/table.html.twig' as table %}
 {% import 'theme/cardshow.html.twig' as cardshow %}
 {% import 'theme/form.html.twig' as frm %}
+{% import 'theme/action.html.twig' as action %}
 
 {% set _title = 'Credito' %}
 {% set _main_title = 'Mostrar' %}
@@ -79,11 +80,12 @@
                     </a>
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-light-danger eliminarPago-btn"
-                       title="eliminarPago">
-                        <i  class="bi bi-trash-fill"></i>
-                        Eliminar
-                    </a>
+                    {{ action.btn_delete_forever_form(path('pago' ~ '_delete', {'id': pago.id}), csrf_token('delete_forever' ~ pago.id)) }}
+{#                    <a class="btn btn-sm btn-light-danger eliminarPago-btn"#}
+{#                       title="eliminarPago">#}
+{#                        <i  class="bi bi-trash-fill"></i>#}
+{#                        Eliminar#}
+{#                    </a>#}
                 </td>
             </tr>
             {% endfor %}

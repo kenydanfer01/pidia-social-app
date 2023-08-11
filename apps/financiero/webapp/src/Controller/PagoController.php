@@ -147,7 +147,7 @@ class PagoController extends WebAuthController
             }
         }
 
-        return $this->redirectToRoute('pago_index');
+        return $this->redirectToRoute('credito_show',['id' => $pago->getCredito()->getId()]);
     }
 
     #[Route(path: '/pago/modal', name: 'pago_new_modal', methods: ['POST'])]
