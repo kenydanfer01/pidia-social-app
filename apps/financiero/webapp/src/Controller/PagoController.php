@@ -135,18 +135,25 @@ class PagoController extends WebAuthController
     }
 
     #[Route(path: '/{id}/delete', name: 'pago_delete', methods: ['POST'])]
-    public function delete(Request $request, Pago $pago, PagoManager $manager): Response
+    public function delete(
+        Request $request,
+        Pago $pago,
+        PagoManager $manager,
+        AmortizarCreditoService $amortizarCreditoService,
+    ): Response
     {
         $this->denyAccess([Permission::DELETE], $pago);
 
         if ($this->isCsrfTokenValid('delete_forever'.$pago->getId(), $request->request->get('_token'))) {
+            $montoEliminado = $pago->getPago();
             if ($manager->remove($pago)) {
-                $this->addFlash('warning', 'Registro eliminado');
+                $this->addFlash('warning', 'Pago eliminado correctamente');
+                $credito = $pago->getCredito();
+                $amortizarCreditoService->actualizarAmortizacionDespuesDeEliminarPago($credito, $montoEliminado);
             } else {
                 $this->addErrors($manager->errors());
             }
         }
-
         return $this->redirectToRoute('credito_show',['id' => $pago->getCredito()->getId()]);
     }
 

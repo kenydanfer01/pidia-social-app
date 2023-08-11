@@ -81,11 +81,6 @@
                 </td>
                 <td>
                     {{ action.btn_delete_forever_form(path('pago' ~ '_delete', {'id': pago.id}), csrf_token('delete_forever' ~ pago.id)) }}
-{#                    <a class="btn btn-sm btn-light-danger eliminarPago-btn"#}
-{#                       title="eliminarPago">#}
-{#                        <i  class="bi bi-trash-fill"></i>#}
-{#                        Eliminar#}
-{#                    </a>#}
                 </td>
             </tr>
             {% endfor %}
