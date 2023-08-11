@@ -19,6 +19,7 @@ class GetAllPagosByCredito
         $pagosByCredito=$this->pagoRepository->getAllPagosByCredito($creditoId);
         foreach ($pagosByCredito as $pago){
             $items[] = [
+                'id' => $pago->getId(),
                 'montopagado' => $pago->getPago(),
                 'fecha' => $pago->getFecha(),
             ];

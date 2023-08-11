@@ -5,11 +5,17 @@ namespace SocialApp\Apps\Financiero\Webapp\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\EntityManagerInterface;
 use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Entity\Pago;
 use SocialApp\Apps\Financiero\Webapp\Filter\Dto\CreditoFilterDto;
+use SocialApp\Apps\Financiero\Webapp\Filter\Dto\EditPagoDto;
 use SocialApp\Apps\Financiero\Webapp\Form\CreditoFilterType;
 use SocialApp\Apps\Financiero\Webapp\Form\CreditoType;
+use SocialApp\Apps\Financiero\Webapp\Form\EditPagoType;
+use SocialApp\Apps\Financiero\Webapp\Form\PagoType;
 use SocialApp\Apps\Financiero\Webapp\Manager\CreditoManager;
+use SocialApp\Apps\Financiero\Webapp\Repository\PagoRepository;
 use SocialApp\Apps\Financiero\Webapp\Service\credito\GetPaginatedCreditos;
 use SocialApp\Apps\Financiero\Webapp\Service\Pago\GetAllPagosByCredito;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,20 +92,48 @@ class CreditoController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'credito_show', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'credito_show', methods: ['GET','POST'])]
     public function show(
         Credito $credito,
         Request $request,
         GetAllPagosByCredito $getAllPagosByCredito,
+        PagoRepository $pagoRepository,
+        EntityManagerInterface   $entityManager,
     ): Response
     {
         $creditoId = $request->get('id');
         $dataPagosByCredito =$getAllPagosByCredito->execute($creditoId);
         $this->denyAccess([Permission::SHOW], $credito);
 
+        $pago = new Pago();
+        $formPago = $this->createForm(PagoType::class, $pago);
+
+        $editPago = new EditPagoDto();
+        $formEditPago = $this->createForm(EditPagoType::class, $editPago);
+
+        $formEditPago->handleRequest($request);
+
+        if($formEditPago->isSubmitted() && $formEditPago->isValid()){
+            $formData = $formEditPago->getData();
+            $idPago=$formData->getIdPago();
+            $ePago=$formData->getEPago();
+            $eFechaPago=$formData->getFechaPagoEdit();
+
+            $pagoRepo = $pagoRepository->findOneBy(['id' => $idPago]);
+            if ($pagoRepo) {
+                $pagoRepo->setPago($ePago);
+                $pagoRepo->setFecha($eFechaPago);
+                $entityManager->flush();
+                $this->addFlash('success', 'El pago a sido actualizado con exito.');
+                return $this->redirectToRoute('credito_show', ['id' => $creditoId]);
+            }
+        }
+
         return $this->render('credito/show.html.twig', [
             'credito' => $credito,
             'dataPagosByCredito'=>(empty($dataPagosByCredito))?null:$dataPagosByCredito,
+            'formPago' => $formPago->createView(),
+            'formEditPago'=>$formEditPago->createView(),
         ]);
     }
 
