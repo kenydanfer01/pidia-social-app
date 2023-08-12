@@ -27,6 +27,17 @@ class AmortizarCreditoService
         $this->creditoRepository->save($credito);
     }
 
+    public function actualizarAmortizacionDespuesDeEditarPago($credito, $montoOriginal, $montoActualizado)
+    {
+        $amortizacionActual = $credito->getAmortizacion();
+        $diferenciaMontos = $montoActualizado - $montoOriginal;
+
+        $nuevaAmortizacion = $amortizacionActual + $diferenciaMontos;
+
+        $credito->setAmortizacion($nuevaAmortizacion);
+        $this->creditoRepository->save($credito);
+    }
+
     public function actualizarAmortizacionDespuesDeEliminarPago($credito, $montoEliminado)
     {
         $amortizacionActual = $credito->getAmortizacion();

@@ -5,7 +5,7 @@ namespace SocialApp\Apps\Financiero\Webapp\Service\Pago;
 
 use SocialApp\Apps\Financiero\Webapp\Repository\PagoRepository;
 
-class GetAllPagosByCredito
+class GetAllPagosByCreditoService
 {
     public function __construct(
         private readonly pagoRepository $pagoRepository,
