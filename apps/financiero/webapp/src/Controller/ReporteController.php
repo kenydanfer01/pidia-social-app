@@ -4,6 +4,7 @@ namespace SocialApp\Apps\Financiero\Webapp\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use SocialApp\Apps\Financiero\Webapp\Repository\SocioRepository;
+use SocialApp\Apps\Financiero\Webapp\Service\reporte\proyeccionesBySocioService;
 use SocialApp\Apps\Financiero\Webapp\Service\reporte\soportesBySocioService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,6 +37,30 @@ class ReporteController extends WebAuthController
                 'montoTotal' => $data['montoTotal'],
                 'amortizacionTotal' => $data['amortizacionTotal'],
                 'saldoTotal' => $data['saldoTotal'],
+            ]
+        );
+    }
+
+    #[Route(path: '/proyecciones', name: 'reporte_proyecciones', methods: ['GET','POST'])]
+    public function reportePoryeccionesBySocio(
+        SocioRepository $socioRepository,
+        proyeccionesBySocioService $proyeccionesBySocioService,
+        Request $request,
+    ): Response {
+
+        $socioId= $request->get('socio');
+        if (null === $socioId) {
+            $socioId = 3;
+        }
+
+        $data =$proyeccionesBySocioService->execute($socioId);
+
+        return $this->render(
+            'reporte/proyecciones.html.twig',
+            [
+                'socios'=>$socioRepository->findBy(['isActive'=>true]),
+                'idSocio'=>$socioId,
+                'data'=>$data,
             ]
         );
     }

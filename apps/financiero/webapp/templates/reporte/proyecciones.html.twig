@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/action.html.twig' as action %}
+{% import 'theme/cardshow.html.twig' as cardshow %}
+
+{% set _title = 'Reporte de Proyecciones de Socios' %}
+{% set _main_title = 'reporte' %}
+{% set _section =  'reporte_proyecciones'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _body_main %}
+
+
+    {{ cardshow.card_start() }}
+    <form id="form_demo" class="m-form m-form--fit m-form--label-align-right" method="post">
+                <div class="form-group row">
+                    <label for="select-socios" class="col-lg-2 col-form-label"><h4> Socio: </h4></label>
+                    <div class="col-md-5">
+                        <select id="busSocio" class="form-select form-control m-input" name="socio" required>
+                            <option value="0" disabled selected> SELECCIONAR </option>
+                            {% for socio in socios %}
+                                {% if (idSocio == socio.id ) %}
+                                    <option value="{{ socio.id }}"  selected>  {{ socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres }} </option>
+                                {% else %}
+                                    <option value="{{ socio.id }}"> {{ socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres }} </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <button class="m-btn m-btn--pill btn btn-light-primary mb-2"
+                                style="margin-right: 15px;"
+                                onClick="actionForm(this.form.id,'{{ path('reporte_proyecciones') }}'); return false;"
+                                type="button"><i class="fas fa-search"></i> Buscar
+                        </button>
+                        <button class="m-btn m-btn--pill btn btn-light-warning ml-2"
+                                onClick="limpiarCampos()"
+                                type="button"><i class="fas fa-times"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+    </form>
+
+    {{ cardshow.card_end() }}
+
+    {{ cardshow.card_start('Listado de proyecciones:') }}
+    <div class="table-responsive">
+        <table class="table table-striped gy-7 gs-7">
+            <thead>
+            <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200"  style="background-color: #93c5fd; color: white;">
+                <th>Socio</th>
+                <th>Año</th>
+                <th>Proyeccion</th>
+                <th>Acopio</th>
+                <th>Aporte</th>
+                <th>Pago Aporte</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            {% for item in data %}
+                <tr>
+                    <td>{{ item.socio }}</td>
+                    <td>{{ item.anio }}</td>
+                    <td>{{ item.proyeccion }}</td>
+                    <td>{{ item.acopio }}</td>
+                    <td>S/ {{ item.aporte }}</td>
+                    <td>S/ {{ item.pagoAporte }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="14">
+                        <strong>Registros no encontrados, realize otra busqueda</strong>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ cardshow.card_end() }}
+{% endblock _body_main %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            $('#busSocio').select2();
+        });</script>
+    <script>
+        function actionForm(formId, act) {
+            document.getElementById(formId).action = act;
+            document.getElementById(formId).submit();
+        }
+
+        function limpiarCampos() {
+            $('#busSocio').val(null).trigger('change'); // Restablece el valor del selector
+            $('#table-body').empty(); // Vacía el cuerpo de la tabla
+
+            setTimeout(function() {
+                actionForm('form_demo', '{{ path('reporte_proyecciones') }}');
+            }, 10);
+        }
+    </script>
+{% endblock %}
+

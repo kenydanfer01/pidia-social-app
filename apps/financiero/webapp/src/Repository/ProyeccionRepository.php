@@ -61,4 +61,12 @@ class ProyeccionRepository extends BaseRepository
             ->getQuery()
             ->getResult();
     }
+    public function getAllProyeccionBySocioV2(int $socioId): array
+    {
+        return $this->allQuery()
+            ->andWhere('socio.id= :socioId')
+            ->setParameter('socioId', $socioId)
+            ->orderBy('proyeccion.updatedAt', 'DESC')
+            ->getQuery()->getResult();
+    }
 }
