@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/action.html.twig' as action %}
+{% import 'theme/cardshow.html.twig' as cardshow %}
+
+{% set _title = 'Reporte de Soportes de Socios' %}
+{% set _main_title = 'reporte' %}
+{% set _section =  'reporte_soportes'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show(_title) }}
+{% endblock %}
+
+{% block _body_main %}
+
+
+    {{ cardshow.card_start() }}
+    <form id="form_demo" class="m-form m-form--fit m-form--label-align-right" method="post">
+        <div class="card shadow-sm mb-5">
+            <div class="card-body">
+                <div class="form-group row">
+                    <label for="select-socios" class="col-2 col-form-label"><h4> Socio: </h4></label>
+                    <div class="col-md-5">
+                        <select id="busSocio" class="form-select form-control m-input" name="socio" required>
+                            <option value="0" disabled selected> SELECCIONAR </option>
+                            {% for socio in socios %}
+                                {% if (idSocio == socio.id ) %}
+                                    <option value="{{ socio.id }}"  selected>  {{ socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres }} </option>
+                                {% else %}
+                                    <option value="{{ socio.id }}"> {{ socio.apellidoPaterno~' '~socio.apellidoMaterno~' '~socio.nombres }} </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <button class="m-btn m-btn--pill btn btn-light-primary mb-2"
+                                style="margin-right: 15px;"
+                                onClick="actionForm(this.form.id,'{{ path('reporte_soportes') }}'); return false;"
+                                type="button"><i class="fas fa-search"></i> Buscar
+                        </button>
+                        <button class="m-btn m-btn--pill btn btn-light-warning ml-2"
+                                onClick="limpiarCampos()"
+                                type="button"><i class="fas fa-times"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{ cardshow.card_end() }}
+
+    {{ cardshow.card_start('Listado de soportes realizados:') }}
+    <div class="table-responsive">
+        <table class="table table-striped gy-7 gs-7">
+            <thead>
+            <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200"  style="background-color: #93c5fd; color: white;">
+                <th>Socio</th>
+                <th>T.Soporte</th>
+                <th>Monto</th>
+                <th>Amortizacion</th>
+                <th>Saldo</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            {% for item in data %}
+                <tr>
+                    <td>{{ item.socio }}</td>
+                    <td>{{ item.tipoCredito }}</td>
+                    <td>S/ {{ item.monto }}</td>
+                    <td>S/ {{ item.amortizacion }}</td>
+                    <td>S/ {{ item.saldo }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="14">
+                        <strong>Registros no encontrados, realize una busqueda</strong>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2"><strong>Totales:</strong></td>
+                <td><strong>S/ {{ montoTotal }}</strong></td>
+                <td><strong>S/ {{ amortizacionTotal }}</strong></td>
+                <td><strong>S/ {{ saldoTotal }}</strong></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    {{ cardshow.card_end() }}
+{% endblock _body_main %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            $('#busSocio').select2();
+        });</script>
+    <script>
+        function actionForm(formId, act) {
+            document.getElementById(formId).action = act;
+            document.getElementById(formId).submit();
+        }
+
+        function limpiarCampos() {
+            $('#busSocio').val(null).trigger('change'); // Restablece el valor del selector
+            $('#table-body').empty(); // Vacía el cuerpo de la tabla
+            // Opcional: Restablecer los totales a cero si es necesario
+            // ...
+
+            setTimeout(function() {
+                actionForm('form_demo', '{{ path('reporte_soportes') }}');
+            }, 10);
+        }
+    </script>
+{% endblock %}
+
