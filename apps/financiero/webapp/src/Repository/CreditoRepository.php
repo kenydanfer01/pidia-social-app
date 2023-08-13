@@ -62,6 +62,15 @@ class CreditoRepository extends BaseRepository
             ->getQuery()->getResult();
     }
 
+    public function getAllCreditosBySocioV2(int $socioId): array
+    {
+        return $this->allQuery()
+            ->andWhere('socio.id= :socioId')
+            ->setParameter('socioId', $socioId)
+            ->orderBy('credito.updatedAt', 'DESC')
+            ->getQuery()->getResult();
+    }
+
     public function filterQueryPaginated(CreditoFilterDto $filterDto): QueryBuilder
     {
         $queryBuilder = $this->allQuery();
