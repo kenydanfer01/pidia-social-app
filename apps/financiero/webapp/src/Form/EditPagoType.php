@@ -4,6 +4,7 @@ namespace SocialApp\Apps\Financiero\Webapp\Form;
 use CarlosChininin\App\Infrastructure\Form\DateFlatpickrType;
 use SocialApp\Apps\Financiero\Webapp\Filter\Dto\EditPagoDto;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,12 +18,13 @@ final class EditPagoType extends AbstractType
             ->add('idPago', HiddenType::class, [
                 'required' => false,
             ])
-            ->add('fechaPagoEdit', DateFlatpickrType::class, [
-                'required' => false,
-                'label' => 'Fecha de pago:',
+            ->add('fechaPagoEdit', DateType::class, [
+                'widget' => 'single_text',
                 'attr' => [
                     'class' => 'js-flatpickr',
+                    'placeholder' => 'Selecciona una fecha',
                 ],
+                'label' => 'Fecha:',
             ])
             ->add('ePago', TextType::class, [
                 'label' => 'Monto Pagado:',

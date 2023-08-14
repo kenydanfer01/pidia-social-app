@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Financiero\Webapp\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
@@ -26,9 +31,9 @@ class CreditoController extends WebAuthController
 {
     public const BASE_ROUTE = 'credito_index';
 
-    #[Route(path: '/', name: 'credito_index', defaults: ['page' => '1'], methods: ['GET','POST'])]
-    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'credito_index_paginated', methods: ['GET','POST'])]
-    public function index(Request $request, int $page,GetPaginatedCreditos $getPaginatedCreditos, CreditoManager $manager): Response
+    #[Route(path: '/', name: 'credito_index', defaults: ['page' => '1'], methods: ['GET', 'POST'])]
+    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'credito_index_paginated', methods: ['GET', 'POST'])]
+    public function index(Request $request, int $page, GetPaginatedCreditos $getPaginatedCreditos, CreditoManager $manager): Response
     {
         $this->denyAccess([Permission::LIST]);
         $filterDto = new CreditoFilterDto();
@@ -91,16 +96,15 @@ class CreditoController extends WebAuthController
         );
     }
 
-    #[Route(path: '/{id}', name: 'credito_show', methods: ['GET','POST'])]
+    #[Route(path: '/{id}', name: 'credito_show', methods: ['GET', 'POST'])]
     public function show(
         Credito $credito,
         Request $request,
         GetAllPagosByCreditoService $getAllPagosByCreditoService,
         EditarPagoService $editarPagoService,
-    ): Response
-    {
+    ): Response {
         $creditoId = $request->get('id');
-        $dataPagosByCredito =$getAllPagosByCreditoService->execute($creditoId);
+        $dataPagosByCredito = $getAllPagosByCreditoService->execute($creditoId);
 
         $this->denyAccess([Permission::SHOW], $credito);
 
@@ -110,25 +114,11 @@ class CreditoController extends WebAuthController
         $editPago = new EditPagoDto();
         $formEditPago = $this->createForm(EditPagoType::class, $editPago);
 
-        $formEditPago->handleRequest($request);
-
-        if($formEditPago->isSubmitted() && $formEditPago->isValid()){
-            $formData = $formEditPago->getData();
-            $idPago=$formData->getIdPago();
-            $ePago=$formData->getEPago();
-            $eFechaPago=$formData->getFechaPagoEdit();
-
-            $editarPagoService->execute($idPago,$ePago,$eFechaPago,$credito);
-
-            $this->addFlash('success', 'El pago a sido actualizado con exito.');
-            return $this->redirectToRoute('credito_show', ['id' => $creditoId]);
-        }
-
         return $this->render('credito/show.html.twig', [
             'credito' => $credito,
-            'dataPagosByCredito'=>(empty($dataPagosByCredito))?null:$dataPagosByCredito,
+            'dataPagosByCredito' => (empty($dataPagosByCredito)) ? null : $dataPagosByCredito,
             'formPago' => $formPago->createView(),
-            'formEditPago'=>$formEditPago->createView(),
+            'formEditPago' => $formEditPago->createView(),
         ]);
     }
 

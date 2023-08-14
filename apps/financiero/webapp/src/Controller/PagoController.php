@@ -11,10 +11,13 @@ use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use SocialApp\Apps\Financiero\Webapp\Entity\Pago;
+use SocialApp\Apps\Financiero\Webapp\Filter\Dto\EditPagoDto;
+use SocialApp\Apps\Financiero\Webapp\Form\EditPagoType;
 use SocialApp\Apps\Financiero\Webapp\Form\PagoType;
 use SocialApp\Apps\Financiero\Webapp\Manager\PagoManager;
 use SocialApp\Apps\Financiero\Webapp\Service\credito\AmortizarCreditoService;
 use SocialApp\Apps\Financiero\Webapp\Service\credito\IsValidPaymentService;
+use SocialApp\Apps\Financiero\Webapp\Service\Pago\EditarPagoService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -140,8 +143,7 @@ class PagoController extends WebAuthController
         Pago $pago,
         PagoManager $manager,
         AmortizarCreditoService $amortizarCreditoService,
-    ): Response
-    {
+    ): Response {
         $this->denyAccess([Permission::DELETE], $pago);
 
         if ($this->isCsrfTokenValid('delete_forever'.$pago->getId(), $request->request->get('_token'))) {
@@ -154,7 +156,8 @@ class PagoController extends WebAuthController
                 $this->addErrors($manager->errors());
             }
         }
-        return $this->redirectToRoute('credito_show',['id' => $pago->getCredito()->getId()]);
+
+        return $this->redirectToRoute('credito_show', ['id' => $pago->getCredito()->getId()]);
     }
 
     #[Route(path: '/pago/modal', name: 'pago_new_modal', methods: ['POST'])]
@@ -170,10 +173,42 @@ class PagoController extends WebAuthController
         $form = $this->createForm(PagoType::class, $pago);
         $form->handleRequest($request);
 
-        if ($isValidPaymentService->execute($pago)) {
+        if ($isValidPaymentService->executeForPago($pago)) {
             if ($form->isSubmitted() && $form->isValid()) {
                 $amortizarCreditoService->execute($pago);
                 $pagoManager->save($pago);
+
+                return $this->json([
+                    'status' => true,
+                ]);
+            }
+        }
+
+        return $this->json([
+            'status' => false,
+        ]);
+    }
+
+    #[Route(path: '/edit/pago/modal', name: 'pago_edit_modal', methods: ['POST'])]
+    public function editPagoModal(
+        Request $request,
+        EditarPagoService $editarPagoService,
+        IsValidPaymentService $isValidPaymentService,
+    ): Response {
+        $editPago = new EditPagoDto();
+        $formEditPago = $this->createForm(EditPagoType::class, $editPago);
+
+        $formEditPago->handleRequest($request);
+
+        if ($isValidPaymentService->executeForEditPagoDto($editPago)) {
+            if ($formEditPago->isSubmitted() && $formEditPago->isValid()) {
+                // **Los datos ya estan seteados en el $editPago
+                $formData = $formEditPago->getData();
+                $idPago = $formData->getIdPago();
+                $ePago = $formData->getEPago();
+                $eFechaPago = $formData->getFechaPagoEdit();
+
+                $editarPagoService->execute($idPago, $ePago, $eFechaPago);
 
                 return $this->json([
                     'status' => true,

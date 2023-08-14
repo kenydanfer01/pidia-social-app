@@ -6,7 +6,7 @@ final class EditPagoDto
 {
     public ?int $idPago = null;
 
-    public ?int $ePago = null;
+    public ?float $ePago = null;
     public ?\DateTime $fechaPagoEdit = null;
 
     /**
@@ -18,9 +18,9 @@ final class EditPagoDto
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getEPago(): ?int
+    public function getEPago(): ?float
     {
         return $this->ePago;
     }

@@ -21,9 +21,10 @@ class EditarPagoService
         $this->amortizarCreditoService = $amortizarCreditoService;
     }
 
-    public function execute($idPago, $ePago, $eFechaPago, $credito)
+    public function execute($idPago, $ePago, $eFechaPago)
     {
         $pagoRepo = $this->pagoRepository->findOneBy(['id' => $idPago]);
+        $credito = $pagoRepo?->getCredito();
         if ($pagoRepo) {
             $montoOriginal = $pagoRepo->getPago();
             $pagoRepo->setPago($ePago);
