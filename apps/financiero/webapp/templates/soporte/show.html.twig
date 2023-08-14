@@ -5,9 +5,9 @@
 {% import 'theme/form.html.twig' as frm %}
 {% import 'theme/action.html.twig' as action %}
 
-{% set _title = 'Credito' %}
+{% set _title = 'Soporte' %}
 {% set _main_title = 'Mostrar' %}
-{% set _section =  'credito_index'%}
+{% set _section =  'soporte_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
@@ -15,15 +15,15 @@
 
 {% block _main %}
 
-    {{ cardshow.card_start('Información del Credito: ') }}
-    {{ cardshow.row('Socio', credito.socio, 6) }}
-    {{ cardshow.row('Tipo Credito', credito.tipoCredito, 6) }}
-    {{ cardshow.row('Monto', 'S/' ~ credito.monto, 6) }}
-    {{ cardshow.row('Amortizacion','S/' ~ credito.amortizacion, 6) }}
-    {% set saldo = credito.monto - credito.amortizacion %}
+    {{ cardshow.card_start('Información del Soporte: ') }}
+    {{ cardshow.row('Socio', soporte.socio, 6) }}
+    {{ cardshow.row('Tipo Soporte', soporte.tipoSoporte, 6) }}
+    {{ cardshow.row('Monto', 'S/' ~ soporte.monto, 6) }}
+    {{ cardshow.row('Amortizacion','S/' ~ soporte.amortizacion, 6) }}
+    {% set saldo = soporte.monto - soporte.amortizacion %}
     {{ cardshow.row('Saldo', 'S/' ~ saldo, 6) }}
-    {% if credito.amortizacion < credito.monto %}
-        <button type="button" class="btn btn-light-success btn-sm btn-pagar" data-bs-toggle="modal" data-bs-target="#kt_modal_1" value={{ credito.id }}>
+    {% if soporte.amortizacion < soporte.monto %}
+        <button type="button" class="btn btn-light-success btn-sm btn-pagar" data-bs-toggle="modal" data-bs-target="#kt_modal_1" value={{ soporte.id }}>
             <i class="fa-solid fa-hand-holding-dollar"></i>
             Pagar
         </button>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="modal-body">
                     {{ frm.start(formPago, {id: 'form-pago'}) }}
-                    {{ frm.column(formPago.credito) }}
+                    {{ frm.column(formPago.soporte) }}
                     {{ frm.column(formPago.fecha) }}
                     {{ frm.column(formPago.pago) }}
                     <div class="d-grid gap-2">
@@ -66,7 +66,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for pago in dataPagosByCredito %}
+            {% for pago in dataPagosBySoporte %}
             <tr>
                 <td>{{ pago.montopagado}}</td>
                 <td>{{ pago.fecha |date('Y-m-d')}}</td>
@@ -114,11 +114,11 @@
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_show_links.html.twig' with {'route_base':'credito','entity': credito} %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'soporte','entity': soporte} %}
 {% endblock %}
 
 {% block _body_tools %}
-    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'credito','entity': credito} %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'soporte','entity': soporte} %}
 {% endblock %}
 
 {% block javascripts %}}
@@ -131,8 +131,8 @@
             // Flatpickr();
             $(document).on('click', '.btn-pagar', function (event) {
                 event.preventDefault();
-                $('#pago_credito').val($(this).val());
-                $('#pago_credito').trigger('change');
+                $('#pago_soporte').val($(this).val());
+                $('#pago_soporte').trigger('change');
             });
         });
     </script>

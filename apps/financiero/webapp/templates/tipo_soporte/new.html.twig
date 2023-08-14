@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 
-{% set _title = 'Tipo Credito' %}
+{% set _title = 'Tipo Soporte' %}
 {% set _main_title = 'Nuevo' %}
-{% set _section =  'tipo_credito_index'%}
+{% set _section =  'tipo_soporte_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2(_title,_section,'Nuevo') }}
 {% endblock %}
 
 {% block _main %}
-    {{ include('tipo_credito/_form.html.twig') }}
+    {{ include('tipo_soporte/_form.html.twig') }}
 {% endblock %}
 
 {% block _body_tools %}
-    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'tipo_credito'} %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'tipo_soporte'} %}
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_new_links.html.twig' with {'route_base':'tipo_credito'} %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'tipo_soporte'} %}
 {% endblock %}
 
 {% block stylesheets %}

@@ -3,9 +3,9 @@
 {% import '@App/theme1/pagination.html.twig' as pagination %}
 {% import 'theme/action.html.twig' as action %}
 
-{% set _title = 'Tipo Credito' %}
+{% set _title = 'Tipo Soporte' %}
 {% set _main_title = 'Listado' %}
-{% set _section =  'tipo_credito_index' %}
+{% set _section =  'tipo_soporte_index' %}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show(_title) }}
@@ -30,26 +30,26 @@
             {% import 'theme/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
-            {% for tipo_credito in paginator.results %}
+            {% for tipo_soporte in paginator.results %}
                 <tr>
                     <td class="text-center">{{ loop.index | index (paginator)}}</td>
                     <td class="d-block d-sm-none">
                         <table class="table gs-0 gy-0">
-                            {{ table.tbl_tr_th_td('Cod.Cuenta', tipo_credito.codigoCuenta) }}
-                            {{ table.tbl_tr_th_td('Nombre', tipo_credito.nombre) }}
-                            {{ table.tbl_tr_th_td('Activo', tipo_credito.isActive  | yesno_custom) }}
+                            {{ table.tbl_tr_th_td('Cod.Cuenta', tipo_soporte.codigoCuenta) }}
+                            {{ table.tbl_tr_th_td('Nombre', tipo_soporte.nombre) }}
+                            {{ table.tbl_tr_th_td('Activo', tipo_soporte.isActive  | yesno_custom) }}
                         </table>
                     </td>
-                    <td class="d-none d-sm-table-cell">{{ tipo_credito.codigoCuenta }}</td>
-                    <td class="d-none d-sm-table-cell">{{ tipo_credito.nombre }}</td>
-                    <td class="d-none d-sm-table-cell text-center">{{ tipo_credito.isActive | yesno_custom | raw }}</td>
+                    <td class="d-none d-sm-table-cell">{{ tipo_soporte.codigoCuenta }}</td>
+                    <td class="d-none d-sm-table-cell">{{ tipo_soporte.nombre }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ tipo_soporte.isActive | yesno_custom | raw }}</td>
                     <td class="">
                         <div class="float-end">
-                            {% if access.has('show', tipo_credito) %}
-                                {{ action.btn_show_link2_ico(path('tipo_credito_show', {'id': tipo_credito.id})) }}
+                            {% if access.has('show', tipo_soporte) %}
+                                {{ action.btn_show_link2_ico(path('tipo_soporte_show', {'id': tipo_soporte.id})) }}
                             {% endif %}
-                            {% if access.has('edit', tipo_credito) %}
-                                {{ action.btn_edit_link2_ico(path('tipo_credito_edit', {'id': tipo_credito.id})) }}
+                            {% if access.has('edit', tipo_soporte) %}
+                                {{ action.btn_edit_link2_ico(path('tipo_soporte_edit', {'id': tipo_soporte.id})) }}
                             {% endif %}
                         </div>
                     </td>
@@ -66,11 +66,11 @@
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_index_links.html.twig' with {'route_base': 'tipo_credito'} %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'tipo_soporte'} %}
 {% endblock%}
 
 {% block _body_tools %}
-    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'tipo_credito'}  %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'tipo_soporte'}  %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -80,7 +80,7 @@
     <script src="{{ asset('js/crud/list.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            CRUDList.init('{{ path('tipo_credito_index') }}');
+            CRUDList.init('{{ path('tipo_soporte_index') }}');
         })
     </script>
 {% endblock %}

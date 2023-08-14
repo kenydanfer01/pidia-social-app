@@ -2,9 +2,9 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/table.html.twig' as table %}
 
-{% set _title = 'Tipo Credito' %}
+{% set _title = 'Tipo Soporte' %}
 {% set _main_title = 'Mostrar' %}
-{% set _section =  'tipo_credito_index'%}
+{% set _section =  'tipo_soporte_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
@@ -12,16 +12,16 @@
 
 {% block _main %}
     {{ table.tbl_start() }}
-    {{ table.tbl_tr('Cod.Cuenta',tipo_credito.codigoCuenta) }}
-    {{ table.tbl_tr('Nombre',tipo_credito.nombre) }}
-    {% include 'crud/_show_info.html.twig' with {'entity': tipo_credito} %}
+    {{ table.tbl_tr('Cod.Cuenta',tipo_soporte.codigoCuenta) }}
+    {{ table.tbl_tr('Nombre',tipo_soporte.nombre) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': tipo_soporte} %}
     {{ table.tbl_end() }}
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_show_links.html.twig' with {'route_base':'tipo_credito','entity': tipo_credito} %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'tipo_soporte','entity': tipo_soporte} %}
 {% endblock %}
 
 {% block _body_tools %}
-    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'tipo_credito','entity': tipo_credito} %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'tipo_soporte','entity': tipo_soporte} %}
 {% endblock %}

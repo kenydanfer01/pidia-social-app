@@ -4,24 +4,24 @@ namespace SocialApp\Apps\Financiero\Webapp\Service\Pago;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SocialApp\Apps\Financiero\Webapp\Repository\PagoRepository;
-use SocialApp\Apps\Financiero\Webapp\Service\credito\AmortizarCreditoService;
+use SocialApp\Apps\Financiero\Webapp\Service\soporte\AmortizarSoporteService;
 
 class EditarPagoService
 {
     private $entityManager;
     private $pagoRepository;
-    private $amortizarCreditoService;
+    private $amortizarSoporteService;
     public function __construct(
         EntityManagerInterface $entityManager,
         PagoRepository $pagoRepository,
-        AmortizarCreditoService $amortizarCreditoService
+        AmortizarSoporteService $amortizarSoporteService
     ) {
         $this->entityManager = $entityManager;
         $this->pagoRepository = $pagoRepository;
-        $this->amortizarCreditoService = $amortizarCreditoService;
+        $this->amortizarSoporteService = $amortizarSoporteService;
     }
 
-    public function execute($idPago, $ePago, $eFechaPago, $credito)
+    public function execute($idPago, $ePago, $eFechaPago, $soporte)
     {
         $pagoRepo = $this->pagoRepository->findOneBy(['id' => $idPago]);
         if ($pagoRepo) {
@@ -29,7 +29,7 @@ class EditarPagoService
             $pagoRepo->setPago($ePago);
             $pagoRepo->setFecha($eFechaPago);
             $this->entityManager->flush();
-            $this->amortizarCreditoService->actualizarAmortizacionDespuesDeEditarPago($credito, $montoOriginal, $ePago);
+            $this->amortizarSoporteService->actualizarAmortizacionDespuesDeEditarPago($soporte, $montoOriginal, $ePago);
         }
     }
 

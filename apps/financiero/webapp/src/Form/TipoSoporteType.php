@@ -2,13 +2,13 @@
 
 namespace SocialApp\Apps\Financiero\Webapp\Form;
 
-use SocialApp\Apps\Financiero\Webapp\Entity\TipoCredito;
+use SocialApp\Apps\Financiero\Webapp\Entity\TipoSoporte;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TipoCreditoType extends AbstractType
+class TipoSoporteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -27,7 +27,7 @@ class TipoCreditoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TipoCredito::class,
+            'data_class' => TipoSoporte::class,
         ]);
     }
 }

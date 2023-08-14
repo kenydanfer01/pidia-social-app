@@ -19,7 +19,7 @@ class Pago
     private ?int $id = null;
 
     #[ORM\ManyToOne]
-    private ?Credito $credito = null;
+    private ?Soporte $soporte = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 11, scale: 2, nullable: true)]
     private ?string $pago = null;
@@ -37,14 +37,14 @@ class Pago
         return $this->id;
     }
 
-    public function getCredito(): ?Credito
+    public function getSoporte(): ?Soporte
     {
-        return $this->credito;
+        return $this->soporte;
     }
 
-    public function setCredito(?Credito $credito): static
+    public function setSoporte(?Soporte $soporte): static
     {
-        $this->credito = $credito;
+        $this->soporte = $soporte;
 
         return $this;
     }

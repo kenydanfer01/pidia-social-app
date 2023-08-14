@@ -7,7 +7,7 @@
 
 namespace SocialApp\Apps\Financiero\Webapp\Form;
 
-use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Entity\Soporte;
 use SocialApp\Apps\Financiero\Webapp\Entity\Pago;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,9 +21,9 @@ class PagoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('credito', EntityType::class, [
-                'class' => Credito::class,
-                'label' => 'Credito:',
+            ->add('soporte', EntityType::class, [
+                'class' => Soporte::class,
+                'label' => 'Soporte:',
                 'placeholder' => 'Seleccione..',
             ])
             ->add('pago', MoneyType::class, [
