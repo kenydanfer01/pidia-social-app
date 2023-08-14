@@ -7,7 +7,7 @@
 
 namespace SocialApp\Apps\Financiero\Webapp\Form;
 
-use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Entity\Soporte;
 use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 use SocialApp\Apps\Financiero\Webapp\Entity\TipoCredito;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -54,7 +54,7 @@ class CreditoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Credito::class,
+            'data_class' => Soporte::class,
         ]);
     }
 }

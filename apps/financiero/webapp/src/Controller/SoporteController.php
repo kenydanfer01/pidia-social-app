@@ -5,7 +5,7 @@ namespace SocialApp\Apps\Financiero\Webapp\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
-use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Entity\Soporte;
 use SocialApp\Apps\Financiero\Webapp\Entity\Pago;
 use SocialApp\Apps\Financiero\Webapp\Filter\Dto\CreditoFilterDto;
 use SocialApp\Apps\Financiero\Webapp\Filter\Dto\EditPagoDto;
@@ -69,7 +69,7 @@ class CreditoController extends WebAuthController
     {
         $this->denyAccess([Permission::NEW]);
 
-        $credito = new Credito();
+        $credito = new Soporte();
         $form = $this->createForm(CreditoType::class, $credito);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -93,10 +93,10 @@ class CreditoController extends WebAuthController
 
     #[Route(path: '/{id}', name: 'credito_show', methods: ['GET','POST'])]
     public function show(
-        Credito $credito,
-        Request $request,
+        Soporte                     $credito,
+        Request                     $request,
         GetAllPagosByCreditoService $getAllPagosByCreditoService,
-        EditarPagoService $editarPagoService,
+        EditarPagoService           $editarPagoService,
     ): Response
     {
         $creditoId = $request->get('id');
@@ -133,7 +133,7 @@ class CreditoController extends WebAuthController
     }
 
     #[Route(path: '/{id}/edit', name: 'credito_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Credito $credito, CreditoManager $manager): Response
+    public function edit(Request $request, Soporte $credito, CreditoManager $manager): Response
     {
         $this->denyAccess([Permission::EDIT], $credito);
 
@@ -159,7 +159,7 @@ class CreditoController extends WebAuthController
     }
 
     #[Route(path: '/{id}/state', name: 'credito_change_state', methods: ['POST'])]
-    public function state(Request $request, Credito $credito, CreditoManager $manager): Response
+    public function state(Request $request, Soporte $credito, CreditoManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $credito);
 
@@ -176,7 +176,7 @@ class CreditoController extends WebAuthController
     }
 
     #[Route(path: '/{id}/delete', name: 'credito_delete', methods: ['POST'])]
-    public function delete(Request $request, Credito $credito, CreditoManager $manager): Response
+    public function delete(Request $request, Soporte $credito, CreditoManager $manager): Response
     {
         $this->denyAccess([Permission::DELETE], $credito);
 

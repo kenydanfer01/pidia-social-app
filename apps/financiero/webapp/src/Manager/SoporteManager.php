@@ -3,11 +3,11 @@
 namespace SocialApp\Apps\Financiero\Webapp\Manager;
 
 use CarlosChininin\App\Infrastructure\Manager\CRUDManager;
-use SocialApp\Apps\Financiero\Webapp\Repository\CreditoRepository;
+use SocialApp\Apps\Financiero\Webapp\Repository\SoporteRepository;
 use Symfony\Bundle\SecurityBundle\Security;
-class CreditoManager extends CRUDManager
+class SoporteManager extends CRUDManager
 {
-    public function __construct(CreditoRepository $repository, Security $security)
+    public function __construct(SoporteRepository $repository, Security $security)
     {
         parent::__construct($repository, $security);
     }

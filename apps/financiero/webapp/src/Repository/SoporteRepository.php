@@ -7,21 +7,21 @@ use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Entity\Soporte;
 use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 use SocialApp\Apps\Financiero\Webapp\Filter\Dto\CreditoFilterDto;
 
 /**
- * @method Credito|null find($id, $lockMode = null, $lockVersion = null)
- * @method Credito|null findOneBy(array $criteria, array $orderBy = null)
- * @method Credito[]    findAll()
- * @method Credito[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Soporte|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Soporte|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Soporte[]    findAll()
+ * @method Soporte[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CreditoRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Credito::class);
+        parent::__construct($registry, Soporte::class);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
@@ -52,7 +52,7 @@ class CreditoRepository extends BaseRepository
             ->leftJoin('credito.tipoCredito', 'tipoCredito');
     }
 
-    /** @return Credito[] */
+    /** @return Soporte[] */
     public function getAllCreditosBySocio(Socio $socio): array
     {
         return $this->allQuery()

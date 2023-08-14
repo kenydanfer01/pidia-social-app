@@ -5,11 +5,11 @@ namespace SocialApp\Apps\Financiero\Webapp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use SocialApp\Apps\Financiero\Webapp\Entity\Traits\EntityTrait;
-use SocialApp\Apps\Financiero\Webapp\Repository\TipoCreditoRepository;
+use SocialApp\Apps\Financiero\Webapp\Repository\TipoSoporteRepository;
 
-#[ORM\Entity(repositoryClass: TipoCreditoRepository::class)]
+#[ORM\Entity(repositoryClass: TipoSoporteRepository::class)]
 #[HasLifecycleCallbacks]
-class TipoCredito
+class TipoSoporte
 {
     use EntityTrait;
     #[ORM\Id]
