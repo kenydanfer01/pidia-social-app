@@ -12,7 +12,7 @@
 
 {% block _main %}
     {{ table.tbl_start() }}
-    {{ table.tbl_tr('Credito',pago.credito) }}
+    {{ table.tbl_tr('Soporte',pago.soporte) }}
     {{ table.tbl_tr('Pago','S/' ~ pago.pago) }}
     {{ table.tbl_tr('Fecha',pago.fecha|date('Y-m-d'))}}
     {% include 'crud/_show_info.html.twig' with {'entity': pago} %}

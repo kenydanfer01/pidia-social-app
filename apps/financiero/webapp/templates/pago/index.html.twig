@@ -20,7 +20,7 @@
 
             <tr>
                 {{ table.th('#') }}
-                {{ table.th('Credito', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Soporte', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Pago', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Fecha', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
@@ -36,13 +36,13 @@
                     <td class="text-center">{{ loop.index | index (paginator)}}</td>
                     <td class="d-block d-sm-none">
                         <table class="table gs-0 gy-0">
-                            {{ table.tbl_tr_th_td('Credito', pago.credito) }}
+                            {{ table.tbl_tr_th_td('Soporte', pago.soporte) }}
                             {{ table.tbl_tr_th_td('Pago','S/' ~   pago.pago) }}
                             {{ table.tbl_tr_th_td('Fecha', pago.fecha|date('Y-m-d')) }}
                             {{ table.tbl_tr_th_td('Activo', pago.isActive  | yesno_custom) }}
                         </table>
                     </td>
-                    <td class="d-none d-sm-table-cell">{{ pago.credito}}</td>
+                    <td class="d-none d-sm-table-cell">{{ pago.soporte}}</td>
                     <td class="d-none d-sm-table-cell">S/ {{ pago.pago}}</td>
                     <td class="d-none d-sm-table-cell">{{ pago.fecha|date('Y-m-d') }}</td>
                     <td class="d-none d-sm-table-cell text-center">{{ pago.isActive | yesno_custom | raw }}</td>
