@@ -7,19 +7,19 @@ use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use SocialApp\Apps\Financiero\Webapp\Entity\TipoCredito;
+use SocialApp\Apps\Financiero\Webapp\Entity\TipoSoporte;
 
 /**
- * @method TipoCredito|null find($id, $lockMode = null, $lockVersion = null)
- * @method TipoCredito|null findOneBy(array $criteria, array $orderBy = null)
- * @method TipoCredito[]    findAll()
- * @method TipoCredito[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TipoSoporte|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TipoSoporte|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TipoSoporte[]    findAll()
+ * @method TipoSoporte[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TipoCreditoRepository extends BaseRepository
+class TipoSoporteRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TipoCredito::class);
+        parent::__construct($registry, TipoSoporte::class);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
@@ -37,14 +37,14 @@ class TipoCreditoRepository extends BaseRepository
     {
         $queryBuilder = $this->allQuery();
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['tipo_credito.nombre']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['tipo_soporte.nombre']);
 
         return $queryBuilder;
     }
 
     public function allQuery(): QueryBuilder
     {
-        return $this->createQueryBuilder('tipo_credito')
-            ->select(['tipo_credito']);
+        return $this->createQueryBuilder('tipo_soporte')
+            ->select(['tipo_soporte']);
     }
 }

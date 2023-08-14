@@ -5,7 +5,7 @@ namespace SocialApp\Apps\Financiero\Webapp\Service\Pago;
 
 use SocialApp\Apps\Financiero\Webapp\Repository\PagoRepository;
 
-class GetAllPagosByCreditoService
+class GetAllPagosBySoporteService
 {
     public function __construct(
         private readonly pagoRepository $pagoRepository,
@@ -13,11 +13,11 @@ class GetAllPagosByCreditoService
     {
     }
 
-    public function execute(int $creditoId):array
+    public function execute(int $soporteId):array
     {
         $items=[];
-        $pagosByCredito=$this->pagoRepository->getAllPagosByCredito($creditoId);
-        foreach ($pagosByCredito as $pago){
+        $pagosBySoporte=$this->pagoRepository->getAllPagosBySoporte($soporteId);
+        foreach ($pagosBySoporte as $pago){
             $items[] = [
                 'id' => $pago->getId(),
                 'montopagado' => $pago->getPago(),

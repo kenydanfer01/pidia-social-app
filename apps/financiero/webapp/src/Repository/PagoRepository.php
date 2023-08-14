@@ -42,7 +42,7 @@ class PagoRepository extends BaseRepository
     {
         $queryBuilder = $this->allQuery();
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['pago.credito']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['pago.soporte']);
 
         return $queryBuilder;
     }
@@ -50,15 +50,15 @@ class PagoRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('pago')
-            ->select(['pago', 'credito'])
-            ->join('pago.credito', 'credito');
+            ->select(['pago', 'soporte'])
+            ->join('pago.soporte', 'soporte');
     }
 
-    public function getAllPagosByCredito(int $creditoId): array
+    public function getAllPagosBySoporte(int $soporteId): array
     {
         return $this->allQuery()
-            ->andWhere('credito.id = :creditoId')
-            ->setParameter('creditoId', $creditoId)
+            ->andWhere('soporte.id = :soporteId')
+            ->setParameter('soporteId', $soporteId)
             ->getQuery()->getResult();
     }
 }

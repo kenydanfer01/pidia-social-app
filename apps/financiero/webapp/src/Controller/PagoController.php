@@ -15,9 +15,9 @@ use SocialApp\Apps\Financiero\Webapp\Filter\Dto\EditPagoDto;
 use SocialApp\Apps\Financiero\Webapp\Form\EditPagoType;
 use SocialApp\Apps\Financiero\Webapp\Form\PagoType;
 use SocialApp\Apps\Financiero\Webapp\Manager\PagoManager;
-use SocialApp\Apps\Financiero\Webapp\Service\credito\AmortizarCreditoService;
-use SocialApp\Apps\Financiero\Webapp\Service\credito\IsValidPaymentService;
 use SocialApp\Apps\Financiero\Webapp\Service\Pago\EditarPagoService;
+use SocialApp\Apps\Financiero\Webapp\Service\soporte\AmortizarSoporteService;
+use SocialApp\Apps\Financiero\Webapp\Service\soporte\IsValidPaymentService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,7 +49,7 @@ class PagoController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-//            'credito' => 'Credito',
+//            'soporte' => 'Soporte',
             'pago' => 'Pago',
             'fecha' => 'Fecha',
         ];
@@ -142,7 +142,7 @@ class PagoController extends WebAuthController
         Request $request,
         Pago $pago,
         PagoManager $manager,
-        AmortizarCreditoService $amortizarCreditoService,
+        AmortizarSoporteService $amortizarSoporteService,
     ): Response {
         $this->denyAccess([Permission::DELETE], $pago);
 
@@ -150,21 +150,21 @@ class PagoController extends WebAuthController
             $montoEliminado = $pago->getPago();
             if ($manager->remove($pago)) {
                 $this->addFlash('warning', 'Pago eliminado correctamente');
-                $credito = $pago->getCredito();
-                $amortizarCreditoService->actualizarAmortizacionDespuesDeEliminarPago($credito, $montoEliminado);
+                $soporte = $pago->getSoporte();
+                $amortizarSoporteService->actualizarAmortizacionDespuesDeEliminarPago($soporte, $montoEliminado);
             } else {
                 $this->addErrors($manager->errors());
             }
         }
 
-        return $this->redirectToRoute('credito_show', ['id' => $pago->getCredito()->getId()]);
+        return $this->redirectToRoute('soporte_show', ['id' => $pago->getSoporte()->getId()]);
     }
 
     #[Route(path: '/pago/modal', name: 'pago_new_modal', methods: ['POST'])]
     public function newTrabajadorModal(
         Request $request,
         PagoManager $pagoManager,
-        AmortizarCreditoService $amortizarCreditoService,
+        AmortizarSoporteService $amortizarSoporteService,
         IsValidPaymentService $isValidPaymentService,
     ): Response {
         $this->denyAccess([Permission::NEW]);
@@ -175,7 +175,7 @@ class PagoController extends WebAuthController
 
         if ($isValidPaymentService->executeForPago($pago)) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $amortizarCreditoService->execute($pago);
+                $amortizarSoporteService->execute($pago);
                 $pagoManager->save($pago);
 
                 return $this->json([

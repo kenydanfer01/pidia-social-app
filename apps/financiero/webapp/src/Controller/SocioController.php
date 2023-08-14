@@ -15,7 +15,7 @@ use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
 use SocialApp\Apps\Financiero\Webapp\Form\PagoType;
 use SocialApp\Apps\Financiero\Webapp\Form\SocioType;
 use SocialApp\Apps\Financiero\Webapp\Manager\SocioManager;
-use SocialApp\Apps\Financiero\Webapp\Repository\CreditoRepository;
+use SocialApp\Apps\Financiero\Webapp\Repository\SoporteRepository;
 use SocialApp\Apps\Financiero\Webapp\Repository\ProyeccionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,12 +92,12 @@ class SocioController extends WebAuthController
     }
 
     #[Route(path: '/{id}', name: 'socio_show', methods: ['GET'])]
-    public function show(Socio $socio, ProyeccionRepository $proyeccion, CreditoRepository $creditoRepository): Response
+    public function show(Socio $socio, ProyeccionRepository $proyeccion, SoporteRepository $soporteRepository): Response
     {
         $this->denyAccess([Permission::SHOW], $socio);
         $proyecciones = $proyeccion->getAllProyeccionBySocio($socio);
         $presentProyeccion = reset($proyecciones);
-        $creditos = $creditoRepository->getAllCreditosBySocio($socio);
+        $soportes = $soporteRepository->getAllSoportesBySocio($socio);
 
         $pago = new Pago();
         $formPago = $this->createForm(PagoType::class, $pago);
@@ -107,7 +107,7 @@ class SocioController extends WebAuthController
             [
                 'socio' => $socio,
                 'proyeccion' => $presentProyeccion,
-                'creditos' => $creditos,
+                'soportes' => $soportes,
                 'formPago' => $formPago->createView(),
             ]
         );

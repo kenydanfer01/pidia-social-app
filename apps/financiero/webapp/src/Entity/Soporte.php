@@ -6,11 +6,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use SocialApp\Apps\Financiero\Webapp\Entity\Traits\EntityTrait;
-use SocialApp\Apps\Financiero\Webapp\Repository\CreditoRepository;
+use SocialApp\Apps\Financiero\Webapp\Repository\SoporteRepository;
 
-#[ORM\Entity(repositoryClass: CreditoRepository::class)]
+#[ORM\Entity(repositoryClass: SoporteRepository::class)]
 #[HasLifecycleCallbacks]
-class Credito
+class Soporte
 {
     use EntityTrait;
     #[ORM\Id]
@@ -22,7 +22,7 @@ class Credito
     private ?Socio $socio = null;
 
     #[ORM\ManyToOne]
-    private ?TipoCredito $tipoCredito = null;
+    private ?TipoSoporte $tipoSoporte = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 11, scale: 2, nullable: true)]
     private ?string $monto = null;
@@ -59,14 +59,14 @@ class Credito
         return $this;
     }
 
-    public function getTipoCredito(): ?TipoCredito
+    public function getTipoSoporte(): ?TipoSoporte
     {
-        return $this->tipoCredito;
+        return $this->tipoSoporte;
     }
 
-    public function setTipoCredito(?TipoCredito $tipoCredito): static
+    public function setTipoSoporte(?TipoSoporte $tipoSoporte): static
     {
-        $this->tipoCredito = $tipoCredito;
+        $this->tipoSoporte = $tipoSoporte;
 
         return $this;
     }

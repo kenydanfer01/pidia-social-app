@@ -7,9 +7,9 @@
 
 namespace SocialApp\Apps\Financiero\Webapp\Form;
 
-use SocialApp\Apps\Financiero\Webapp\Entity\Credito;
+use SocialApp\Apps\Financiero\Webapp\Entity\Soporte;
 use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
-use SocialApp\Apps\Financiero\Webapp\Entity\TipoCredito;
+use SocialApp\Apps\Financiero\Webapp\Entity\TipoSoporte;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreditoType extends AbstractType
+class SoporteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -27,9 +27,9 @@ class CreditoType extends AbstractType
                 'label' => 'Socio:',
                 'placeholder' => 'Seleccione..',
             ])
-            ->add('tipoCredito', EntityType::class, [
-                'class' => TipoCredito::class,
-                'label' => 'Tipo Credito:',
+            ->add('tipoSoporte', EntityType::class, [
+                'class' => TipoSoporte::class,
+                'label' => 'Tipo Soporte:',
                 'placeholder' => 'Seleccione..',
             ])
             ->add('monto', MoneyType::class, [
@@ -54,7 +54,7 @@ class CreditoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Credito::class,
+            'data_class' => Soporte::class,
         ]);
     }
 }

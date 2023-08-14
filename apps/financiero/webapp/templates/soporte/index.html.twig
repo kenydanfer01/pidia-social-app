@@ -5,9 +5,9 @@
 {% import 'theme/cardshow.html.twig' as cardshow %}
 {% import 'theme/form.html.twig' as frm %}
 
-{% set _title = 'Credito' %}
+{% set _title = 'Soporte' %}
 {% set _main_title = 'Listado' %}
-{% set _section =  'credito_index' %}
+{% set _section =  'soporte_index' %}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show(_title) }}
@@ -21,7 +21,7 @@
                 {{ form_row(formFilter.socio) }}
             </div>
             <div class="col">
-                {{ form_row(formFilter.tipoCredito) }}
+                {{ form_row(formFilter.tipoSoporte) }}
             </div>
             <div class="col">
                 <button class="btn btn-secondary">Buscar</button>
@@ -39,7 +39,7 @@
             <tr>
                 {{ table.th('#') }}
                 {{ table.th('Socio', true, 'd-none d-sm-table-cell') }}
-                {{ table.th('T.Credito', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('T.Soporte', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Monto', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Amortizacion', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Activo', true, 'd-none d-sm-table-cell text-center') }}
@@ -50,30 +50,30 @@
             {% import 'theme/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
 
-            {% for credito in paginator.results %}
+            {% for soporte in paginator.results %}
                 <tr>
                     <td class="text-center">{{ loop.index | index (paginator)}}</td>
                     <td class="d-block d-sm-none">
                         <table class="table gs-0 gy-0">
-                            {{ table.tbl_tr_th_td('Socio', credito.socio) }}
-                            {{ table.tbl_tr_th_td('T.Credito', credito.tipoCredito) }}
-                            {{ table.tbl_tr_th_td('Monto','S/' ~ credito.monto) }}
-                            {{ table.tbl_tr_th_td('Amortizacion','S/' ~ credito.amortizacion) }}
-                            {{ table.tbl_tr_th_td('Activo', credito.isActive  | yesno_custom) }}
+                            {{ table.tbl_tr_th_td('Socio', soporte.socio) }}
+                            {{ table.tbl_tr_th_td('T.Soporte', soporte.tipoSoporte) }}
+                            {{ table.tbl_tr_th_td('Monto','S/' ~ soporte.monto) }}
+                            {{ table.tbl_tr_th_td('Amortizacion','S/' ~ soporte.amortizacion) }}
+                            {{ table.tbl_tr_th_td('Activo', soporte.isActive  | yesno_custom) }}
                         </table>
                     </td>
-                    <td class="d-none d-sm-table-cell">{{ credito.socio }}</td>
-                    <td class="d-none d-sm-table-cell">{{ credito.tipoCredito }}</td>
-                    <td class="d-none d-sm-table-cell">S/ {{ credito.monto }}</td>
-                    <td class="d-none d-sm-table-cell">S/ {{ credito.amortizacion }}</td>
-                    <td class="d-none d-sm-table-cell text-center">{{ credito.isActive | yesno_custom | raw }}</td>
+                    <td class="d-none d-sm-table-cell">{{ soporte.socio }}</td>
+                    <td class="d-none d-sm-table-cell">{{ soporte.tipoSoporte }}</td>
+                    <td class="d-none d-sm-table-cell">S/ {{ soporte.monto }}</td>
+                    <td class="d-none d-sm-table-cell">S/ {{ soporte.amortizacion }}</td>
+                    <td class="d-none d-sm-table-cell text-center">{{ soporte.isActive | yesno_custom | raw }}</td>
                     <td class="">
                         <div class="float-end">
-                            {% if access.has('show', credito) %}
-                                {{ action.btn_show_link2_ico(path('credito_show', {'id': credito.id})) }}
+                            {% if access.has('show', soporte) %}
+                                {{ action.btn_show_link2_ico(path('soporte_show', {'id': soporte.id})) }}
                             {% endif %}
-                            {% if access.has('edit', credito) %}
-                                {{ action.btn_edit_link2_ico(path('credito_edit', {'id': credito.id})) }}
+                            {% if access.has('edit', soporte) %}
+                                {{ action.btn_edit_link2_ico(path('soporte_edit', {'id': soporte.id})) }}
                             {% endif %}
                         </div>
                     </td>
@@ -90,11 +90,11 @@
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_index_links.html.twig' with {'route_base': 'credito'} %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'soporte'} %}
 {% endblock%}
 
 {% block _body_tools %}
-    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'credito'}  %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'soporte'}  %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -110,7 +110,7 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            CRUDList.init('{{ path('credito_index') }}');
+            CRUDList.init('{{ path('soporte_index') }}');
         })
     </script>
 {% endblock %}

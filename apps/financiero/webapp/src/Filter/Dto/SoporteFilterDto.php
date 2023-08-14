@@ -3,12 +3,12 @@
 namespace SocialApp\Apps\Financiero\Webapp\Filter\Dto;
 
 use SocialApp\Apps\Financiero\Webapp\Entity\Socio;
-use SocialApp\Apps\Financiero\Webapp\Entity\TipoCredito;
+use SocialApp\Apps\Financiero\Webapp\Entity\TipoSoporte;
 
-class CreditoFilterDto
+class SoporteFilterDto
 {
     public ?Socio $socio = null;
-    public ?TipoCredito $tipoCredito = null;
+    public ?TipoSoporte $tipoSoporte = null;
     public ?int $page = null;
     public ?int $limit = null;
 
@@ -22,11 +22,11 @@ class CreditoFilterDto
     }
 
     /**
-     * @return TipoCredito|null
+     * @return TipoSoporte|null
      */
-    public function getTipoCredito(): ?TipoCredito
+    public function getTipoSoporte(): ?TipoSoporte
     {
-        return $this->tipoCredito;
+        return $this->tipoSoporte;
     }
 
 
