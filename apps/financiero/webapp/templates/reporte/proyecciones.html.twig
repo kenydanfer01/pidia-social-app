@@ -5,7 +5,7 @@
 
 {% set _title = 'Reporte de Proyecciones de Socios' %}
 {% set _main_title = 'reporte' %}
-{% set _section =  'reporte_proyecciones'%}
+{% set _section =  'reporte_proyecciones_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show(_title) }}
@@ -33,7 +33,7 @@
                     <div class="col-md-5">
                         <button class="m-btn m-btn--pill btn btn-light-primary mb-2"
                                 style="margin-right: 15px;"
-                                onClick="actionForm(this.form.id,'{{ path('reporte_proyecciones') }}'); return false;"
+                                onClick="actionForm(this.form.id,'{{ path('reporte_proyecciones_index') }}'); return false;"
                                 type="button"><i class="fas fa-search"></i> Buscar
                         </button>
                         <button class="m-btn m-btn--pill btn btn-light-warning ml-2"
@@ -101,7 +101,7 @@
             $('#table-body').empty(); // Vacía el cuerpo de la tabla
 
             setTimeout(function() {
-                actionForm('form_demo', '{{ path('reporte_proyecciones') }}');
+                actionForm('form_demo', '{{ path('reporte_proyecciones_index') }}');
             }, 10);
         }
     </script>

@@ -4,17 +4,16 @@ namespace SocialApp\Apps\Financiero\Webapp\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use SocialApp\Apps\Financiero\Webapp\Repository\SocioRepository;
-use SocialApp\Apps\Financiero\Webapp\Service\reporte\proyeccionesBySocioService;
 use SocialApp\Apps\Financiero\Webapp\Service\reporte\soportesBySocioService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-#[Route('/admin/reporte')]
-class ReporteController extends WebAuthController
+#[Route('/admin/reporte_soportes')]
+class ReporteSoportesController extends WebAuthController
 {
-    public const BASE_ROUTE = 'reporte_index';
-    #[Route(path: '/soportes', name: 'reporte_soportes', methods: ['GET','POST'])]
+    public const BASE_ROUTE = 'reporte_soportes_index';
+    #[Route(path: '/', name: 'reporte_soportes_index', methods: ['GET','POST'])]
     public function reporteSoportesBySocio(
         SocioRepository $socioRepository,
         soportesBySocioService $soportesBySocioService,
@@ -37,30 +36,6 @@ class ReporteController extends WebAuthController
                 'montoTotal' => $data['montoTotal'],
                 'amortizacionTotal' => $data['amortizacionTotal'],
                 'saldoTotal' => $data['saldoTotal'],
-            ]
-        );
-    }
-
-    #[Route(path: '/proyecciones', name: 'reporte_proyecciones', methods: ['GET','POST'])]
-    public function reportePoryeccionesBySocio(
-        SocioRepository $socioRepository,
-        proyeccionesBySocioService $proyeccionesBySocioService,
-        Request $request,
-    ): Response {
-
-        $socioId= $request->get('socio');
-        if (null === $socioId) {
-            $socioId = 3;
-        }
-
-        $data =$proyeccionesBySocioService->execute($socioId);
-
-        return $this->render(
-            'reporte/proyecciones.html.twig',
-            [
-                'socios'=>$socioRepository->findBy(['isActive'=>true]),
-                'idSocio'=>$socioId,
-                'data'=>$data,
             ]
         );
     }

@@ -5,7 +5,7 @@
 
 {% set _title = 'Reporte de Soportes de Socios' %}
 {% set _main_title = 'reporte' %}
-{% set _section =  'reporte_soportes'%}
+{% set _section =  'reporte_soportes_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show(_title) }}
@@ -35,7 +35,7 @@
                     <div class="col-md-5">
                         <button class="m-btn m-btn--pill btn btn-light-primary mb-2"
                                 style="margin-right: 15px;"
-                                onClick="actionForm(this.form.id,'{{ path('reporte_soportes') }}'); return false;"
+                                onClick="actionForm(this.form.id,'{{ path('reporte_soportes_index') }}'); return false;"
                                 type="button"><i class="fas fa-search"></i> Buscar
                         </button>
                         <button class="m-btn m-btn--pill btn btn-light-warning ml-2"
@@ -111,7 +111,7 @@
             // ...
 
             setTimeout(function() {
-                actionForm('form_demo', '{{ path('reporte_soportes') }}');
+                actionForm('form_demo', '{{ path('reporte_soportes_index') }}');
             }, 10);
         }
     </script>
