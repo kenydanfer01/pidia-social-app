@@ -52,17 +52,7 @@ class SoporteRepository extends BaseRepository
             ->leftJoin('soporte.tipoSoporte', 'tipoSoporte');
     }
 
-    /** @return Soporte[] */
-    public function getAllSoportesBySocio(Socio $socio): array
-    {
-        return $this->allQuery()
-            ->andWhere('soporte.socio = :socio')
-            ->setParameter('socio', $socio)
-            ->orderBy('soporte.updatedAt', 'DESC')
-            ->getQuery()->getResult();
-    }
-
-    public function getAllSoportesBySocioV2(int $socioId): array
+    public function getAllSoportesBySocio(int $socioId): array
     {
         return $this->allQuery()
             ->andWhere('socio.id= :socioId')

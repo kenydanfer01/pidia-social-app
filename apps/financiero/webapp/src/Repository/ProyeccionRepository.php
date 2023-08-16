@@ -51,17 +51,7 @@ class ProyeccionRepository extends BaseRepository
             ->leftJoin('proyeccion.socio', 'socio');
     }
 
-    /** @return Proyeccion[] */
-    public function getAllProyeccionBySocio(Socio $socio): array
-    {
-        return $this->allQuery()
-            ->andWhere('proyeccion.socio = :socio')
-            ->setParameter('socio', $socio)
-            ->orderBy('proyeccion.anio', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-    public function getAllProyeccionBySocioV2(int $socioId): array
+    public function getAllProyeccionBySocio(int $socioId): array
     {
         return $this->allQuery()
             ->andWhere('socio.id= :socioId')

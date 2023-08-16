@@ -16,7 +16,7 @@ class proyeccionesBySocioService
     public function execute(int $socioId) : array
     {
         $items=[];
-        $proyeccionesBySocio=$this->proyeccionRepository->getAllProyeccionBySocioV2($socioId);
+        $proyeccionesBySocio=$this->proyeccionRepository->getAllProyeccionBySocio($socioId);
         foreach ($proyeccionesBySocio as $proyeccion){
             $items[] = [
                 'id' => $proyeccion->getId(),

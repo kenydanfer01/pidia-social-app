@@ -101,7 +101,6 @@ class SoporteController extends WebAuthController
         Soporte $soporte,
         Request $request,
         GetAllPagosBySoporteService $getAllPagosBySoporteService,
-        EditarPagoService $editarPagoService,
     ): Response {
         $soporteId = $request->get('id');
         $dataPagosBySoporte = $getAllPagosBySoporteService->execute($soporteId);

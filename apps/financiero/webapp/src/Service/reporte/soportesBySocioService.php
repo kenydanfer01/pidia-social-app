@@ -19,7 +19,7 @@ class soportesBySocioService
         $montoTotal = 0.00;
         $amortizacionTotal = 0.00;
 
-        $soportesBySocio=$this->soporteRepository->getAllSoportesBySocioV2($socioId);
+        $soportesBySocio=$this->soporteRepository->getAllSoportesBySocio($socioId);
         foreach ($soportesBySocio as $soporte){
             $montoTotal += $soporte->getMonto();
             $amortizacionTotal += $soporte->getAmortizacion();
