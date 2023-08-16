@@ -13,15 +13,17 @@
 {% block _main %}
     {{ table.tbl_start() }}
     {{ table.tbl_tr('Paciente',registro_fondos.paciente) }}
-    {{ table.tbl_tr('Tipo',registro_fondos.tipo) }}
+    {{ table.tbl_tr('DNI',registro_fondos.dni) }}
+    {{ table.tbl_tr('Nombre',registro_fondos.nombreSocio) }}
+    {{ table.tbl_tr('Base Social',registro_fondos.baseSocial) }}
+    {{ table.tbl_tr('Tipo de Socio',registro_fondos.tipoSocio) }}
+    {{ table.tbl_tr('Tipo',registro_fondos.tipoRegistro) }}
     {{ table.tbl_tr('Condicion',registro_fondos.condicion) }}
     {{ table.tbl_tr('Fecha',registro_fondos.fecha | date('d-m-Y')) }}
     {{ table.tbl_tr('Monto',registro_fondos.monto) }}
     {{ table.tbl_tr('Observacion',registro_fondos.observacion) }}
-
     {% include 'crud/_show_info.html.twig' with {'entity': registro_fondos} %}
     {{ table.tbl_end() }}
-
 {% endblock %}
 
 {% block _main_footer %}

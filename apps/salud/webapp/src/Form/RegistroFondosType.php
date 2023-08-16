@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,11 +23,20 @@ class RegistroFondosType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('paciente', EntityType::class, [
-                'class' => Paciente::class,
-                'placeholder' => 'seleccione un paciente',
+            ->add('dni', TextType::class, [
+                'label' => 'Número de DNI:  ',
             ])
-            ->add('tipo', ChoiceType::class, [
+            ->add('nombreSocio', TextType::class, [
+                'label' => 'Nombre Encontrado:  ',
+            ])
+            ->add('baseSocial', TextType::class, [
+                'label' => 'Base Social:  ',
+            ])
+            ->add('tipoSocio', TextType::class, [
+                'label' => 'Tipo de Beneficiario:  ',
+            ])
+            ->add('tipoRegistro', ChoiceType::class, [
+                'placeholder' => 'Seleccione el tipo ..',
                 'choices' => [
                     'Fondo Mortorio' => 'fondomortorio',
                     'Apoyo Salud' => 'apoyosalud',

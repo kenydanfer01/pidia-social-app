@@ -28,9 +28,52 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            Select2();
+        let dniTxt = document.getElementById('registro_fondos_dni');
+        let nombresTxt = document.getElementById('registro_fondos_nombreSocio');
+        let baseSocialTxt = document.getElementById('registro_fondos_baseSocial');
+        let tipoSocioTxt = document.getElementById('registro_fondos_tipoSocio');
+        nombresTxt.readOnly = true;
+        baseSocialTxt.readOnly = true;
+        tipoSocioTxt.readOnly = true;
+    </script>
+    <script>
+        // Modificar para cuando se implementen las APIs del Sispro
+        async function getPersonaApi(dni) {
+            let response = await fetch('{{ path('buscar_paciente_dni') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    dni: dni,
+                })
+            });
+            return await response.json();
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             Flatpickr();
-        });
+            Select2();
+        })
+
+        // Realiza la busqueda luego de haber escrito 8 dígitos en el DNI
+        dniTxt.onkeyup = function () {
+            if(this.value.length === 8){
+                getPersonaApi(this.value).then(result => {
+                    if (null !== result.data) {
+                        nombresTxt.value = result.data['nombreCompleto'] ;
+                        // La base Social y Tipo de Socio también deben ser campos que traiga el API
+                        baseSocialTxt.value = 'Base Social de Ejemplo' ;
+                        tipoSocioTxt.value = 'Socio' ;
+                    }
+                    else {
+                        // Muestra alerta si no encuentra algun registro
+                        // Falta implementar Boton para registrar por modal un Paciente en caso de no encontrar
+                        swal.fire("Advertencia!", "No se encontró Registro con el DNI ingresado. ", "warning");
+                    }
+                })
+            }
+        }
     </script>
 {% endblock %}

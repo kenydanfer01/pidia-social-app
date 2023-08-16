@@ -16,10 +16,10 @@
         {% block table_head %}
             {% import 'theme/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
-
             <tr>
                 {{ table.th('#') }}
                 {{ table.th('Datos', true, 'd-block d-sm-none') }}
+                {{ table.th('DNI', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Paciente', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Tipo', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Fecha', true, 'd-none d-sm-table-cell') }}
@@ -31,31 +31,30 @@
         {% block table_body %}
             {% import 'theme/action.html.twig' as action %}
             {% import '@App/theme1/table.html.twig' as table %}
-
             {% for registro_fondos in paginator.results %}
                 <tr>
                     <td class="text-center">{{ loop.index | index (paginator)}}</td>
                     <td class="d-block d-sm-none">
                         <table class="table gs-0 gy-0">
-                            {{ table.tbl_tr_th_td('Paciente', registro_fondos.paciente) }}
-                            {{ table.tbl_tr_th_td('Tipo', registro_fondos.tipo) }}
+                            {{ table.tbl_tr_th_td('DNI', registro_fondos.paciente.dni ?? registro_fondos.dni) }}
+                            {{ table.tbl_tr_th_td('Paciente', registro_fondos.paciente ?? registro_fondos.nombreSocio) }}
+                            {{ table.tbl_tr_th_td('Tipo', registro_fondos.tipoRegistro) }}
                             {{ table.tbl_tr_th_td('Fecha', registro_fondos.fecha | date('d-m-Y')) }}
                             {{ table.tbl_tr_th_td('Monto', registro_fondos.monto) }}
                             {{ table.tbl_tr_th_td('Activo', registro_fondos.isActive  | yesno_custom) }}
                         </table>
                     </td>
-                    <td class="d-none d-sm-table-cell text-uppercase">{{ registro_fondos.paciente }}</td>
+                    <td class="d-none d-sm-table-cell text-uppercase">{{ registro_fondos.paciente.dni ?? registro_fondos.dni }}</td>
+                    <td class="d-none d-sm-table-cell text-uppercase">{{ registro_fondos.paciente ?? registro_fondos.nombreSocio }}</td>
                     <td class="d-none d-sm-table-cell">
-                        {% if registro_fondos.tipo == 'fondomortorio' %}
+                        {% if registro_fondos.tipoRegistro == 'fondomortorio' %}
                             Fondo Mortorio
-                            {% elseif registro_fondos.tipo == 'apoyosalud' %}
+                            {% elseif registro_fondos.tipoRegistro == 'apoyosalud' %}
                             Apoyo Salud
                         {% else %}
                             Otro tipo de fondo
                         {% endif %}
                     </td>
-
-
                     <td class="d-none d-sm-table-cell">{{ registro_fondos.fecha  | date('d-m-Y') }}</td>
                     <td class="d-none d-sm-table-cell">{{ registro_fondos.monto }}</td>
                     <td class="d-none d-sm-table-cell text-center">{{ registro_fondos.isActive | yesno_custom | raw }}</td>
