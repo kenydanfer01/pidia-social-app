@@ -20,7 +20,7 @@ class RegistroFondos
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'registroFondos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Paciente $paciente = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -36,7 +36,19 @@ class RegistroFondos
     private ?string $observacion = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $tipo = null;
+    private ?string $tipoRegistro = null;
+
+    #[ORM\Column(length: 8, nullable: true)]
+    private ?string $dni = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $nombreSocio = null;
+
+    #[ORM\Column(length: 70, nullable: true)]
+    private ?string $baseSocial = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $tipoSocio = null;
 
     public function __construct()
     {
@@ -108,14 +120,62 @@ class RegistroFondos
         return $this;
     }
 
-    public function getTipo(): ?string
+    public function getTipoRegistro(): ?string
     {
-        return $this->tipo;
+        return $this->tipoRegistro;
     }
 
-    public function setTipo(string $tipo): static
+    public function setTipoRegistro(string $tipoRegistro): static
     {
-        $this->tipo = $tipo;
+        $this->tipoRegistro = $tipoRegistro;
+
+        return $this;
+    }
+
+    public function getDni(): ?string
+    {
+        return $this->dni;
+    }
+
+    public function setDni(string $dni): static
+    {
+        $this->dni = $dni;
+
+        return $this;
+    }
+
+    public function getNombreSocio(): ?string
+    {
+        return $this->nombreSocio;
+    }
+
+    public function setNombreSocio(?string $nombreSocio): static
+    {
+        $this->nombreSocio = $nombreSocio;
+
+        return $this;
+    }
+
+    public function getBaseSocial(): ?string
+    {
+        return $this->baseSocial;
+    }
+
+    public function setBaseSocial(?string $baseSocial): static
+    {
+        $this->baseSocial = $baseSocial;
+
+        return $this;
+    }
+
+    public function getTipoSocio(): ?string
+    {
+        return $this->tipoSocio;
+    }
+
+    public function setTipoSocio(?string $tipoSocio): static
+    {
+        $this->tipoSocio = $tipoSocio;
 
         return $this;
     }

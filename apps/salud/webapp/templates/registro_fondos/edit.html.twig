@@ -28,6 +28,16 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
+        let dniTxt = document.getElementById('registro_fondos_dni');
+        let nombresTxt = document.getElementById('registro_fondos_nombreSocio');
+        let baseSocialTxt = document.getElementById('registro_fondos_baseSocial');
+        let tipoSocioTxt = document.getElementById('registro_fondos_tipoSocio');
+        dniTxt.readOnly = true;
+        nombresTxt.readOnly = true;
+        baseSocialTxt.readOnly = true;
+        tipoSocioTxt.readOnly = true;
+    </script>
+    <script>
         $(document).ready(function() {
             Select2();
             Flatpickr();
