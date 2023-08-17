@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Salud\Webapp\Form;
 
 use SocialApp\Apps\Salud\Webapp\Entity\EnfermedadAsociada;
@@ -28,7 +33,11 @@ class FichaEvaluacionType extends AbstractType
             ])
             ->add('evaluacionClinica', EvaluacionClinicaType::class, [
                 'required' => false,
-            ]);
+            ])
+            ->add('dni')
+            ->add('nombreSocio')
+            ->add('baseSocial')
+            ->add('tipoSocio');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

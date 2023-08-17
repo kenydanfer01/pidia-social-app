@@ -50,6 +50,18 @@ class FichaEvaluacion
     #[ORM\JoinColumn(nullable: true)]
     private ?EvaluacionClinica $evaluacionClinica = null;
 
+    #[ORM\Column(length: 8, nullable: true)]
+    private ?string $dni = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $nombreSocio = null;
+
+    #[ORM\Column(length: 70, nullable: true)]
+    private ?string $baseSocial = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $tipoSocio = null;
+
     public function __construct()
     {
         $this->enfermedadesAsociadas = new ArrayCollection();
@@ -152,6 +164,54 @@ class FichaEvaluacion
     public function setEvaluacionClinica(?EvaluacionClinica $evaluacionClinica): static
     {
         $this->evaluacionClinica = $evaluacionClinica;
+
+        return $this;
+    }
+
+    public function getDni(): ?string
+    {
+        return $this->dni;
+    }
+
+    public function setDni(?string $dni): static
+    {
+        $this->dni = $dni;
+
+        return $this;
+    }
+
+    public function getNombreSocio(): ?string
+    {
+        return $this->nombreSocio;
+    }
+
+    public function setNombreSocio(?string $nombreSocio): static
+    {
+        $this->nombreSocio = $nombreSocio;
+
+        return $this;
+    }
+
+    public function getBaseSocial(): ?string
+    {
+        return $this->baseSocial;
+    }
+
+    public function setBaseSocial(?string $baseSocial): static
+    {
+        $this->baseSocial = $baseSocial;
+
+        return $this;
+    }
+
+    public function getTipoSocio(): ?string
+    {
+        return $this->tipoSocio;
+    }
+
+    public function setTipoSocio(?string $tipoSocio): static
+    {
+        $this->tipoSocio = $tipoSocio;
 
         return $this;
     }

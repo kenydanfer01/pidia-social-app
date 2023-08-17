@@ -1,6 +1,10 @@
 {% import 'theme/form.html.twig' as frm %}
 
 {{ frm.start(form) }}
+    {{ frm.column(form.dni) }}
+    {{ frm.column(form.nombreSocio) }}
+    {{ frm.column(form.baseSocial) }}
+    {{ frm.column(form.tipoSocio) }}
     {{ frm.column(form.paciente) }}
     <br/>
     <div class="accordion" id="kt_accordion_1">
