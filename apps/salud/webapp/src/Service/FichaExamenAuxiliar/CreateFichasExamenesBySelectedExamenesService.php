@@ -16,6 +16,7 @@ class CreateFichasExamenesBySelectedExamenesService
 {
     public function __construct(
         private readonly FichaExamenAuxiliarManager $fichaExamenAuxiliarManager,
+        private readonly CreateDetallesForFichaExamenAuxiliarService $createDetallesForFichaExamenAuxiliarService,
     ) {
     }
 
@@ -30,6 +31,7 @@ class CreateFichasExamenesBySelectedExamenesService
         foreach ($examenesAuxiliares as $examenAuxiliar) {
             $fichaExamenAuxiliar = $this->createFichaExamenAuxiliar($fichaEvaluacion, $examenAuxiliar);
             $this->fichaExamenAuxiliarManager->save($fichaExamenAuxiliar);
+            $this->createDetallesForFichaExamenAuxiliarService->execute($fichaExamenAuxiliar);
         }
     }
 

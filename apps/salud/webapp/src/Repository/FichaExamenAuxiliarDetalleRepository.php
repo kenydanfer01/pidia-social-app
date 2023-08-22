@@ -2,65 +2,49 @@
 
 namespace SocialApp\Apps\Salud\Webapp\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Filter\DoctrineValueSearch;
+use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaExamenAuxiliarDetalle;
 
 /**
- * @extends ServiceEntityRepository<FichaExamenAuxiliarDetalle>
- *
  * @method FichaExamenAuxiliarDetalle|null find($id, $lockMode = null, $lockVersion = null)
  * @method FichaExamenAuxiliarDetalle|null findOneBy(array $criteria, array $orderBy = null)
  * @method FichaExamenAuxiliarDetalle[]    findAll()
  * @method FichaExamenAuxiliarDetalle[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FichaExamenAuxiliarDetalleRepository extends ServiceEntityRepository
+class FichaExamenAuxiliarDetalleRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FichaExamenAuxiliarDetalle::class);
     }
 
-    public function save(FichaExamenAuxiliarDetalle $entity, bool $flush = false): void
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
     {
-        $this->getEntityManager()->persist($entity);
+        $queryBuilder = $this->filterQuery($params, $permissions);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        if (true === $inArray) {
+            return $queryBuilder->getQuery()->getArrayResult();
         }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
-    public function remove(FichaExamenAuxiliarDetalle $entity, bool $flush = false): void
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
-        $this->getEntityManager()->remove($entity);
+        $queryBuilder = $this->allQuery();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['ficha_examen_auxiliar_detalle.id']);
+
+        return $queryBuilder;
     }
 
-//    /**
-//     * @return FichaExamenAuxiliarDetalle[] Returns an array of FichaExamenAuxiliarDetalle objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?FichaExamenAuxiliarDetalle
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('ficha_examen_auxiliar_detalle')
+            ->select(['ficha_examen_auxiliar_detalle']);
+    }
 }
