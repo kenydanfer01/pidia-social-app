@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/action.html.twig' as action %}
 
 {% set _title = 'Ficha Examen Auxiliar' %}
 {% set _main_title = 'Editar' %}
@@ -33,9 +34,11 @@
 {% endblock %}
 
 {% block _body_tools %}
+    {{ action.btn_print_link_ico(path('ficha_evaluacion_index')) }}
 {% endblock %}
 
 {% block _main_footer %}
+    {{ action.btn_print_link(path('ficha_evaluacion_index')) }}
 {% endblock %}
 
 {% block stylesheets %}

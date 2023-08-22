@@ -119,18 +119,48 @@
                 <!--begin::Item-->
                 <div class="mb-5">
                     <!--begin::Header-->
-                    <div class="accordion-header py-3 d-flex collapsed" data-bs-toggle="collapse" data-bs-target="#ficha_examen_auxiliar_accordion_item_{{ loop.index }}">
-            <span class="accordion-icon">
-                <i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i>
-            </span>
-                        <h3 class="fs-6 fw-semibold mb-0 ms-4">{{ fichaExamenAuxiliar.examenAuxiliar }}</h3>
-                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ action.btn_edit_link_ico(path('ficha_examen_auxiliar_edit', {'id': fichaExamenAuxiliar.id})) }}
+                            {{ action.btn_print_link_ico(path('ficha_evaluacion_index')) }}
+                        </div>
+                        <div class="col">
+                            <div class="accordion-header py-3 d-flex collapsed" data-bs-toggle="collapse" data-bs-target="#ficha_examen_auxiliar_accordion_item_{{ loop.index }}">
+                                <span class="accordion-icon">
+                                    <i class="ki-duotone ki-arrow-right fs-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <h3 class="fs-6 fw-semibold mb-0 ms-4">
+                                    {{ fichaExamenAuxiliar.examenAuxiliar }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div><br>
                     <!--end::Header-->
 
                     <!--begin::Body-->
                     <div id="ficha_examen_auxiliar_accordion_item_{{ loop.index }}" class="fs-6 collapse ps-10" data-bs-parent="#ficha_examen_auxiliar_accordion">
-                        {{ action.btn_edit_link_ico(path('ficha_examen_auxiliar_edit', {'id': fichaExamenAuxiliar.id})) }}<br>
-                        ...
+                        {% for detalle in fichaExamenAuxiliar.detalles %}
+                            <!--begin::Item-->
+                            <div class="mb-4">
+                                <!--begin::Item-->
+                                <div class="d-flex align-items-center ps-10 mb-n1">
+                                    <!--begin::Bullet-->
+                                    <span class="bullet me-3"></span>
+                                    <!--end::Bullet-->
+
+                                    <!--begin::Label-->
+                                    <div class="text-gray-600 fw-semibold fs-6">
+                                        {{ detalle.nombre }} : {{ detalle.valor ?? '0.00' }}
+                                    </div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Item-->
+                            </div>
+                            <!--end::Item-->
+                        {% endfor %}<br>
                     </div>
                     <!--end::Body-->
                 </div>

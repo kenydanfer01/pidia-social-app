@@ -1,11 +1,16 @@
 {% import 'theme/form.html.twig' as frm %}
 
 {{ frm.start(form) }}
-    {{ frm.column(form.dni) }}
-    {{ frm.column(form.nombreSocio) }}
-    {{ frm.column(form.baseSocial) }}
-    {{ frm.column(form.tipoSocio) }}
-    {{ frm.column(form.paciente) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.dni),
+            frm.row(form.nombreSocio),
+            frm.row(form.baseSocial),
+            frm.row(form.tipoSocio),
+            frm.row(form.paciente)
+        ],
+        6
+    ) }}
     <br/>
     <div class="accordion" id="kt_accordion_1">
         <div class="accordion-item">
@@ -39,14 +44,14 @@
         </div>
     </div>
     <br/>
-    {{ frm.column(form.enfermedadesAsociadas) }}
+    {{ frm.column(form.enfermedadesAsociadas) }}<br>
     {{ frm.column(form.diagnostico) }}
     <br/>
     {{ frm.column(form.intervenciones) }}
     <br/>
-    {{ frm.column(form.tratamiento) }}
+    {{ frm.column(form.tratamiento) }}<br>
     {{ frm.column(form.examenesAuxiliares) }}
-    <h4>Recomendaciones Adicionales</h4>
+{#    <h4>Recomendaciones Adicionales</h4>#}<br>
     {{ frm.button(button_label|default('Guardar')) }}
 {{ frm.end(form) }}
 
