@@ -7,15 +7,15 @@
 
 namespace SocialApp\Apps\Salud\Webapp\Service\FichaExamenAuxiliar;
 
-use Doctrine\ORM\EntityManagerInterface;
 use SocialApp\Apps\Salud\Webapp\Entity\ExamenAuxiliar;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaEvaluacion;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaExamenAuxiliar;
+use SocialApp\Apps\Salud\Webapp\Manager\FichaExamenAuxiliarManager;
 
 class CreateFichasExamenesBySelectedExamenesService
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly FichaExamenAuxiliarManager $fichaExamenAuxiliarManager,
     ) {
     }
 
@@ -29,9 +29,8 @@ class CreateFichasExamenesBySelectedExamenesService
 
         foreach ($examenesAuxiliares as $examenAuxiliar) {
             $fichaExamenAuxiliar = $this->createFichaExamenAuxiliar($fichaEvaluacion, $examenAuxiliar);
-            $this->entityManager->persist($fichaExamenAuxiliar);
+            $this->fichaExamenAuxiliarManager->save($fichaExamenAuxiliar);
         }
-        $this->entityManager->flush();
     }
 
     private function createFichaExamenAuxiliar(FichaEvaluacion $fichaEvaluacion, ExamenAuxiliar $examenAuxiliar): FichaExamenAuxiliar

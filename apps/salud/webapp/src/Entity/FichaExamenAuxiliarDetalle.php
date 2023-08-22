@@ -1,13 +1,23 @@
 <?php
 
+/*
+ * This file is part of the PIDIA.
+ * (c) Carlos Chininin <cio@pidia.pe>
+ */
+
 namespace SocialApp\Apps\Salud\Webapp\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use SocialApp\Apps\Salud\Webapp\Entity\Traits\EntityTrait;
 use SocialApp\Apps\Salud\Webapp\Repository\FichaExamenAuxiliarDetalleRepository;
 
 #[ORM\Entity(repositoryClass: FichaExamenAuxiliarDetalleRepository::class)]
+#[HasLifecycleCallbacks]
 class FichaExamenAuxiliarDetalle
 {
+    use EntityTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

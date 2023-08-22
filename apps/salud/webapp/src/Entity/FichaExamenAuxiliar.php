@@ -33,7 +33,7 @@ class FichaExamenAuxiliar
     #[ORM\JoinColumn(nullable: false)]
     private ?ExamenAuxiliar $examenAuxiliar = null;
 
-    #[ORM\OneToMany(mappedBy: 'fichaExamenAuxiliar', targetEntity: FichaExamenAuxiliarDetalle::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'fichaExamenAuxiliar', targetEntity: FichaExamenAuxiliarDetalle::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $detalles;
 
     public function __construct()
