@@ -62,9 +62,13 @@ class FichaEvaluacion
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $tipoSocio = null;
 
+    #[ORM\ManyToMany(targetEntity: ExamenAuxiliar::class)]
+    private Collection $examenesAuxiliares;
+
     public function __construct()
     {
         $this->enfermedadesAsociadas = new ArrayCollection();
+        $this->examenesAuxiliares = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -212,6 +216,30 @@ class FichaEvaluacion
     public function setTipoSocio(?string $tipoSocio): static
     {
         $this->tipoSocio = $tipoSocio;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExamenAuxiliar>
+     */
+    public function getExamenesAuxiliares(): Collection
+    {
+        return $this->examenesAuxiliares;
+    }
+
+    public function addExamenesAuxiliare(ExamenAuxiliar $examenesAuxiliare): static
+    {
+        if (!$this->examenesAuxiliares->contains($examenesAuxiliare)) {
+            $this->examenesAuxiliares->add($examenesAuxiliare);
+        }
+
+        return $this;
+    }
+
+    public function removeExamenesAuxiliare(ExamenAuxiliar $examenesAuxiliare): static
+    {
+        $this->examenesAuxiliares->removeElement($examenesAuxiliare);
 
         return $this;
     }

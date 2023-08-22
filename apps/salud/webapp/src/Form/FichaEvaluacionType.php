@@ -8,6 +8,7 @@
 namespace SocialApp\Apps\Salud\Webapp\Form;
 
 use SocialApp\Apps\Salud\Webapp\Entity\EnfermedadAsociada;
+use SocialApp\Apps\Salud\Webapp\Entity\ExamenAuxiliar;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaEvaluacion;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -37,7 +38,12 @@ class FichaEvaluacionType extends AbstractType
             ->add('dni')
             ->add('nombreSocio')
             ->add('baseSocial')
-            ->add('tipoSocio');
+            ->add('tipoSocio')
+            ->add('examenesAuxiliares', EntityType::class, [
+                'class' => ExamenAuxiliar::class,
+                'multiple' => true,
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
