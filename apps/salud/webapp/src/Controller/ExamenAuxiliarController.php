@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/examen/auxiliar')]
+#[Route('/admin/examen_auxiliar')]
 class ExamenAuxiliarController extends WebAuthController
 {
     public const BASE_ROUTE = 'examen_auxiliar_index';

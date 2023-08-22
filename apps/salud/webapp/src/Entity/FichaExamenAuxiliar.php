@@ -7,6 +7,8 @@
 
 namespace SocialApp\Apps\Salud\Webapp\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use SocialApp\Apps\Salud\Webapp\Entity\Traits\EntityTrait;
@@ -30,6 +32,14 @@ class FichaExamenAuxiliar
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?ExamenAuxiliar $examenAuxiliar = null;
+
+    #[ORM\OneToMany(mappedBy: 'fichaExamenAuxiliar', targetEntity: FichaExamenAuxiliarDetalle::class, orphanRemoval: true)]
+    private Collection $detalles;
+
+    public function __construct()
+    {
+        $this->detalles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -56,6 +66,36 @@ class FichaExamenAuxiliar
     public function setExamenAuxiliar(?ExamenAuxiliar $examenAuxiliar): static
     {
         $this->examenAuxiliar = $examenAuxiliar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FichaExamenAuxiliarDetalle>
+     */
+    public function getDetalles(): Collection
+    {
+        return $this->detalles;
+    }
+
+    public function addDetalle(FichaExamenAuxiliarDetalle $detalle): static
+    {
+        if (!$this->detalles->contains($detalle)) {
+            $this->detalles->add($detalle);
+            $detalle->setFichaExamenAuxiliar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDetalle(FichaExamenAuxiliarDetalle $detalle): static
+    {
+        if ($this->detalles->removeElement($detalle)) {
+            // set the owning side to null (unless already changed)
+            if ($detalle->getFichaExamenAuxiliar() === $this) {
+                $detalle->setFichaExamenAuxiliar(null);
+            }
+        }
 
         return $this;
     }

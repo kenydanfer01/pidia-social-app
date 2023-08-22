@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+
+{% set _title = 'Ficha Examen Auxiliar' %}
+{% set _main_title = 'Editar' %}
+{% set _section =  'ficha_evaluacion_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2('Ficha Evaluacion', _section, 'Editar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('ficha_examen_auxiliar/_form.html.twig', {'button_label': 'Actualizar'}) }}
+{% endblock %}
+
+{% block _body_tools %}
+{% endblock %}
+
+{% block _main_footer %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+{% endblock %}

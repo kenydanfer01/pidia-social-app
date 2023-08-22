@@ -68,6 +68,11 @@ class FichaEvaluacion
     #[ORM\OneToMany(mappedBy: 'fichaEvaluacion', targetEntity: FichaExamenAuxiliar::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $fichaExamenesAuxiliares;
 
+    public function __toString(): string
+    {
+        return $this->id;
+    }
+
     public function __construct()
     {
         $this->enfermedadesAsociadas = new ArrayCollection();

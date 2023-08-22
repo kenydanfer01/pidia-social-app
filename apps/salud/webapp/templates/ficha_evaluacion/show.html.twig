@@ -2,6 +2,7 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/table.html.twig' as table %}
 {% import 'theme/cardshow.html.twig' as cardshow %}
+{% import 'theme/action.html.twig' as action %}
 
 {% set _title = 'Ficha Evaluación' %}
 {% set _main_title = 'Mostrar' %}
@@ -112,14 +113,31 @@
         </div>
         {{ cardshow.card_end() }}
         {{ cardshow.card_start('7. Exámenes Auxiliares: ') }}
-        <div class=" px-3">
-            <p>
-                <strong>OBSERVACIONES:</strong>
-                EXAMENES AUXILIARES....
-            </p>
-            <hr><br>
-            <hr><br>
+        <!--begin::Accordion-->
+        <div class="accordion accordion-icon-toggle" id="ficha_examen_auxiliar_accordion">
+            {% for fichaExamenAuxiliar in ficha_evaluacion.fichaExamenesAuxiliares %}
+                <!--begin::Item-->
+                <div class="mb-5">
+                    <!--begin::Header-->
+                    <div class="accordion-header py-3 d-flex collapsed" data-bs-toggle="collapse" data-bs-target="#ficha_examen_auxiliar_accordion_item_{{ loop.index }}">
+            <span class="accordion-icon">
+                <i class="ki-duotone ki-arrow-right fs-4"><span class="path1"></span><span class="path2"></span></i>
+            </span>
+                        <h3 class="fs-6 fw-semibold mb-0 ms-4">{{ fichaExamenAuxiliar.examenAuxiliar }}</h3>
+                    </div>
+                    <!--end::Header-->
+
+                    <!--begin::Body-->
+                    <div id="ficha_examen_auxiliar_accordion_item_{{ loop.index }}" class="fs-6 collapse ps-10" data-bs-parent="#ficha_examen_auxiliar_accordion">
+                        {{ action.btn_edit_link_ico(path('ficha_examen_auxiliar_edit', {'id': fichaExamenAuxiliar.id})) }}<br>
+                        ...
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Item-->
+            {% endfor %}
         </div>
+        <!--end::Accordion-->
         {{ cardshow.card_end() }}
         {{ cardshow.card_start('8. Recomendaciones Adicionales: ') }}
         <div class=" px-3">

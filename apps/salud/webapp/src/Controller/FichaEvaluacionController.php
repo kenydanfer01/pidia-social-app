@@ -13,6 +13,7 @@ use CarlosChininin\Util\Http\ParamFetcher;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaEvaluacion;
 use SocialApp\Apps\Salud\Webapp\Form\FichaEvaluacionType;
 use SocialApp\Apps\Salud\Webapp\Manager\FichaEvaluacionManager;
+use SocialApp\Apps\Salud\Webapp\Service\FichaExamenAuxiliar\CreateFichasExamenesBySelectedExamenesService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,8 +56,11 @@ class FichaEvaluacionController extends WebAuthController
     }
 
     #[Route(path: '/new', name: 'ficha_evaluacion_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FichaEvaluacionManager $manager): Response
-    {
+    public function new(
+        Request $request,
+        FichaEvaluacionManager $manager,
+        CreateFichasExamenesBySelectedExamenesService $createFichasExamenesBySelectedExamenesService,
+    ): Response {
         $this->denyAccess([Permission::NEW]);
 
         $fichaEvaluacion = new FichaEvaluacion();
@@ -64,6 +68,7 @@ class FichaEvaluacionController extends WebAuthController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($manager->save($fichaEvaluacion)) {
+                $createFichasExamenesBySelectedExamenesService->execute($fichaEvaluacion);
                 $this->addFlash('success', 'Registro creado!!!');
             } else {
                 $this->addErrors($manager->errors());
