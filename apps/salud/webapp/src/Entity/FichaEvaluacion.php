@@ -65,10 +65,14 @@ class FichaEvaluacion
     #[ORM\ManyToMany(targetEntity: ExamenAuxiliar::class)]
     private Collection $examenesAuxiliares;
 
+    #[ORM\OneToMany(mappedBy: 'fichaEvaluacion', targetEntity: FichaExamenAuxiliar::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $fichaExamenesAuxiliares;
+
     public function __construct()
     {
         $this->enfermedadesAsociadas = new ArrayCollection();
         $this->examenesAuxiliares = new ArrayCollection();
+        $this->fichaExamenesAuxiliares = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -240,6 +244,36 @@ class FichaEvaluacion
     public function removeExamenesAuxiliare(ExamenAuxiliar $examenesAuxiliare): static
     {
         $this->examenesAuxiliares->removeElement($examenesAuxiliare);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FichaExamenAuxiliar>
+     */
+    public function getFichaExamenesAuxiliares(): Collection
+    {
+        return $this->fichaExamenesAuxiliares;
+    }
+
+    public function addFichaExamenesAuxiliare(FichaExamenAuxiliar $fichaExamenesAuxiliare): static
+    {
+        if (!$this->fichaExamenesAuxiliares->contains($fichaExamenesAuxiliare)) {
+            $this->fichaExamenesAuxiliares->add($fichaExamenesAuxiliare);
+            $fichaExamenesAuxiliare->setFichaEvaluacion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFichaExamenesAuxiliare(FichaExamenAuxiliar $fichaExamenesAuxiliare): static
+    {
+        if ($this->fichaExamenesAuxiliares->removeElement($fichaExamenesAuxiliare)) {
+            // set the owning side to null (unless already changed)
+            if ($fichaExamenesAuxiliare->getFichaEvaluacion() === $this) {
+                $fichaExamenesAuxiliare->setFichaEvaluacion(null);
+            }
+        }
 
         return $this;
     }
