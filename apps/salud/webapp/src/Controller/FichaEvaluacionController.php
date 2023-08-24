@@ -13,6 +13,7 @@ use CarlosChininin\Util\Http\ParamFetcher;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaEvaluacion;
 use SocialApp\Apps\Salud\Webapp\Form\FichaEvaluacionType;
 use SocialApp\Apps\Salud\Webapp\Manager\FichaEvaluacionManager;
+use SocialApp\Apps\Salud\Webapp\Service\FichaEvaluacion\UpdateFichaExamenesAuxiliaresInFichaEvaluacionService;
 use SocialApp\Apps\Salud\Webapp\Service\FichaExamenAuxiliar\CreateFichasExamenesBySelectedExamenesService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,14 +109,21 @@ class FichaEvaluacionController extends WebAuthController
     }
 
     #[Route(path: '/{id}/edit', name: 'ficha_evaluacion_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, FichaEvaluacion $fichaEvaluacion, FichaEvaluacionManager $manager): Response
-    {
+    public function edit(
+        Request $request,
+        FichaEvaluacion $fichaEvaluacion,
+        FichaEvaluacionManager $manager,
+        UpdateFichaExamenesAuxiliaresInFichaEvaluacionService $updateFichaExamenesAuxiliaresInFichaEvaluacionService,
+    ): Response {
         $this->denyAccess([Permission::EDIT], $fichaEvaluacion);
+
+        $idsExamenesAuxiliaresBefore = $updateFichaExamenesAuxiliaresInFichaEvaluacionService->idsExamenesAuxiliares($fichaEvaluacion);
 
         $form = $this->createForm(FichaEvaluacionType::class, $fichaEvaluacion);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($manager->save($fichaEvaluacion)) {
+                $updateFichaExamenesAuxiliaresInFichaEvaluacionService->execute($fichaEvaluacion, $idsExamenesAuxiliaresBefore);
                 $this->addFlash('success', 'Registro actualizado!!!');
             } else {
                 $this->addErrors($manager->errors());

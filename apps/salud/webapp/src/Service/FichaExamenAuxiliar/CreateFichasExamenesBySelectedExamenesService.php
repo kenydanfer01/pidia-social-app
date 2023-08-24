@@ -35,7 +35,7 @@ class CreateFichasExamenesBySelectedExamenesService
         }
     }
 
-    private function createFichaExamenAuxiliar(FichaEvaluacion $fichaEvaluacion, ExamenAuxiliar $examenAuxiliar): FichaExamenAuxiliar
+    public function createFichaExamenAuxiliar(FichaEvaluacion $fichaEvaluacion, ExamenAuxiliar $examenAuxiliar): FichaExamenAuxiliar
     {
         $fichaExamenAuxiliar = new FichaExamenAuxiliar();
         $fichaExamenAuxiliar->setFichaEvaluacion($fichaEvaluacion);
