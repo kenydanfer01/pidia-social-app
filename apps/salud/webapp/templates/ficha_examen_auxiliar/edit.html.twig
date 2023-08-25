@@ -24,9 +24,6 @@
         ],
         6
     ) }}
-    <script>
-        Select2();
-    </script>
 {% endblock %}
 
 {% block _main %}
@@ -42,18 +39,40 @@
 {% endblock %}
 
 {% block stylesheets %}
+    <style>
+        .custom-background-color {
+            background-color: #E7E7E7 !important;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
     <script>
-        let fichaExamenAuxiliarDetalles =document.getElementById('ficha_examen_auxiliar_detalles');
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        let fichaExamenAuxiliarDetalles = document.getElementById('ficha_examen_auxiliar_detalles');
+        let jqExamenAuxiliarSelect =  $('#ficha_examen_auxiliar_examenAuxiliar');
+        let jqFichaEvaluacionSelect =  $('#ficha_examen_auxiliar_fichaEvaluacion');
+
+        jqExamenAuxiliarSelect.addClass('custom-background-color');
+        jqFichaEvaluacionSelect.addClass('custom-background-color');
+
+        function makeSelect2OnlyRead(selectElement) {
+            selectElement.on('select2:opening', function(e) {
+                e.preventDefault();
+            });
+
+            selectElement.select2({
+                allowClear: false,
+            });
+        }
+
+        window.onload = function() {
             Select2();
             Collection.init(fichaExamenAuxiliarDetalles);
-        });
+            makeSelect2OnlyRead(jqExamenAuxiliarSelect)
+            makeSelect2OnlyRead(jqFichaEvaluacionSelect)
+        }
+
     </script>
 {% endblock %}

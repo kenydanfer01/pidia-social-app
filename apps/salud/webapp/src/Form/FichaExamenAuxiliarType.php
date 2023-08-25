@@ -3,8 +3,10 @@
 namespace SocialApp\Apps\Salud\Webapp\Form;
 
 use CarlosChininin\App\Infrastructure\Form\CollectionFormType;
+use SocialApp\Apps\Salud\Webapp\Entity\ExamenAuxiliar;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaExamenAuxiliar;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaExamenAuxiliarDetalle;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +17,11 @@ class FichaExamenAuxiliarType extends AbstractType
     {
         $builder
             ->add('fichaEvaluacion')
-            ->add('examenAuxiliar')
+            ->add('examenAuxiliar', EntityType::class, [
+                'class' => ExamenAuxiliar::class,
+                'required' => true,
+                'label' => 'Examen Auxiliar:',
+            ])
             ->add('detalles', CollectionFormType::class, [
                 'required' => false,
                 'entry_type' => FichaExamenAuxiliarDetalleType::class,
