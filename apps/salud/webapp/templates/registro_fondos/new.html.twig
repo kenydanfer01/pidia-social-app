@@ -28,39 +28,25 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Flatpickr();
+            Select2();
+        })
+
         let dniTxt = document.getElementById('registro_fondos_dni');
         let nombresTxt = document.getElementById('registro_fondos_nombreSocio');
         let baseSocialTxt = document.getElementById('registro_fondos_baseSocial');
         let tipoSocioTxt = document.getElementById('registro_fondos_tipoSocio');
+
         nombresTxt.readOnly = true;
         baseSocialTxt.readOnly = true;
         tipoSocioTxt.readOnly = true;
-    </script>
-    <script>
-        // Modificar para cuando se implementen las APIs del Sispro
-        {#async function getPersonaApi(dni) {#}
-        {#    let response = await fetch('{{ path('buscar_paciente_dni') }}', {#}
-        {#        method: 'POST',#}
-        {#        headers: {#}
-        {#            'Content-Type': 'application/json'#}
-        {#        },#}
-        {#        body: JSON.stringify({#}
-        {#            dni: dni,#}
-        {#        })#}
-        {#    });#}
-        {#    return await response.json();#}
-        {#}#}
-        {#async function getSocio(dni) {#}
-        {#    let response = await fetch(`https://solcafe.sisprocoffee.com/api/v2/socios/${dni}`, {#}
-        {#        method: "GET",#}
-        {#        headers: {"Content-type": "application/json;charset=UTF-8"}#}
-        {#    })#}
-        {#        .then(response => response.json())#}
-        {#        .catch(err => console.log(err))#}
-        {#    return await response;#}
-        {#}#}
 
-        function fetchData1(query) {
+        let nameSelected = '';
+        let baseSocial = '';
+        let TipoBeneficiario = '';
+
+        function getPersonDni(query) {
             return fetch('{{ path('buscar_paciente_dni') }}', {
                 method: 'POST',
                 headers: {
@@ -72,70 +58,75 @@
             }).then(response => response.json());
         }
 
-        function fetchData2(query) {
+        function getSocioSisproApi(query) {
             return fetch(`https://solcafe.sisprocoffee.com/api/v2/socios/${query}`)
                 .then(response => response.json());
         }
 
         function compareResults(query) {
             // Realizar ambas consultas fetch en paralelo
-            let nombreSispro = null;
-            let nombreReniec = null;
-            let nombreSelected = null;
-            Promise.all([fetchData1(query), fetchData2(query)])
+            let nameSispro = null;
+            let nameReniec = null;
+            Promise.all([getPersonDni(query), getSocioSisproApi(query)])
                 .then(([data1, data2]) => {
-                    nombreReniec = data1.data.nombreCompleto
-                    nombreSispro = data2.socio.nombre
-                    if (nombreReniec === null && nombreSispro !== null){
-                        console.log('No se encontraron datos en Reniec, elegimos el nombreSispro')
-                        nombreSelected = nombreSispro;
-                        return;
+                    console.log(data1);
+                    console.log(data2);
+                    if (data1.data === null && data2.socio === null){
+                        Swal.fire('El DNI no se encuentra ni en SISPRO ni en RENIEC');
                     }
-                    if (nombreReniec === nombreSispro){
-                        nombreSelected = nombreReniec;
-                        console.log('Elegimos el nombre de Reniec')
-                        return;
+                    if (data1.data !== null){
+                        nameReniec = data1.data.nombreCompleto
+                        nameSelected = nameReniec;
                     }
-                    if (nombreReniec !== nombreSispro && nombreReniec !== null && nombreSispro !== null){
-                        console.log('El usuario debe elegir')
-                        return;
+                    if (data2.socio !== null){
+                        nameSispro = data2.socio.nombre;
+                        nameSelected = nameSispro;
+                        baseSocial = data2.socio.baseSocial;
+                        TipoBeneficiario = data2.socio.tipo;
                     }
-                })
+                    if (data2.socio === null && data1.data !== null ){
+                        Swal.fire('La persona: ' + nameSelected + ', no está registrada en SISPRO');
+                        // logica para nuevo registro de persona
+                    }
+                    if (nameReniec !== null && nameSispro !== null) {
+                        if (nameReniec === nameSispro){
+                            nameSelected = nameReniec;
+                        }
+                        if (nameReniec !== nameSispro){
+                            console.log('El usuario debe elegir')
+                            Swal.fire({
+                                title: 'Se han contrado diferencias entre los Datos de RENIEC con el registro de SISPRO. Por favor, Elija una opción',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonText: 'RENIEC: ' + nameReniec,
+                                cancelButtonText: 'SISPRO: ' + nameSispro,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    nameSelected = nameReniec;
+                                } else if (result.dismiss) {
+                                    nameSelected = nameSispro;
+                                }
+                                Swal.fire('Seleccionaste: ' +nameSelected);
+                                nombresTxt.value = nameSelected;
+                            });
+                        }
+                    }
+                    tipoSocioTxt.value = TipoBeneficiario;
+                    baseSocialTxt.value = baseSocial;
+                    nombresTxt.value = nameSelected;
+                }
+                )
                 .catch(error => {
                     console.error("Error al obtener datos:", error);
                 });
         }
-
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Flatpickr();
-            Select2();
-            compareResults('27855133');
-        })
 
         // Realiza la busqueda luego de haber escrito 8 dígitos en el DNI
         dniTxt.onkeyup = function () {
             if (this.value.length !== 8) {
                 return;
             }
-            // compareResults(this.value);
-            // // getPersonaApi(this.value).then(result => {
-            // //     if (null === result.data){
-            // //         return;
-            // //     }
-            // //     let nombreSocio = result.data.nombreCompleto;
-            // //     console.log(nombreSocio);
-            // //     // nombresTxt.value = result.data['nombreCompleto']
-            // //     //     console.log(result.data);
-            // //     // else {
-            // //     //     // Muestra alerta si no encuentra algun registro
-            // //     //     // Falta implementar Boton para registrar por modal un Paciente en caso de no encontrar
-            // //     //     swal.fire("Advertencia!", "No se encontró Registro con el DNI ingresado. ", "warning");
-            // //     // }
-            // // });
-            // baseSocialTxt.value = 'Base Social de Ejemplo';
-            // tipoSocioTxt.value = 'Socio';
+            compareResults(this.value);
         }
     </script>
 {% endblock %}
