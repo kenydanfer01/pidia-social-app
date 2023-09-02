@@ -38,42 +38,104 @@
     </script>
     <script>
         // Modificar para cuando se implementen las APIs del Sispro
-        async function getPersonaApi(dni) {
-            let response = await fetch('{{ path('buscar_paciente_dni') }}', {
+        {#async function getPersonaApi(dni) {#}
+        {#    let response = await fetch('{{ path('buscar_paciente_dni') }}', {#}
+        {#        method: 'POST',#}
+        {#        headers: {#}
+        {#            'Content-Type': 'application/json'#}
+        {#        },#}
+        {#        body: JSON.stringify({#}
+        {#            dni: dni,#}
+        {#        })#}
+        {#    });#}
+        {#    return await response.json();#}
+        {#}#}
+        {#async function getSocio(dni) {#}
+        {#    let response = await fetch(`https://solcafe.sisprocoffee.com/api/v2/socios/${dni}`, {#}
+        {#        method: "GET",#}
+        {#        headers: {"Content-type": "application/json;charset=UTF-8"}#}
+        {#    })#}
+        {#        .then(response => response.json())#}
+        {#        .catch(err => console.log(err))#}
+        {#    return await response;#}
+        {#}#}
+
+        function fetchData1(query) {
+            return fetch('{{ path('buscar_paciente_dni') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dni: dni,
+                    dni: query,
                 })
-            });
-            return await response.json();
+            }).then(response => response.json());
         }
+
+        function fetchData2(query) {
+            return fetch(`https://solcafe.sisprocoffee.com/api/v2/socios/${query}`)
+                .then(response => response.json());
+        }
+
+        function compareResults(query) {
+            // Realizar ambas consultas fetch en paralelo
+            let nombreSispro = null;
+            let nombreReniec = null;
+            let nombreSelected = null;
+            Promise.all([fetchData1(query), fetchData2(query)])
+                .then(([data1, data2]) => {
+                    nombreReniec = data1.data.nombreCompleto
+                    nombreSispro = data2.socio.nombre
+                    if (nombreReniec === null && nombreSispro !== null){
+                        console.log('No se encontraron datos en Reniec, elegimos el nombreSispro')
+                        nombreSelected = nombreSispro;
+                        return;
+                    }
+                    if (nombreReniec === nombreSispro){
+                        nombreSelected = nombreReniec;
+                        console.log('Elegimos el nombre de Reniec')
+                        return;
+                    }
+                    if (nombreReniec !== nombreSispro && nombreReniec !== null && nombreSispro !== null){
+                        console.log('El usuario debe elegir')
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al obtener datos:", error);
+                });
+        }
+
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Flatpickr();
             Select2();
+            compareResults('27855133');
         })
 
         // Realiza la busqueda luego de haber escrito 8 dígitos en el DNI
         dniTxt.onkeyup = function () {
-            if(this.value.length === 8){
-                getPersonaApi(this.value).then(result => {
-                    if (null !== result.data) {
-                        nombresTxt.value = result.data['nombreCompleto'] ;
-                        // La base Social y Tipo de Socio también deben ser campos que traiga el API
-                        baseSocialTxt.value = 'Base Social de Ejemplo' ;
-                        tipoSocioTxt.value = 'Socio' ;
-                    }
-                    else {
-                        // Muestra alerta si no encuentra algun registro
-                        // Falta implementar Boton para registrar por modal un Paciente en caso de no encontrar
-                        swal.fire("Advertencia!", "No se encontró Registro con el DNI ingresado. ", "warning");
-                    }
-                })
+            if (this.value.length !== 8) {
+                return;
             }
+            // compareResults(this.value);
+            // // getPersonaApi(this.value).then(result => {
+            // //     if (null === result.data){
+            // //         return;
+            // //     }
+            // //     let nombreSocio = result.data.nombreCompleto;
+            // //     console.log(nombreSocio);
+            // //     // nombresTxt.value = result.data['nombreCompleto']
+            // //     //     console.log(result.data);
+            // //     // else {
+            // //     //     // Muestra alerta si no encuentra algun registro
+            // //     //     // Falta implementar Boton para registrar por modal un Paciente en caso de no encontrar
+            // //     //     swal.fire("Advertencia!", "No se encontró Registro con el DNI ingresado. ", "warning");
+            // //     // }
+            // // });
+            // baseSocialTxt.value = 'Base Social de Ejemplo';
+            // tipoSocioTxt.value = 'Socio';
         }
     </script>
 {% endblock %}
