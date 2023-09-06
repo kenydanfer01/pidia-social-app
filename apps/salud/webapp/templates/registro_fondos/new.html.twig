@@ -3,7 +3,7 @@
 
 {% set _title = 'Registro Fondos' %}
 {% set _main_title = 'Nuevo' %}
-{% set _section =  'registro_fondos_index'%}
+{% set _section =  'registro_fondos_index' %}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2(_title,_section,'Nuevo') }}
@@ -28,7 +28,7 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             Flatpickr();
             Select2();
         })
@@ -44,7 +44,14 @@
 
         let nameSelected = '';
         let baseSocial = '';
-        let TipoBeneficiario = '';
+        let tipoBeneficiario = '';
+
+        let tipoSocioMapping = {
+            "S": "Socio",
+            "F": "Familiar",
+            "T": "Trabajador",
+            "O": "Otro",
+        };
 
         function getPersonDni(query) {
             return fetch('{{ path('buscar_paciente_dni') }}', {
@@ -63,58 +70,80 @@
                 .then(response => response.json());
         }
 
+        function clearInputs() {
+            dniTxt.value = '';
+            nombresTxt.value = '';
+            baseSocialTxt.value = '';
+            tipoSocioTxt.value = '';
+        }
+
         function compareResults(query) {
             // Realizar ambas consultas fetch en paralelo
             let nameSispro = null;
             let nameReniec = null;
             Promise.all([getPersonDni(query), getSocioSisproApi(query)])
                 .then(([data1, data2]) => {
-                    console.log(data1);
-                    console.log(data2);
-                    if (data1.data === null && data2.socio === null){
-                        Swal.fire('El DNI no se encuentra ni en SISPRO ni en RENIEC');
-                    }
-                    if (data1.data !== null){
-                        nameReniec = data1.data.nombreCompleto
-                        nameSelected = nameReniec;
-                    }
-                    if (data2.socio !== null){
-                        nameSispro = data2.socio.nombre;
-                        nameSelected = nameSispro;
-                        baseSocial = data2.socio.baseSocial;
-                        TipoBeneficiario = data2.socio.tipo;
-                    }
-                    if (data2.socio === null && data1.data !== null ){
-                        Swal.fire('La persona: ' + nameSelected + ', no está registrada en SISPRO');
-                        // logica para nuevo registro de persona
-                    }
-                    if (nameReniec !== null && nameSispro !== null) {
-                        if (nameReniec === nameSispro){
+                        console.log(data1);
+                        console.log(data2);
+                        if (data1.data === null && data2.socio === null) {
+                            Swal.fire('El DNI no se encuentra ni en SISPRO ni en RENIEC');
+                        }
+                        if (data1.data !== null) {
+                            nameReniec = data1.data.nombreCompleto
                             nameSelected = nameReniec;
                         }
-                        if (nameReniec !== nameSispro){
-                            console.log('El usuario debe elegir')
+                        if (data2.socio !== null) {
+                            nameSispro = data2.socio.nombre;
+                            nameSelected = nameSispro;
+                            baseSocial = data2.socio.baseSocial;
+                            tipoBeneficiario = data2.socio.tipo;
+                        }
+                        if (data2.socio === null && data1.data !== null) {
                             Swal.fire({
-                                title: 'Se han contrado diferencias entre los Datos de RENIEC con el registro de SISPRO. Por favor, Elija una opción',
-                                icon: 'question',
-                                showCancelButton: true,
-                                confirmButtonText: 'RENIEC: ' + nameReniec,
-                                cancelButtonText: 'SISPRO: ' + nameSispro,
+                                title: 'La persona: ' + nameSelected + ', no está registrada en SISPRO',
+                                text: '¿Desea registrar a la persona de forma independiente?',
+                                showDenyButton: true,
+                                confirmButtonText: 'REGISTRAR',
+                                denyButtonText: `CANCELAR`,
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    nameSelected = nameReniec;
-                                } else if (result.dismiss) {
-                                    nameSelected = nameSispro;
+                                    Swal.fire('Podrá editar los campos Manualmente', '', 'success')
+                                    nombresTxt.readOnly = false;
+                                    baseSocialTxt.readOnly = false;
+                                    tipoSocioTxt.readOnly = false;
+                                } else if (result.isDenied) {
+                                    Swal.fire('INGRESE UN DNI VÁLIDO')
+                                    clearInputs();
                                 }
-                                Swal.fire('Seleccionaste: ' +nameSelected);
-                                nombresTxt.value = nameSelected;
-                            });
+                            })
                         }
+                        if (nameReniec !== null && nameSispro !== null) {
+                            if (nameReniec === nameSispro) {
+                                nameSelected = nameReniec;
+                            }
+                            if (nameReniec !== nameSispro) {
+                                console.log('El usuario debe elegir')
+                                Swal.fire({
+                                    title: 'Se han contrado diferencias entre los Datos de RENIEC con el registro de SISPRO. Por favor, Elija una opción',
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'RENIEC: ' + nameReniec,
+                                    cancelButtonText: 'SISPRO: ' + nameSispro,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        nameSelected = nameReniec;
+                                    } else if (result.dismiss) {
+                                        nameSelected = nameSispro;
+                                    }
+                                    Swal.fire('Seleccionaste: ' + nameSelected);
+                                    nombresTxt.value = nameSelected;
+                                });
+                            }
+                        }
+                        tipoSocioTxt.value = tipoSocioMapping[tipoBeneficiario] || '';
+                        baseSocialTxt.value = baseSocial;
+                        nombresTxt.value = nameSelected;
                     }
-                    tipoSocioTxt.value = TipoBeneficiario;
-                    baseSocialTxt.value = baseSocial;
-                    nombresTxt.value = nameSelected;
-                }
                 )
                 .catch(error => {
                     console.error("Error al obtener datos:", error);

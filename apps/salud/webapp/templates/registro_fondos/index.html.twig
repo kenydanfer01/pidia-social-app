@@ -20,7 +20,8 @@
                 {{ table.th('#') }}
                 {{ table.th('Datos', true, 'd-block d-sm-none') }}
                 {{ table.th('DNI', true, 'd-none d-sm-table-cell') }}
-                {{ table.th('Paciente', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Beneficiario', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Base Social', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Tipo', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Fecha', true, 'd-none d-sm-table-cell') }}
                 {{ table.th('Monto', true, 'd-none d-sm-table-cell') }}
@@ -38,6 +39,7 @@
                         <table class="table gs-0 gy-0">
                             {{ table.tbl_tr_th_td('DNI', registro_fondos.paciente.dni ?? registro_fondos.dni) }}
                             {{ table.tbl_tr_th_td('Paciente', registro_fondos.paciente ?? registro_fondos.nombreSocio) }}
+                            {{ table.tbl_tr_th_td('Base Social', registro_fondos.baseSocial) }}
                             {{ table.tbl_tr_th_td('Tipo', registro_fondos.tipoRegistro) }}
                             {{ table.tbl_tr_th_td('Fecha', registro_fondos.fecha | date('d-m-Y')) }}
                             {{ table.tbl_tr_th_td('Monto', registro_fondos.monto) }}
@@ -46,6 +48,7 @@
                     </td>
                     <td class="d-none d-sm-table-cell text-uppercase">{{ registro_fondos.paciente.dni ?? registro_fondos.dni }}</td>
                     <td class="d-none d-sm-table-cell text-uppercase">{{ registro_fondos.paciente ?? registro_fondos.nombreSocio }}</td>
+                    <td class="d-none d-sm-table-cell">{{ registro_fondos.baseSocial }}</td>
                     <td class="d-none d-sm-table-cell">
                         {% if registro_fondos.tipoRegistro == 'fondomortorio' %}
                             Fondo Mortorio
