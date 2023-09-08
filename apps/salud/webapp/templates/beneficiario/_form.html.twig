@@ -1,0 +1,19 @@
+{% import 'theme/form.html.twig' as frm %}
+
+{{ frm.start(form) }}
+    {{ frm.columnX(
+        [
+            frm.row(form.dni),
+            frm.row(form.nombre),
+            frm.row(form.baseSocial),
+            frm.row(form.posicion),
+            frm.row(form.direccion),
+            frm.row(form.telefono),
+            frm.row(form.fechaNacimiento),
+            frm.row(form.estadoCivil),
+            frm.row(form.sexo),
+        ],
+        6
+    ) }}
+{{ frm.button(button_label|default('Guardar')) }}
+{{ frm.end(form) }}

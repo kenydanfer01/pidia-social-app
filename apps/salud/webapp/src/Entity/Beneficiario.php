@@ -9,11 +9,16 @@ namespace SocialApp\Apps\Salud\Webapp\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use SocialApp\Apps\Salud\Webapp\Entity\Traits\EntityTrait;
 use SocialApp\Apps\Salud\Webapp\Repository\BeneficiarioRepository;
 
 #[ORM\Entity(repositoryClass: BeneficiarioRepository::class)]
+#[HasLifecycleCallbacks]
 class Beneficiario
 {
+    use EntityTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -38,15 +43,15 @@ class Beneficiario
     private ?string $baseSocial = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Parametro $estadoCivil = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Parametro $sexo = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Parametro $posicion = null;
 
     public function __toString(): string
