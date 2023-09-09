@@ -49,7 +49,7 @@ class BeneficiarioType extends AbstractType
             ])
             ->add('baseSocial', TextType::class, [
                 'label' => 'Base Social: ',
-                'required' => false,
+                'required' => true,
             ])
             ->add('estadoCivil', EntityType::class, [
                 'class' => Parametro::class,
@@ -83,7 +83,7 @@ class BeneficiarioType extends AbstractType
                 'class' => Parametro::class,
                 'label' => 'Posición:',
                 'placeholder' => 'Seleccione..',
-                'required' => false,
+                'required' => true,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('parametro')
                         ->join('parametro.parent', 'parametro_padre')
