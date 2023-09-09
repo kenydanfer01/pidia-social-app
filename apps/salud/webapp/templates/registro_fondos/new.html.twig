@@ -154,6 +154,7 @@
                         console.log(data1);
                         console.log(data2);
                         if (data1.data === null && data2.socio === null) {
+                            nameSelected = '';
                             clearInputs()
                             Swal.fire('El DNI no se encuentra ni en SISPRO ni en RENIEC');
                         }
