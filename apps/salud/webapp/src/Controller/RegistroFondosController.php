@@ -5,7 +5,9 @@ namespace SocialApp\Apps\Salud\Webapp\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
+use SocialApp\Apps\Salud\Webapp\Entity\Beneficiario;
 use SocialApp\Apps\Salud\Webapp\Entity\RegistroFondos;
+use SocialApp\Apps\Salud\Webapp\Form\BeneficiarioType;
 use SocialApp\Apps\Salud\Webapp\Form\RegistroFondosType;
 use SocialApp\Apps\Salud\Webapp\Manager\RegistroFondosManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,11 +69,15 @@ class RegistroFondosController extends WebAuthController
             return $this->redirectToRoute('registro_fondos_index');
         }
 
+        $beneficiario = new Beneficiario();
+        $formBeneficiario = $this->createForm(BeneficiarioType::class, $beneficiario);
+
         return $this->render(
             'registro_fondos/new.html.twig',
             [
                 'registro_fondos' => $registroFondos,
                 'form' => $form->createView(),
+                'formBeneficiario' => $formBeneficiario->createView(),
             ]
         );
     }

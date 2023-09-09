@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/form.html.twig' as frm %}
 
 {% set _title = 'Registro Fondos' %}
 {% set _main_title = 'Nuevo' %}
@@ -11,6 +12,45 @@
 
 {% block _main %}
     {{ include('registro_fondos/_form.html.twig') }}
+    <div class="modal fade" tabindex="-1" id="modal-beneficiario">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Nuevo Beneficiario </h5>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="svg-icon svg-icon-2x"></span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ frm.start(formBeneficiario, {id: 'form-beneficiario'}) }}
+                    {{ frm.columnX(
+                        [
+                            frm.row(formBeneficiario.dni),
+                            frm.row(formBeneficiario.posicion),
+                        ],
+                        6
+                    ) }}
+                    {{ frm.columnX([frm.row(formBeneficiario.nombre)],12) }}
+                    {{ frm.columnX(
+                        [
+                            frm.row(formBeneficiario.baseSocial),
+                            frm.row(formBeneficiario.direccion),
+                            frm.row(formBeneficiario.telefono),
+                            frm.row(formBeneficiario.fechaNacimiento),
+                            frm.row(formBeneficiario.estadoCivil),
+                            frm.row(formBeneficiario.sexo),
+                        ],
+                        6
+                    ) }}
+                </div>
+                <div class="modal-footer">
+                    {{ frm.button(button_label|default('Guardar')) }}
+                    {{ frm.end(formBeneficiario) }}
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block _body_tools %}
@@ -19,6 +59,9 @@
 
 {% block _main_footer %}
     {% include 'crud/_new_links.html.twig' with {'route_base':'registro_fondos'} %}
+    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-beneficiario">
+        Registrar Beneficiario
+    </button>
 {% endblock %}
 
 {% block stylesheets %}
@@ -28,15 +71,40 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Flatpickr();
-            Select2();
-        })
-
         let dniTxt = document.getElementById('registro_fondos_dni');
         let nombresTxt = document.getElementById('registro_fondos_nombreSocio');
         let baseSocialTxt = document.getElementById('registro_fondos_baseSocial');
         let tipoSocioTxt = document.getElementById('registro_fondos_tipoSocio');
+        let beneficiarioDniTxt = document.getElementById('beneficiario_dni');
+        let beneficiarioNombreTxt = document.getElementById('beneficiario_nombre');
+        let form = document.getElementById('form-beneficiario');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            Flatpickr();
+            Select2();
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(form);
+                fetch("{{ path('beneficiario_new_modal') }}", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        dniTxt.value = data.dni;
+                        nombresTxt.value = data.nombre;
+                        baseSocialTxt.value = data.baseSocial;
+                        tipoSocioTxt.value = data.posicion.name;
+                        form.reset();
+                        $('#modal-beneficiario').modal('hide');
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                    });
+            });
+        });
 
         nombresTxt.readOnly = true;
         baseSocialTxt.readOnly = true;
@@ -54,7 +122,7 @@
         };
 
         function getPersonDni(query) {
-            return fetch('{{ path('buscar_paciente_dni') }}', {
+            return fetch('{{ path('buscar_persona_dni') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -86,6 +154,7 @@
                         console.log(data1);
                         console.log(data2);
                         if (data1.data === null && data2.socio === null) {
+                            clearInputs()
                             Swal.fire('El DNI no se encuentra ni en SISPRO ni en RENIEC');
                         }
                         if (data1.data !== null) {
@@ -107,10 +176,10 @@
                                 denyButtonText: `CANCELAR`,
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    Swal.fire('Podrá editar los campos Manualmente', '', 'success')
-                                    nombresTxt.readOnly = false;
-                                    baseSocialTxt.readOnly = false;
-                                    tipoSocioTxt.readOnly = false;
+                                    beneficiarioDniTxt.value = query;
+                                    beneficiarioNombreTxt.value = nameSelected;
+                                    clearInputs()
+                                    $('#modal-beneficiario').modal('show');
                                 } else if (result.isDenied) {
                                     Swal.fire('INGRESE UN DNI VÁLIDO')
                                     clearInputs();
