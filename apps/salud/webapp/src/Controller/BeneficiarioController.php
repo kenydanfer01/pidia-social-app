@@ -144,7 +144,7 @@ class BeneficiarioController extends WebAuthController
         return $this->redirectToRoute('beneficiario_index');
     }
 
-    #[Route(path: '/search_dni', name: 'buscar_beneficiario_dni', methods: ['POST'])]
+    #[Route(path: '/search_dni', name: 'buscar_persona_dni', methods: ['POST'])]
     public function searchBeneficiario(Request $request, SearchPersonService $personService): Response
     {
         $dataRequest = $request->getContent();
@@ -154,5 +154,24 @@ class BeneficiarioController extends WebAuthController
         $datos = $personService->dni($dni);
 
         return $this->json(['data' => $datos]);
+    }
+
+    #[Route(path: '/beneficiario/modal', name: 'beneficiario_new_modal', methods: ['POST'])]
+    public function newBeneficiarioModal(Request $request, BeneficiarioManager $manager): Response
+    {
+        $this->denyAccess([Permission::NEW]);
+        $beneficiario = new Beneficiario();
+
+        $form = $this->createForm(BeneficiarioType::class, $beneficiario);
+        $form->handleRequest($request);
+
+        $manager->save($beneficiario);
+
+        return $this->json([
+            'dni' => $beneficiario->getDni(),
+            'nombre' => $beneficiario->getNombre(),
+            'baseSocial' => $beneficiario->getBaseSocial(),
+            'posicion' => $beneficiario->getPosicion(),
+        ]);
     }
 }
