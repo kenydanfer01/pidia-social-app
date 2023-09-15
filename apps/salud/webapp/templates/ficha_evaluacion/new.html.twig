@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import 'theme/form.html.twig' as frm %}
 
 {% set _title = 'Ficha Evaluación' %}
 {% set _main_title = 'Nuevo' %}
@@ -11,6 +12,45 @@
 
 {% block _main %}
     {{ include('ficha_evaluacion/_form.html.twig') }}
+    <div class="modal fade" tabindex="-1" id="modal-beneficiario">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Nuevo Beneficiario </h5>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="svg-icon svg-icon-2x"></span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ frm.start(formBeneficiario, {id: 'form-beneficiario'}) }}
+                    {{ frm.columnX(
+                        [
+                            frm.row(formBeneficiario.dni),
+                            frm.row(formBeneficiario.posicion),
+                        ],
+                        6
+                    ) }}
+                    {{ frm.columnX([frm.row(formBeneficiario.nombre)],12) }}
+                    {{ frm.columnX(
+                        [
+                            frm.row(formBeneficiario.baseSocial),
+                            frm.row(formBeneficiario.direccion),
+                            frm.row(formBeneficiario.telefono),
+                            frm.row(formBeneficiario.fechaNacimiento),
+                            frm.row(formBeneficiario.estadoCivil),
+                            frm.row(formBeneficiario.sexo),
+                        ],
+                        6
+                    ) }}
+                </div>
+                <div class="modal-footer">
+                    {{ frm.button(button_label|default('Guardar')) }}
+                    {{ frm.end(formBeneficiario) }}
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block _body_tools %}
@@ -19,6 +59,9 @@
 
 {% block _main_footer %}
     {% include 'crud/_new_links.html.twig' with {'route_base':'ficha_evaluacion'} %}
+    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-beneficiario">
+        Registrar Beneficiario
+    </button>
 {% endblock %}
 
 {% block stylesheets %}
@@ -53,6 +96,164 @@
             // let label = document.querySelector('label[for="ficha_evaluacion_evaluacionClinica"]');
             // label.classList.add('sr-only');
         })
+    </script>
+    <script>
+        let dniTxt = document.getElementById('ficha_evaluacion_dni');
+        let nombresTxt = document.getElementById('ficha_evaluacion_nombreSocio');
+        let baseSocialTxt = document.getElementById('ficha_evaluacion_baseSocial');
+        let tipoSocioTxt = document.getElementById('ficha_evaluacion_tipoSocio');
+        let beneficiarioDniTxt = document.getElementById('beneficiario_dni');
+        let beneficiarioNombreTxt = document.getElementById('beneficiario_nombre');
+        let form = document.getElementById('form-beneficiario');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            Flatpickr();
+            Select2();
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(form);
+                fetch("{{ path('beneficiario_new_modal') }}", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        dniTxt.value = data.dni;
+                        nombresTxt.value = data.nombre;
+                        baseSocialTxt.value = data.baseSocial;
+                        tipoSocioTxt.value = data.posicion.name;
+                        form.reset();
+                        $('#modal-beneficiario').modal('hide');
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+
+        nombresTxt.readOnly = true;
+        baseSocialTxt.readOnly = true;
+        tipoSocioTxt.readOnly = true;
+
+        let nameSelected = '';
+        let baseSocial = '';
+        let tipoBeneficiario = '';
+
+        let tipoSocioMapping = {
+            "S": "Socio",
+            "F": "Familiar",
+            "T": "Trabajador",
+            "O": "Otro",
+        };
+
+        function getPersonDni(query) {
+            return fetch('{{ path('buscar_persona_dni') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    dni: query,
+                })
+            }).then(response => response.json());
+        }
+
+        function getSocioSisproApi(query) {
+            return fetch(`https://solcafe.sisprocoffee.com/api/v2/socios/${query}`)
+                .then(response => response.json());
+        }
+
+        function clearInputs() {
+            dniTxt.value = '';
+            nombresTxt.value = '';
+            baseSocialTxt.value = '';
+            tipoSocioTxt.value = '';
+        }
+
+        function compareResults(query) {
+            // Realizar ambas consultas fetch en paralelo
+            let nameSispro = null;
+            let nameReniec = null;
+            Promise.all([getPersonDni(query), getSocioSisproApi(query)])
+                .then(([data1, data2]) => {
+                        console.log(data1);
+                        console.log(data2);
+                        if (data1.data === null && data2.socio === null) {
+                            nameSelected = '';
+                            clearInputs()
+                            Swal.fire('El DNI no se encuentra ni en SISPRO ni en RENIEC');
+                        }
+                        if (data1.data !== null) {
+                            nameReniec = data1.data.nombreCompleto
+                            nameSelected = nameReniec;
+                        }
+                        if (data2.socio !== null) {
+                            nameSispro = data2.socio.nombre;
+                            nameSelected = nameSispro;
+                            baseSocial = data2.socio.baseSocial;
+                            tipoBeneficiario = data2.socio.tipo;
+                        }
+                        if (data2.socio === null && data1.data !== null) {
+                            Swal.fire({
+                                title: 'La persona: ' + nameSelected + ', no está registrada en SISPRO',
+                                text: '¿Desea registrar a la persona de forma independiente?',
+                                showDenyButton: true,
+                                confirmButtonText: 'REGISTRAR',
+                                denyButtonText: `CANCELAR`,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    beneficiarioDniTxt.value = query;
+                                    beneficiarioNombreTxt.value = nameSelected;
+                                    clearInputs()
+                                    $('#modal-beneficiario').modal('show');
+                                } else if (result.isDenied) {
+                                    Swal.fire('INGRESE UN DNI VÁLIDO')
+                                    clearInputs();
+                                }
+                            })
+                        }
+                        if (nameReniec !== null && nameSispro !== null) {
+                            if (nameReniec === nameSispro) {
+                                nameSelected = nameReniec;
+                            }
+                            if (nameReniec !== nameSispro) {
+                                console.log('El usuario debe elegir')
+                                Swal.fire({
+                                    title: 'Se han contrado diferencias entre los Datos de RENIEC con el registro de SISPRO. Por favor, Elija una opción',
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'RENIEC: ' + nameReniec,
+                                    cancelButtonText: 'SISPRO: ' + nameSispro,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        nameSelected = nameReniec;
+                                    } else if (result.dismiss) {
+                                        nameSelected = nameSispro;
+                                    }
+                                    Swal.fire('Seleccionaste: ' + nameSelected);
+                                    nombresTxt.value = nameSelected;
+                                });
+                            }
+                        }
+                        tipoSocioTxt.value = tipoSocioMapping[tipoBeneficiario] || '';
+                        baseSocialTxt.value = baseSocial;
+                        nombresTxt.value = nameSelected;
+                    }
+                )
+                .catch(error => {
+                    console.error("Error al obtener datos:", error);
+                });
+        }
+
+        // Realiza la busqueda luego de haber escrito 8 dígitos en el DNI
+        dniTxt.onkeyup = function () {
+            if (this.value.length !== 8) {
+                return;
+            }
+            compareResults(this.value);
+        }
     </script>
 {% endblock %}
 

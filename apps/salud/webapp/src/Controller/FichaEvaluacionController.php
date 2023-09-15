@@ -10,7 +10,9 @@ namespace SocialApp\Apps\Salud\Webapp\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
+use SocialApp\Apps\Salud\Webapp\Entity\Beneficiario;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaEvaluacion;
+use SocialApp\Apps\Salud\Webapp\Form\BeneficiarioType;
 use SocialApp\Apps\Salud\Webapp\Form\FichaEvaluacionType;
 use SocialApp\Apps\Salud\Webapp\Manager\FichaEvaluacionManager;
 use SocialApp\Apps\Salud\Webapp\Service\FichaEvaluacion\UpdateFichaExamenesAuxiliaresInFichaEvaluacionService;
@@ -77,12 +79,15 @@ class FichaEvaluacionController extends WebAuthController
 
             return $this->redirectToRoute('ficha_evaluacion_index');
         }
+        $beneficiario = new Beneficiario();
+        $formBeneficiario = $this->createForm(BeneficiarioType::class, $beneficiario);
 
         return $this->render(
             'ficha_evaluacion/new.html.twig',
             [
                 'ficha_evaluacion' => $fichaEvaluacion,
                 'form' => $form->createView(),
+                'formBeneficiario' => $formBeneficiario->createView(),
             ]
         );
     }

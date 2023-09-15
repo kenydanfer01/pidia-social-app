@@ -12,6 +12,7 @@ use SocialApp\Apps\Salud\Webapp\Entity\ExamenAuxiliar;
 use SocialApp\Apps\Salud\Webapp\Entity\FichaEvaluacion;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,10 +36,18 @@ class FichaEvaluacionType extends AbstractType
             ->add('evaluacionClinica', EvaluacionClinicaType::class, [
                 'required' => false,
             ])
-            ->add('dni')
-            ->add('nombreSocio')
-            ->add('baseSocial')
-            ->add('tipoSocio')
+            ->add('dni', TextType::class, [
+                'label' => 'Número de DNI:  ',
+            ])
+            ->add('nombreSocio', TextType::class, [
+                'label' => 'Nombre Encontrado:  ',
+            ])
+            ->add('baseSocial', TextType::class, [
+                'label' => 'Base Social:  ',
+            ])
+            ->add('tipoSocio', TextType::class, [
+                'label' => 'Tipo de Beneficiario:  ',
+            ])
             ->add('examenesAuxiliares', EntityType::class, [
                 'class' => ExamenAuxiliar::class,
                 'multiple' => true,
